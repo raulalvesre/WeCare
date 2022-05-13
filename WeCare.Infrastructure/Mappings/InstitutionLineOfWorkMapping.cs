@@ -6,7 +6,6 @@ namespace WeCare.Infrastructure.Mappings;
 
 public class InstitutionLineOfWorkMapping : IEntityTypeConfiguration<InstitutionLineOfWork>
 {
-    
     public void Configure(EntityTypeBuilder<InstitutionLineOfWork> builder)
     {
         builder.ToTable("institution_line_of_work");
@@ -16,5 +15,4 @@ public class InstitutionLineOfWorkMapping : IEntityTypeConfiguration<Institution
             .HasMaxLength(255)
             .IsRequired();
     }
-    
 }

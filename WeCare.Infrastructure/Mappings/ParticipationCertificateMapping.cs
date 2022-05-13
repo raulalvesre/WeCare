@@ -6,15 +6,14 @@ namespace WeCare.Infrastructure.Mappings;
 
 public class ParticipationCertificateMapping : IEntityTypeConfiguration<ParticipationCertificate>
 {
-    
     public void Configure(EntityTypeBuilder<ParticipationCertificate> builder)
     {
         builder.ToTable("participation_certificate");
 
         builder.HasKey(x => x.Id);
-        
+
         builder.Property(x => x.CreationDate)
-            .HasDefaultValue("GETDATE()")
+            .HasDefaultValueSql("NOW()")
             .ValueGeneratedOnAdd();
 
         builder.HasOne(x => x.Candidate)
@@ -29,5 +28,4 @@ public class ParticipationCertificateMapping : IEntityTypeConfiguration<Particip
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
     }
-    
 }

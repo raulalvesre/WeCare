@@ -6,7 +6,6 @@ namespace WeCare.Infrastructure.Mappings;
 
 public class VolunteerOpportunityMapping : IEntityTypeConfiguration<VolunteerOpportunity>
 {
-    
     public void Configure(EntityTypeBuilder<VolunteerOpportunity> builder)
     {
         builder.ToTable("volunteer_opportunity");
@@ -26,11 +25,11 @@ public class VolunteerOpportunityMapping : IEntityTypeConfiguration<VolunteerOpp
 
         builder.Property(x => x.OpportunityDate)
             .IsRequired();
-        
+
         builder.Property(x => x.CreationDate)
-            .HasDefaultValue("GETDATE()")
+            .HasDefaultValueSql("NOW()")
             .ValueGeneratedOnAdd();
-        
+
         builder.Property(x => x.LastUpdatedDate);
 
         builder.HasOne(x => x.Institution)
@@ -39,5 +38,4 @@ public class VolunteerOpportunityMapping : IEntityTypeConfiguration<VolunteerOpp
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
     }
-    
 }

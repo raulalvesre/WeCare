@@ -6,13 +6,12 @@ namespace WeCare.Infrastructure.Mappings;
 
 public class InstitutionMapping : IEntityTypeConfiguration<Institution>
 {
-    
     public void Configure(EntityTypeBuilder<Institution> builder)
     {
         builder.ToTable("institution");
-        
+
         builder.HasKey(x => x.Id);
-        
+
         builder.Property(x => x.Email)
             .HasMaxLength(255)
             .IsRequired();
@@ -20,7 +19,7 @@ public class InstitutionMapping : IEntityTypeConfiguration<Institution>
         builder.Property(x => x.Password)
             .HasMaxLength(500)
             .IsRequired();
-        
+
         builder.Property(x => x.Name)
             .HasMaxLength(255)
             .IsRequired();
@@ -36,11 +35,11 @@ public class InstitutionMapping : IEntityTypeConfiguration<Institution>
         builder.Property(x => x.Address)
             .HasMaxLength(500)
             .IsRequired();
-        
+
         builder.Property(x => x.CreationDate)
-            .HasDefaultValue("GETDATE()")
+            .HasDefaultValueSql("NOW()")
             .ValueGeneratedOnAdd();
-        
+
         builder.Property(x => x.LastUpdatedDate);
 
         builder.HasOne(x => x.LineOfWork)
@@ -49,5 +48,4 @@ public class InstitutionMapping : IEntityTypeConfiguration<Institution>
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
     }
-    
 }

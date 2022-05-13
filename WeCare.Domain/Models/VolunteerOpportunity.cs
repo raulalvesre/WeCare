@@ -2,7 +2,6 @@ namespace WeCare.Domain;
 
 public class VolunteerOpportunity
 {
-    
     public int Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
@@ -11,8 +10,7 @@ public class VolunteerOpportunity
     public DateTime CreationDate { get; set; }
     public DateTime? LastUpdatedDate { get; set; }
 
-    
+
     public int InstitutionId { get; set; }
     public Institution Institution { get; set; }
-    
 }
