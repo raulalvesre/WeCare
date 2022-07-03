@@ -1,8 +1,9 @@
 namespace WeCare.Domain;
 
-public class Institution : User
+public class OpportunityCause
 {
-    public string Cnpj { get; set; }
+    public long Id { get; set; }
+    public string Name { get; set; }
+    
     public IEnumerable<VolunteerOpportunity> VolunteerOpportunities { get; set; }
-
 }

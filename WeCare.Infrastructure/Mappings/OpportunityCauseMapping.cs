@@ -4,15 +4,15 @@ using WeCare.Domain;
 
 namespace WeCare.Infrastructure.Mappings;
 
-public class InstitutionLineOfWorkMapping : IEntityTypeConfiguration<InstitutionLineOfWork>
+public class OpportunityCauseMapping : IEntityTypeConfiguration<OpportunityCause>
 {
-    public void Configure(EntityTypeBuilder<InstitutionLineOfWork> builder)
+    public void Configure(EntityTypeBuilder<OpportunityCause> builder)
     {
-        builder.ToTable("institution_line_of_work");
+        builder.ToTable("opportunity_cause");
 
         builder.HasKey(x => x.Id);
+
         builder.Property(x => x.Name)
-            .HasMaxLength(255)
             .IsRequired();
     }
 }

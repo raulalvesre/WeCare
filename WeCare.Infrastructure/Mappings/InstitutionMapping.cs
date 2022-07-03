@@ -8,44 +8,10 @@ public class InstitutionMapping : IEntityTypeConfiguration<Institution>
 {
     public void Configure(EntityTypeBuilder<Institution> builder)
     {
-        builder.ToTable("institution");
+        builder.Property(x => x.Cnpj);
 
-        builder.HasKey(x => x.Id);
-
-        builder.Property(x => x.Email)
-            .HasMaxLength(255)
-            .IsRequired();
-
-        builder.Property(x => x.Password)
-            .HasMaxLength(500)
-            .IsRequired();
-
-        builder.Property(x => x.Name)
-            .HasMaxLength(255)
-            .IsRequired();
-
-        builder.Property(x => x.Cnpj)
-            .HasMaxLength(18)
-            .IsRequired();
-
-        builder.Property(x => x.Telephone)
-            .HasMaxLength(11)
-            .IsRequired();
-
-        builder.Property(x => x.Address)
-            .HasMaxLength(500)
-            .IsRequired();
-
-        builder.Property(x => x.CreationDate)
-            .HasDefaultValueSql("NOW()")
-            .ValueGeneratedOnAdd();
-
-        builder.Property(x => x.LastUpdatedDate);
-
-        builder.HasOne(x => x.LineOfWork)
-            .WithMany()
-            .HasForeignKey(x => x.LineOfWorkId)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.HasMany(x => x.VolunteerOpportunities)
+            .WithOne(x => x.Institution)
+            .HasForeignKey(x => x.InstitutionId);
     }
 }

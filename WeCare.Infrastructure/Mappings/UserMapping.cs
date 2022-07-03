@@ -4,25 +4,28 @@ using WeCare.Domain;
 
 namespace WeCare.Infrastructure.Mappings;
 
-public class VolunteerOpportunityMapping : IEntityTypeConfiguration<VolunteerOpportunity>
+public class UserMapping : IEntityTypeConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<VolunteerOpportunity> builder)
+    public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable("volunteer_opportunity");
-
+        builder.HasDiscriminator<string>("user_type")
+            .HasValue<Candidate>("CANDIDATE")
+            .HasValue<Institution>("INSTITUTION");
+        
         builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.Email)
+            .IsRequired();
+
+        builder.Property(x => x.Password)
+            .IsRequired();
 
         builder.Property(x => x.Name)
             .IsRequired();
-
-        builder.Property(x => x.Description);
         
-        builder.Property(x => x.Address)
+        builder.Property(x => x.Telephone)
             .IsRequired();
 
-        builder.Property(x => x.OpportunityDate)
-            .IsRequired();
-        
         builder.Property(x => x.Address)
             .IsRequired();
         
@@ -45,25 +48,11 @@ public class VolunteerOpportunityMapping : IEntityTypeConfiguration<VolunteerOpp
         
         builder.Property(x => x.Cep)
             .IsRequired();
-
+        
         builder.Property(x => x.CreationDate)
             .HasDefaultValueSql("NOW()")
             .ValueGeneratedOnAdd();
 
         builder.Property(x => x.LastUpdateDate);
-
-        builder.HasOne(x => x.Institution)
-            .WithMany()
-            .HasForeignKey(x => x.InstitutionId)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasMany(x => x.RequiredQualifications)
-            .WithMany(x => x.VolunteerOpportunities)
-            .UsingEntity(x => x.ToTable("qualification_opportunity_link"));
-        
-        builder.HasMany(x => x.Causes)
-            .WithMany(x => x.VolunteerOpportunities)
-            .UsingEntity(x => x.ToTable("cause_opportunity_link"));
     }
 }
