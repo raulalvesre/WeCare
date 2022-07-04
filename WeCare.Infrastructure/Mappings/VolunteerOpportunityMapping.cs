@@ -8,7 +8,7 @@ public class VolunteerOpportunityMapping : IEntityTypeConfiguration<VolunteerOpp
 {
     public void Configure(EntityTypeBuilder<VolunteerOpportunity> builder)
     {
-        builder.ToTable("volunteer_opportunity");
+        builder.ToTable("volunteers_opportunities");
 
         builder.HasKey(x => x.Id);
 
@@ -16,38 +16,17 @@ public class VolunteerOpportunityMapping : IEntityTypeConfiguration<VolunteerOpp
             .IsRequired();
 
         builder.Property(x => x.Description);
-        
+
         builder.Property(x => x.Address)
             .IsRequired();
 
         builder.Property(x => x.OpportunityDate)
             .IsRequired();
-        
-        builder.Property(x => x.Address)
-            .IsRequired();
-        
-        builder.Property(x => x.Number)
-            .IsRequired();
 
-        builder.Property(x => x.Complement);
-        
-        builder.Property(x => x.City)
-            .IsRequired();
-        
-        builder.Property(x => x.City)
-            .IsRequired();
-
-        builder.Property(x => x.Neighborhood);
-        
-        builder.Property(x => x.State)
-            .HasConversion<string>()
-            .IsRequired();
-        
-        builder.Property(x => x.Cep)
-            .IsRequired();
+        builder.HasOne(x => x.Address);
 
         builder.Property(x => x.CreationDate)
-            .HasDefaultValueSql("NOW()")
+            .HasDefaultValueSql("now()")
             .ValueGeneratedOnAdd();
 
         builder.Property(x => x.LastUpdateDate);
@@ -61,7 +40,7 @@ public class VolunteerOpportunityMapping : IEntityTypeConfiguration<VolunteerOpp
         builder.HasMany(x => x.RequiredQualifications)
             .WithMany(x => x.VolunteerOpportunities)
             .UsingEntity(x => x.ToTable("qualification_opportunity_link"));
-        
+
         builder.HasMany(x => x.Causes)
             .WithMany(x => x.VolunteerOpportunities)
             .UsingEntity(x => x.ToTable("cause_opportunity_link"));

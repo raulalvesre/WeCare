@@ -5,19 +5,22 @@ using WeCare.Domain;
 namespace WeCare.API.Controllers;
 
 [ApiController]
-[Route("candidate")]
-public class CandidateController : ControllerBase
+[Route("api/[controller]")]
+public class CandidatesController : ControllerBase
 {
     private readonly CandidateService _candidateService;
 
-    public CandidateController(CandidateService candidateService)
+    public CandidatesController(CandidateService candidateService)
     {
         _candidateService = candidateService;
     }
 
-    [HttpGet("{id:int}")]
-    public Candidate GetById(int id)
+    [HttpGet("{id:long:min(0)}")]
+    public async ValueTask<ActionResult> GetById(long id)
     {
-        return _candidateService.GetById(id);
+        var candidate = await _candidateService.GetById(id);
+        return candidate is not null
+            ? Ok(candidate)
+            : NotFound();
     }
 }

@@ -8,12 +8,12 @@ public class ParticipationCertificateMapping : IEntityTypeConfiguration<Particip
 {
     public void Configure(EntityTypeBuilder<ParticipationCertificate> builder)
     {
-        builder.ToTable("participation_certificate");
+        builder.ToTable("participations_certificates");
 
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.CreationDate)
-            .HasDefaultValueSql("NOW()")
+            .HasDefaultValueSql("now()")
             .ValueGeneratedOnAdd();
 
         builder.HasOne(x => x.Candidate)

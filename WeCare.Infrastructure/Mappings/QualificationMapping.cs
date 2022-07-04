@@ -8,7 +8,7 @@ public class QualificationMapping : IEntityTypeConfiguration<Qualification>
 {
     public void Configure(EntityTypeBuilder<Qualification> builder)
     {
-        builder.ToTable("qualification");
+        builder.ToTable("qualifications");
 
         builder.HasKey(x => x.Id);
 

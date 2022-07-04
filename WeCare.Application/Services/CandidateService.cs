@@ -12,14 +12,5 @@ public class CandidateService
         _candidateRepository = candidateRepository;
     }
 
-    public Candidate GetById(int id)
-    {
-        Candidate? candidate = _candidateRepository.Query
-            .FirstOrDefault(x => x.Id == id);
-
-        if (candidate == null)
-            throw new Exception("Candidate not found!");
-
-        return candidate;
-    }
+    public Task<Candidate?> GetById(long id) => _candidateRepository.GetById(id);
 }
