@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WeCare.Application.SearchParams;
 using WeCare.Application.Services;
 using WeCare.Domain;
 
@@ -22,5 +23,12 @@ public class CandidatesController : ControllerBase
         return candidate is not null
             ? Ok(candidate)
             : NotFound();
+    }
+    
+    [HttpGet("search")]
+    public async ValueTask<Pagination<Candidate>> GetById([FromQuery] CandidateSearchParams searchParams)
+    {
+        var candidatePage = await _candidateService.GetPage(searchParams);
+        return candidatePage;
     }
 }

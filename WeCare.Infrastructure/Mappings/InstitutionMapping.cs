@@ -23,17 +23,34 @@ public class InstitutionMapping : IEntityTypeConfiguration<Institution>
 
         builder.Property(x => x.Telephone)
             .IsRequired();
+        
+        builder.Property(x => x.LastUpdateDate);
+
+        builder.Property(x => x.Cnpj);
+        
+        builder.Property(x => x.Street)
+            .IsRequired();
+        
+        builder.Property(x => x.Number)
+            .IsRequired();
+
+        builder.Property(x => x.Complement);
+        
+        builder.Property(x => x.City)
+            .IsRequired();
+        
+        builder.Property(x => x.Neighborhood);
+        
+        builder.Property(x => x.State)
+            .IsRequired();
+        
+        builder.Property(x => x.PostalCode)
+            .IsRequired();
 
         builder.Property(x => x.CreationDate)
             .HasDefaultValueSql("now()")
             .ValueGeneratedOnAdd();
-
-        builder.Property(x => x.LastUpdateDate);
-
-        builder.Property(x => x.Cnpj);
-
-        builder.HasOne(x => x.Address);
-
+        
         builder.HasMany(x => x.VolunteerOpportunities)
             .WithOne(x => x.Institution)
             .HasForeignKey(x => x.InstitutionId);

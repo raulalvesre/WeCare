@@ -8,7 +8,7 @@ public class DatabaseContext : DbContext
     
     private static readonly string _connStr = @"
         Host=localhost;
-        Port=5432;
+        Port=7771;
         Database=wecare;
         User Id=postgres;
         Password=rar432;
@@ -16,7 +16,6 @@ public class DatabaseContext : DbContext
     
     public DbSet<Candidate> Candidates { get; set; } = null!;
     public DbSet<Institution> Institutions  { get; set; } = null!;
-    public DbSet<Address> Addresses  { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -28,7 +27,7 @@ public class DatabaseContext : DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.HasDefaultSchema("public");
-        base.OnModelCreating(builder);
+        builder.ApplyConfigurationsFromAssembly(typeof(DatabaseContext).Assembly);
     }
     
 }

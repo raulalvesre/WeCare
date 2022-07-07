@@ -1,21 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using WeCare.Domain;
+using WeCare.Infrastructure.Repositories.Base;
 
 namespace WeCare.Infrastructure.Repositories;
 
-public class CandidateRepository
+public class CandidateRepository : BaseRepository<Candidate>
 {
-    private readonly DatabaseContext _databaseContext;
-
-    public CandidateRepository(DatabaseContext database)
+    public CandidateRepository(DatabaseContext databaseContext) : base(databaseContext)
     {
-        this._databaseContext = database;
     }
-
+    
     public Task<Candidate?> GetById(long id)
     {
-        return _databaseContext.Candidates
-            .Include(candidate => candidate.Address)
+        return Query
             .AsNoTracking()            
             .FirstOrDefaultAsync(candidate => candidate.Id == id);
     }
