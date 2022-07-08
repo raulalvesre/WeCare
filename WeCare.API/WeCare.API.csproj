@@ -7,11 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\WeCare.Application\WeCare.Application.csproj"/>
+        <ProjectReference Include="..\WeCare.Application\WeCare.Application.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
     </ItemGroup>
 
 </Project>

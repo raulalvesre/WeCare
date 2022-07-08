@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WeCare.Application.SearchParams;
 using WeCare.Application.Services;
+using WeCare.Application.ViewModels;
 using WeCare.Domain;
 
 namespace WeCare.API.Controllers;
@@ -17,18 +18,21 @@ public class CandidatesController : ControllerBase
     }
 
     [HttpGet("{id:long:min(0)}")]
-    public async ValueTask<ActionResult> GetById(long id)
+    public async ValueTask<ActionResult<Candidate>> GetById(long id)
     {
-        var candidate = await _candidateService.GetById(id);
-        return candidate is not null
-            ? Ok(candidate)
-            : NotFound();
+        return await _candidateService.GetById(id);
     }
     
     [HttpGet("search")]
-    public async ValueTask<Pagination<Candidate>> GetById([FromQuery] CandidateSearchParams searchParams)
+    public async ValueTask<ActionResult<Pagination<Candidate>>> Search([FromQuery] CandidateSearchParams searchParams)
     {
         var candidatePage = await _candidateService.GetPage(searchParams);
         return candidatePage;
+    }
+
+    [HttpPost]
+    public async ValueTask<ActionResult<Candidate>> Save(CandidateForm form)
+    {
+        return await _candidateService.Save(form);
     }
 }
