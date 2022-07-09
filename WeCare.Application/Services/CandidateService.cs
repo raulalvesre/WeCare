@@ -15,14 +15,9 @@ public class CandidateService
         _candidateRepository = candidateRepository;
     }
 
-    public async Task<Candidate?> GetById(long id)
+    public Task<Candidate?> GetById(long id)
     {
-        var candidate = await _candidateRepository.GetById(id);
-        
-        if (candidate is null)
-            throw new NotFoundException("Candidato não encontrado");
-
-        return candidate;
+        return _candidateRepository.GetById(id);
     }
 
     public Task<Pagination<Candidate>> GetPage(CandidateSearchParams searchParams)
@@ -32,10 +27,6 @@ public class CandidateService
 
     public async Task<Candidate?> Save(CandidateForm form)
     {
-        var validationResult = await form.ValidateAsync();
-        if (!validationResult.IsValid)
-            throw new BadRequestException(validationResult.Errors);
-
         var candidate = new Candidate
         {
             Name = form.Name,

@@ -19,7 +19,7 @@ public abstract class PaginationFilterParamsBase<T> : IPaginationFilterParams<T>
         Filter();
         query = query.AsNoTracking();
 
-        if (_preQuery != null)
+        if (_preQuery is not null)
             query = _preQuery(query);
 
         return query.AsExpandableEFCore().Where(_predicate);

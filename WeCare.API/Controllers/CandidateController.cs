@@ -20,9 +20,12 @@ public class CandidatesController : ControllerBase
     [HttpGet("{id:long:min(0)}")]
     public async ValueTask<ActionResult<Candidate>> GetById(long id)
     {
-        return await _candidateService.GetById(id);
+        var candidate = await _candidateService.GetById(id);
+        return candidate is not null
+            ? candidate
+            : NotFound();
     }
-    
+
     [HttpGet("search")]
     public async ValueTask<ActionResult<Pagination<Candidate>>> Search([FromQuery] CandidateSearchParams searchParams)
     {
@@ -33,6 +36,13 @@ public class CandidatesController : ControllerBase
     [HttpPost]
     public async ValueTask<ActionResult<Candidate>> Save(CandidateForm form)
     {
-        return await _candidateService.Save(form);
+        var validationResult = await form.ValidateAsync();
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
+        await _candidateService.Save(form);
+        return NoContent();
     }
 }

@@ -8,8 +8,5 @@ public class CandidateForm
     public string Name { get; set; }
     public string Email { get; set; }
 
-    public Task<ValidationResult> ValidateAsync()
-    {
-        return new CandidateFormValidator().ValidateAsync(this);
-    }
+    public Task<ValidationResult> ValidateAsync() => new CandidateFormValidator().ValidateAsync(this);
 }
