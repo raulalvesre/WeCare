@@ -15,19 +15,8 @@ CREATE TABLE IF NOT EXISTS candidates
     state            TEXT                     NOT NULL default '',
     postal_code      TEXT                     NOT NULL default '',
     creation_date    timestamp with time zone NOT NULL default now(),
-    last_update_date timestamp with time zone NOT NULL default now()
+    last_update_date timestamp with time zone
 );
-
-INSERT INTO public.candidates (id, email, password, name, birth_date, cpf, telephone, street, number, complement, city,
-                               neighborhood, state, postal_code, creation_date, last_update_date)
-VALUES (DEFAULT, 'rar@gmail.com', 'rar432', 'Raul Alves Reginaldo', '1999-01-28', '47981477883', '11976454630', '', '', '',
-        '', '', '', '', '2022-07-07 01:27:39.039057 +00:00', '2022-07-07 01:27:39.039057 +00:00');
-
-INSERT INTO public.candidates (id, email, password, name, birth_date, cpf, telephone, street, number, complement, city,
-                               neighborhood, state, postal_code, creation_date, last_update_date)
-VALUES (2, 'raul.alves.re@gmail.com', 'rar432', 'raulzera', '1999-01-28', '47981477883', '11976454630', '', '', '',
-        '', '', '', '', '2022-07-07 01:27:39.039057 +00:00', '2022-07-07 01:27:39.039057 +00:00');
-
 
 CREATE TABLE IF NOT EXISTS qualifications
 (
@@ -64,7 +53,7 @@ CREATE TABLE IF NOT EXISTS institutions
     state            TEXT                     NOT NULL default '',
     postal_code      TEXT                     NOT NULL default '',
     creation_date    timestamp with time zone NOT NULL default now(),
-    last_update_date timestamp with time zone NOT NULL default now()
+    last_update_date timestamp with time zone
 );
 
 CREATE TABLE IF NOT EXISTS volunteer_opportunities
@@ -82,7 +71,7 @@ CREATE TABLE IF NOT EXISTS volunteer_opportunities
     state            TEXT                     NOT NULL default '',
     postal_code      TEXT                     NOT NULL default '',
     creation_date    timestamp with time zone NOT NULL default now(),
-    last_update_date timestamp with time zone NOT NULL default now(),
+    last_update_date timestamp with time zone,
 
     FOREIGN KEY (institution_id)
         REFERENCES "institutions" (id)
