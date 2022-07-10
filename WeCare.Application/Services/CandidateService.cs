@@ -1,3 +1,4 @@
+using WeCare.Application.SearchParams;
 using WeCare.Domain;
 using WeCare.Infrastructure.Repositories;
 
@@ -13,4 +14,9 @@ public class CandidateService
     }
 
     public Task<Candidate?> GetById(long id) => _candidateRepository.GetById(id);
+
+    public Task<Pagination<Candidate>> GetPage(CandidateSearchParams searchParams)
+    {
+        return _candidateRepository.Paginate(searchParams);
+    }
 }

@@ -20,22 +20,43 @@ public class CandidateMapping : IEntityTypeConfiguration<Candidate>
 
         builder.Property(x => x.Name)
             .IsRequired();
-
-        builder.Property(x => x.Telephone)
+        
+        builder.Property(x => x.BirthDate)
             .IsRequired();
 
+        builder.Property(x => x.Cpf);
+        
+        builder.Property(x => x.Telephone)
+            .IsRequired();
+        
+        builder.Property(x => x.Street)
+            .IsRequired();
+        
+        builder.Property(x => x.Number)
+            .IsRequired();
+
+        builder.Property(x => x.Complement);
+        
+        builder.Property(x => x.City)
+            .IsRequired();
+        
+        builder.Property(x => x.Neighborhood);
+        
+        builder.Property(x => x.State)
+            .HasConversion(
+                x => x.ToString(),
+                x => (State)Enum.Parse(typeof(State), x))
+            .IsRequired();
+        
+        builder.Property(x => x.PostalCode)
+            .IsRequired();
+        
         builder.Property(x => x.CreationDate)
             .HasDefaultValueSql("now()")
             .ValueGeneratedOnAdd();
 
         builder.Property(x => x.LastUpdateDate);
-
-        builder.Property(x => x.BirthDate);
-
-        builder.Property(x => x.Cpf);
-
-        builder.HasOne(x => x.Address);
-
+        
         builder.HasMany(x => x.Qualifications)
             .WithMany(x => x.Candidates)
             .UsingEntity(x => x.ToTable("candidates_qualification_link"));

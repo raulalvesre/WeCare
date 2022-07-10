@@ -7,9 +7,16 @@ public class Institution
     public string Password { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string Telephone { get; set; } = string.Empty;
-    public Address? Address { get; set; }
+    public string Street { get; set; } = string.Empty;
+    public string Number { get; set; }
+    public string Complement { get; set; } = string.Empty;
+    public string City { get; set; } = string.Empty;
+    public string Neighborhood { get; set; } = string.Empty;
+    public State State { get; set; }
+    public string PostalCode { get; set; } = string.Empty;
     public string Cnpj { get; set; } = string.Empty;
-    public IEnumerable<VolunteerOpportunity> VolunteerOpportunities { get; set; } = new List<VolunteerOpportunity>();
     public DateTime CreationDate { get; set; }
-    public DateTime LastUpdateDate { get; set; }
+    public DateTime? LastUpdateDate { get; set; }
+    
+    public IEnumerable<VolunteerOpportunity> VolunteerOpportunities { get; set; } = new List<VolunteerOpportunity>();
 }

@@ -16,15 +16,31 @@ public class VolunteerOpportunityMapping : IEntityTypeConfiguration<VolunteerOpp
             .IsRequired();
 
         builder.Property(x => x.Description);
-
-        builder.Property(x => x.Address)
-            .IsRequired();
-
+        
         builder.Property(x => x.OpportunityDate)
             .IsRequired();
+        
+         builder.Property(x => x.LastUpdateDate);
 
-        builder.HasOne(x => x.Address);
+         builder.Property(x => x.Street)
+             .IsRequired();
+        
+         builder.Property(x => x.Number)
+             .IsRequired();
 
+         builder.Property(x => x.Complement);
+        
+         builder.Property(x => x.City)
+             .IsRequired();
+        
+         builder.Property(x => x.Neighborhood);
+        
+         builder.Property(x => x.State)
+             .IsRequired();
+        
+         builder.Property(x => x.PostalCode)
+             .IsRequired();
+        
         builder.Property(x => x.CreationDate)
             .HasDefaultValueSql("now()")
             .ValueGeneratedOnAdd();
