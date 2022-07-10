@@ -18,7 +18,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<DatabaseContext>();
 builder.Services.AddScoped<CandidateRepository>();
+builder.Services.AddScoped<VolunteerOpportunityRepository>();
+builder.Services.AddScoped<InstitutionRepository>();
 builder.Services.AddScoped<CandidateService>();
+builder.Services.AddScoped<VolunteerOpportunityService>();
 
 var app = builder.Build();
 
