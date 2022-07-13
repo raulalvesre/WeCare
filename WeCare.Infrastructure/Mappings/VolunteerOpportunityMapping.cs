@@ -8,7 +8,7 @@ public class VolunteerOpportunityMapping : IEntityTypeConfiguration<VolunteerOpp
 {
     public void Configure(EntityTypeBuilder<VolunteerOpportunity> builder)
     {
-        builder.ToTable("volunteers_opportunities");
+        builder.ToTable("volunteer_opportunities");
 
         builder.HasKey(x => x.Id);
 
@@ -48,7 +48,7 @@ public class VolunteerOpportunityMapping : IEntityTypeConfiguration<VolunteerOpp
         builder.Property(x => x.LastUpdateDate);
 
         builder.HasOne(x => x.Institution)
-            .WithMany()
+            .WithMany(x => x.VolunteerOpportunities)
             .HasForeignKey(x => x.InstitutionId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);

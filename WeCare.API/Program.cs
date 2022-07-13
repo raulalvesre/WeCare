@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 using WeCare.API.Filters;
 using WeCare.Application.Services;
 using WeCare.Infrastructure;
@@ -22,6 +24,9 @@ builder.Services.AddScoped<VolunteerOpportunityRepository>();
 builder.Services.AddScoped<InstitutionRepository>();
 builder.Services.AddScoped<CandidateService>();
 builder.Services.AddScoped<VolunteerOpportunityService>();
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+builder.Services.Configure<JsonOptions>(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 var app = builder.Build();
 

@@ -9,6 +9,13 @@ public class VolunteerOpportunityService
     private readonly VolunteerOpportunityRepository _volunteerOpportunityRepository;
     private readonly InstitutionRepository _institutionRepository;
 
+    public VolunteerOpportunityService(VolunteerOpportunityRepository volunteerOpportunityRepository, InstitutionRepository institutionRepository)
+    {
+        _volunteerOpportunityRepository = volunteerOpportunityRepository;
+        _institutionRepository = institutionRepository;
+    }
+
+    //TODO resolver como q vai receber causas e requerimentos
     public async Task<VolunteerOpportunityResponse> Save(long institutionId, VolunteerOpportunityForm newOpportunity)
     {
         var validationResult = await newOpportunity.ValidateAsync();

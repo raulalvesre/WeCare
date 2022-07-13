@@ -10,15 +10,9 @@ public class VolunteerOpportunityForm
     public string Name { get; set; }
     public string Description { get; set; }
     public DateTime OpportunityDate { get; set; }
-    public string AddressStreet { get; set; }
-    public string AddressNumber { get; set; }
-    public string AddressComplement { get; set; }
-    public string AddressCity { get; set; }
-    public string AddressNeighborhood { get; set; }
-    public State AddressState { get; set; }
-    public string AddressPostalCode { get; set; }
-    public IEnumerable<Qualification> RequiredQualifications { get; set; } = new List<Qualification>();
-    public IEnumerable<OpportunityCause> Causes { get; set; } = new List<OpportunityCause>();
+    public AddressViewModel Address { get; set; }
+    // public IEnumerable<Qualification> RequiredQualifications { get; set; } = new List<Qualification>();
+    // public IEnumerable<OpportunityCause> Causes { get; set; } = new List<OpportunityCause>();
     
     public Task<ValidationResult> ValidateAsync()
     {
@@ -33,15 +27,15 @@ public class VolunteerOpportunityForm
             InstitutionId = institutionId,
             Description = Description,
             OpportunityDate = OpportunityDate,
-            Street = AddressStreet,
-            Number = AddressNumber,
-            Complement = AddressComplement,
-            City = AddressCity,
-            Neighborhood = AddressNeighborhood,
-            State = AddressState,
-            PostalCode = AddressPostalCode,
-            RequiredQualifications = RequiredQualifications,
-            Causes = Causes
+            Street = Address.Street,
+            Number = Address.Number,
+            Complement = Address.Complement,
+            City = Address.City,
+            Neighborhood = Address.Neighborhood,
+            State = Address.State,
+            PostalCode = Address.PostalCode,
+            RequiredQualifications = new List<Qualification>(),
+            Causes = new List<OpportunityCause>()
         };
     }
 }

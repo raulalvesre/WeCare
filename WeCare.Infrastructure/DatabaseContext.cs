@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using WeCare.Domain;
 
 namespace WeCare.Infrastructure;
@@ -22,7 +23,8 @@ public class DatabaseContext : DbContext
     {
         optionsBuilder
             .UseNpgsql(_connStr)
-            .UseSnakeCaseNamingConvention();
+            .UseSnakeCaseNamingConvention()
+            .LogTo(Console.WriteLine, LogLevel.Information);
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -30,5 +32,4 @@ public class DatabaseContext : DbContext
         builder.HasDefaultSchema("public");
         builder.ApplyConfigurationsFromAssembly(typeof(DatabaseContext).Assembly);
     }
-    
 }
