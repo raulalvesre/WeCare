@@ -4,7 +4,7 @@ using WeCare.Domain;
 
 namespace WeCare.Infrastructure;
 
-public class DatabaseContext : DbContext
+public class WeCareDatabaseContext : DbContext
 {
     
     private static readonly string _connStr = @"
@@ -30,6 +30,6 @@ public class DatabaseContext : DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.HasDefaultSchema("public");
-        builder.ApplyConfigurationsFromAssembly(typeof(DatabaseContext).Assembly);
+        builder.ApplyConfigurationsFromAssembly(typeof(WeCareDatabaseContext).Assembly);
     }
 }

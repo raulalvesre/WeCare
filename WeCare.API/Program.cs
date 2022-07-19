@@ -18,7 +18,7 @@ builder.Services.AddControllers(opts =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<DatabaseContext>();
+builder.Services.AddDbContext<WeCareDatabaseContext>();
 builder.Services.AddScoped<CandidateRepository>();
 builder.Services.AddScoped<VolunteerOpportunityRepository>();
 builder.Services.AddScoped<InstitutionRepository>();
@@ -35,3 +35,5 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.Run();
+
+public partial class Program { }

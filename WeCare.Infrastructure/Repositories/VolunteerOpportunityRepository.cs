@@ -5,7 +5,7 @@ namespace WeCare.Infrastructure.Repositories;
 
 public class VolunteerOpportunityRepository : BaseRepository<VolunteerOpportunity>
 {
-    public VolunteerOpportunityRepository(DatabaseContext databaseContext) : base(databaseContext)
+    public VolunteerOpportunityRepository(WeCareDatabaseContext weCareDatabaseContext) : base(weCareDatabaseContext)
     {
     }
 }
