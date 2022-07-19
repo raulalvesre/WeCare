@@ -6,7 +6,7 @@ namespace WeCare.Infrastructure.Repositories;
 
 public class CandidateRepository : BaseRepository<Candidate>
 {
-    public CandidateRepository(DatabaseContext databaseContext) : base(databaseContext)
+    public CandidateRepository(WeCareDatabaseContext weCareDatabaseContext) : base(weCareDatabaseContext)
     {
     }
     

@@ -8,7 +8,7 @@ public class ParticipationCertificateMapping : IEntityTypeConfiguration<Particip
 {
     public void Configure(EntityTypeBuilder<ParticipationCertificate> builder)
     {
-        builder.ToTable("participations_certificates");
+        builder.ToTable("participation_certificates");
 
         builder.HasKey(x => x.Id);
 

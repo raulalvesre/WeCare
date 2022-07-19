@@ -5,14 +5,14 @@ namespace WeCare.Infrastructure.Repositories.Base;
 
 public abstract class BaseRepository<T> where T : class
 {
-    protected readonly DatabaseContext _databaseContext;
+    protected readonly WeCareDatabaseContext WeCareDatabaseContext;
 
     protected readonly DbSet<T> _set;
 
-    public BaseRepository(DatabaseContext databaseContext)
+    public BaseRepository(WeCareDatabaseContext weCareDatabaseContext)
     {
-        _databaseContext = databaseContext;
-        _set = databaseContext.Set<T>();
+        WeCareDatabaseContext = weCareDatabaseContext;
+        _set = weCareDatabaseContext.Set<T>();
 
         if (_set == null)
             throw new InvalidOperationException($"Invalid DbSet Type: {typeof(T).Name}");
@@ -23,7 +23,7 @@ public abstract class BaseRepository<T> where T : class
     public async Task Save(T record)
     {
         await _set.AddAsync(record);
-        await _databaseContext.SaveChangesAsync();
+        await WeCareDatabaseContext.SaveChangesAsync();
     }
 
     public Task Update(T record)
@@ -41,7 +41,7 @@ public abstract class BaseRepository<T> where T : class
     public async Task<Pagination<T>> Paginate(IPaginationFilterParams<T> filterParams)
     {
         var recordList = new List<T>();
-        var query = filterParams.ApplyFilter(_databaseContext.Set<T>());
+        var query = filterParams.ApplyFilter(WeCareDatabaseContext.Set<T>());
         
         int pageNumber = filterParams.PageNumber ?? 1;
         int pageSize = filterParams.PageSize ?? 10;

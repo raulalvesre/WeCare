@@ -42,7 +42,6 @@ CREATE TABLE IF NOT EXISTS institutions
     email            text                     NOT NULL default '',
     password         text                     NOT NULL default '',
     name             text                     NOT NULL default '',
-    birth_date       date                     NOT NULL,
     cnpj             text                     NOT NULL default '',
     telephone        text                     NOT NULL default '',
     street           TEXT                     NOT NUll default '',
@@ -55,6 +54,7 @@ CREATE TABLE IF NOT EXISTS institutions
     creation_date    timestamp with time zone NOT NULL default now(),
     last_update_date timestamp with time zone
 );
+
 
 CREATE TABLE IF NOT EXISTS volunteer_opportunities
 (
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS volunteer_opportunities
         REFERENCES "institutions" (id)
 );
 
-CREATE TABLE IF NOT EXISTS qualification_opportunity_link
+    CREATE TABLE IF NOT EXISTS qualification_opportunity_link
 (
     opportunity_id   bigint NOT NULL,
     qualification_id bigint NOT NULL,
