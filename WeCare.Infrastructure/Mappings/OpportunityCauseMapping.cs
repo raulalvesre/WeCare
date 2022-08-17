@@ -8,7 +8,7 @@ public class OpportunityCauseMapping : IEntityTypeConfiguration<OpportunityCause
 {
     public void Configure(EntityTypeBuilder<OpportunityCause> builder)
     {
-        builder.ToTable("opportunities_causes");
+        builder.ToTable("opportunity_causes");
 
         builder.HasKey(x => x.Id);
 
