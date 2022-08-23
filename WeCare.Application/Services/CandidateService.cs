@@ -39,8 +39,8 @@ public class CandidateService
 
         var candidate = new Candidate
         {
+            Email = form.Email,
             Name = form.Name,
-            Email = form.Email
         };
 
         await _candidateRepository.Save(candidate);
@@ -48,17 +48,16 @@ public class CandidateService
         return candidate;
     }
 
-    public async Task<Candidate?> Save(CandidateAdminForm form) {
+    public async Task<CandidateViewModel> Save(CandidateAdminForm form) {
         var validationResult = await form.ValidateAsync();
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
-        var candidate = new Candidate {
-            Email = form.Email
-        };
+        var candidate = form.toModel();
 
         await _candidateRepository.Save(candidate);
 
-        return candidate;
+        return new CandidateViewModel(candidate);
    }
+
 }
