@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using WeCare.Application.Exceptions;
 using WeCare.Application.SearchParams;
 using WeCare.Application.ViewModels;
@@ -46,4 +47,18 @@ public class CandidateService
 
         return candidate;
     }
+
+    public async Task<Candidate?> Save(CandidateAdminForm form) {
+        var validationResult = await form.ValidateAsync();
+        if (!validationResult.IsValid)
+            throw new BadRequestException(validationResult.Errors);
+
+        var candidate = new Candidate {
+            Email = form.Email
+        };
+
+        await _candidateRepository.Save(candidate);
+
+        return candidate;
+   }
 }
