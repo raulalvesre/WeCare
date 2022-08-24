@@ -6,7 +6,7 @@ public class AddressViewModel
 {
     public string Street { get; set; }
     public string Number { get; set; }
-    public string? Complement { get; set; }
+    public string Complement { get; set; }= string.Empty;
     public string City { get; set; }
     public string Neighborhood { get; set; }
     public State State { get; set; }
