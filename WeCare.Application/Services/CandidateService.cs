@@ -16,22 +16,29 @@ public class CandidateService
         _candidateRepository = candidateRepository;
     }
 
-    public async Task<Candidate?> GetById(long id)
+    public async Task<CandidateViewModel> GetById(long id)
     {
         var candidate = await _candidateRepository.GetById(id);
-        
+
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");
 
-        return candidate;
+        return new CandidateViewModel(candidate);
     }
 
-    public Task<Pagination<Candidate>> GetPage(CandidateSearchParams searchParams)
+    public async Task<Pagination<CandidateViewModel>> GetPage(CandidateSearchParams searchParams)
     {
-        return _candidateRepository.Paginate(searchParams);
+        var modelPage = await _candidateRepository.Paginate(searchParams);
+
+        return new Pagination<CandidateViewModel>(
+            modelPage.PageNumber, 
+            modelPage.PageSize,
+            modelPage.TotalCount,
+            modelPage.TotalPages,
+            modelPage.Data.Select(x => new CandidateViewModel(x)));
     }
 
-    public async Task<Candidate?> Save(CandidateForm form)
+    public async Task<CandidateViewModel> Save(CandidateForm form)
     {
         var validationResult = await form.ValidateAsync();
         if (!validationResult.IsValid)
@@ -45,10 +52,11 @@ public class CandidateService
 
         await _candidateRepository.Save(candidate);
 
-        return candidate;
+        return new CandidateViewModel(candidate);
     }
 
-    public async Task<CandidateViewModel> Save(CandidateAdminForm form) {
+    public async Task<CandidateViewModel> Save(CandidateAdminForm form)
+    {
         var validationResult = await form.ValidateAsync();
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
@@ -58,6 +66,31 @@ public class CandidateService
         await _candidateRepository.Save(candidate);
 
         return new CandidateViewModel(candidate);
-   }
+    }
 
+    public async Task<CandidateViewModel> Update(long candidateId, CandidateAdminForm form)
+    {
+        var validationResult = await form.ValidateAsync();
+        if (!validationResult.IsValid)
+            throw new BadRequestException(validationResult.Errors);
+
+        var candidate = await _candidateRepository.GetById(candidateId);
+        if (candidate is null)
+            throw new NotFoundException("Candidato não encontrado");
+
+        candidate = form.toModel();
+        await _candidateRepository.Update(candidate);
+
+        return new CandidateViewModel(candidate);
+    }
+
+    public async Task Remove(long candidateId)
+    {
+        var candidate = await _candidateRepository.GetById(candidateId);
+        if (candidate is null)
+            throw new NotFoundException("Candidato não encontrado");
+
+        await _candidateRepository.Remove(candidate);
+    }
+    
 }

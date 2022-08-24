@@ -7,7 +7,8 @@ namespace WeCare.Application.Validators;
 public class CandidateAdminFormValidator : AbstractValidator<CandidateAdminForm>
 {
 
-    public readonly string TelephoneRegex = @"^\((?:[14689][1-9]|2[12478]|3[1234578]|5[1345]|7[134579])\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$";
+    private readonly string TelephoneRegex = @"^\((?:[14689][1-9]|2[12478]|3[1234578]|5[1345]|7[134579])\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$";
+    private readonly string CpfRegex = @"/^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}$/";
     
     public CandidateAdminFormValidator()
     {
@@ -37,7 +38,7 @@ public class CandidateAdminFormValidator : AbstractValidator<CandidateAdminForm>
         RuleFor(x => x.Telephone)
             .NotEmpty()
             .WithMessage("É necessário um telefone")
-            .Must(x => Regex.Match(x, TelephoneRegex).Success)
+            .Must(x => !Regex.Match(x, TelephoneRegex).Success)
             .WithMessage("Número de telefone inválido");
 
         RuleFor(x => x.Address)
@@ -46,7 +47,7 @@ public class CandidateAdminFormValidator : AbstractValidator<CandidateAdminForm>
         RuleFor(x => x.Cpf)
             .NotEmpty()
             .WithMessage("É necessário um CPF")
-            .Matches(@"/^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}/")
+            .Must(x => !Regex.Match(x, CpfRegex).Success)
             .WithMessage("CPF inválido");
 
         RuleFor(x => x.BirthDate)
