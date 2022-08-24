@@ -9,7 +9,7 @@ public class WeCareDatabaseContext : DbContext
     
     private static readonly string _connStr = @"
         Host=localhost;
-        Port=7771;
+        Port=5432;
         Database=wecare;
         User Id=postgres;
         Password=rar432;
