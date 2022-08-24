@@ -42,5 +42,17 @@ public class CandidateAdminFormValidator : AbstractValidator<CandidateAdminForm>
 
         RuleFor(x => x.Address)
             .SetValidator(new AddressViewModelValidator());
+
+        RuleFor(x => x.Cpf)
+            .NotEmpty()
+            .WithMessage("É necessário um CPF")
+            .Matches(@"/^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}/")
+            .WithMessage("CPF inválido");
+
+        RuleFor(x => x.BirthDate)
+            .NotEmpty()
+            .WithMessage("É necessário uma data de nascimento")
+            .LessThan(DateTime.Now)
+            .WithMessage("Data de nascimento inválida");
     }
 }
