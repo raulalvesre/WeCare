@@ -30,7 +30,6 @@ public class CandidateAdminFormValidator : AbstractValidator<CandidateAdminForm>
             .MaximumLength(500)
             .WithMessage("O nome pode ter no máximo 500 caracteres");
 
-        RuleFor(x => x.Telephone)
 
     }
 }
