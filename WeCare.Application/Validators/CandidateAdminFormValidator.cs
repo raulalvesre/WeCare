@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using FluentValidation;
 using WeCare.Application.ViewModels;
 
@@ -5,6 +6,9 @@ namespace WeCare.Application.Validators;
 
 public class CandidateAdminFormValidator : AbstractValidator<CandidateAdminForm>
 {
+
+    public readonly string TelephoneRegex = @"^\((?:[14689][1-9]|2[12478]|3[1234578]|5[1345]|7[134579])\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$";
+    
     public CandidateAdminFormValidator()
     {
         RuleFor(x => x.Email)
@@ -30,6 +34,13 @@ public class CandidateAdminFormValidator : AbstractValidator<CandidateAdminForm>
             .MaximumLength(500)
             .WithMessage("O nome pode ter no máximo 500 caracteres");
 
+        RuleFor(x => x.Telephone)
+            .NotEmpty()
+            .WithMessage("É necessário um telefone")
+            .Must(x => Regex.Match(x, TelephoneRegex).Success)
+            .WithMessage("Número de telefone inválido");
 
+        RuleFor(x => x.Address)
+            .SetValidator(new AddressViewModelValidator());
     }
 }
