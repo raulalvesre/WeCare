@@ -19,11 +19,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<WeCareDatabaseContext>();
-builder.Services.AddScoped<CandidateRepository>();
-builder.Services.AddScoped<VolunteerOpportunityRepository>();
-builder.Services.AddScoped<InstitutionRepository>();
+builder.Services.AddTransient<CandidateRepository>();
+builder.Services.AddTransient<VolunteerOpportunityRepository>();
+builder.Services.AddTransient<InstitutionRepository>();
 builder.Services.AddScoped<CandidateService>();
 builder.Services.AddScoped<VolunteerOpportunityService>();
+builder.Services.AddScoped<InstitutionService>();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.Configure<JsonOptions>(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));

@@ -26,16 +26,16 @@ public abstract class BaseRepository<T> where T : class
         await WeCareDatabaseContext.SaveChangesAsync();
     }
 
-    public Task Update(T record)
+    public async Task Update(T record)
     {
         _set.Update(record);
-        return Task.CompletedTask;
+        await WeCareDatabaseContext.SaveChangesAsync();
     }
 
-    public Task Remove(T record)
+    public async Task Remove(T record)
     {
         _set.Remove(record);
-        return Task.CompletedTask;
+        await WeCareDatabaseContext.SaveChangesAsync();
     }
     
     public async Task<Pagination<T>> Paginate(IPaginationFilterParams<T> filterParams)

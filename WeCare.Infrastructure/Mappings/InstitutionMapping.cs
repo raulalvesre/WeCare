@@ -42,6 +42,9 @@ public class InstitutionMapping : IEntityTypeConfiguration<Institution>
         builder.Property(x => x.Neighborhood);
         
         builder.Property(x => x.State)
+            .HasConversion(
+                x => x.ToString(),
+                x => (State)Enum.Parse(typeof(State), x))
             .IsRequired();
         
         builder.Property(x => x.PostalCode)
