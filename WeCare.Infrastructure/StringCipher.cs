@@ -1,6 +1,10 @@
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
+
 namespace WeCare.Infrastructure;
 
-public class RijndaelEncryption
+public class StringCipher
 {
     private class Crypto
     {

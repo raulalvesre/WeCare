@@ -3,6 +3,8 @@ using WeCare.Application.ViewModels;
 using WeCare.Domain;
 using WeCare.Infrastructure.Repositories;
 
+using WeCare.Infrastructure;
+
 namespace WeCare.Application.Services;
 
 public class AuthService
@@ -21,6 +23,8 @@ public class AuthService
         var candidate = await _candidateRepository.GetByEmail(loginRequest.Email);
         if (candidate is null)
             throw new UnauthorizedException("Usuário ou senha inválidos");
+        
+        return null;
     } 
     
     public async Task<TokenViewModel> GetTokenForInstitution(LoginRequest loginRequest)
@@ -28,6 +32,8 @@ public class AuthService
         var institution = await _institutionRepository.GetByEmail(loginRequest.Email);
         if (institution is null)
             throw new UnauthorizedException("Usuário ou senha inválidos");
+
+        return null;
     } 
     
     private bool LoginRequestPasswordAndCandidateModelPasswordAreTheSame(LoginRequest req, Candidate model)
