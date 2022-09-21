@@ -29,5 +29,15 @@ public class ExceptionFilter : IExceptionFilter
                 Errors = exception.Errors
             });
         }
+
+        if (context.Exception is UnauthorizedException)
+        {
+            var exception = context.Exception as UnauthorizedException;
+            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            context.Result = new JsonResult(new
+            {
+                Message = exception.Message
+            });
+        }
     }
 }

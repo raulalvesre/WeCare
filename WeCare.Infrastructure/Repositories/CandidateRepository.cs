@@ -16,4 +16,11 @@ public class CandidateRepository : BaseRepository<Candidate>
             .AsNoTracking()            
             .FirstOrDefaultAsync(candidate => candidate.Id == id);
     }
+
+    public Task<Candidate?> GetByEmail(string email)
+    {
+        return Query
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Email.Equals(email));
+    }
 }
