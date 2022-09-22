@@ -15,11 +15,4 @@ public class InstitutionRepository : BaseRepository<Institution>
         return Query
             .AnyAsync(x => x.Id == id);
     }
-    
-    public Task<Institution?> GetByEmail(string email)
-    {
-        return Query
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Email.Equals(email));
-    }
 }
