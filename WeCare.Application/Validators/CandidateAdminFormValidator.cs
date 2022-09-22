@@ -38,7 +38,7 @@ public class CandidateAdminFormValidator : AbstractValidator<CandidateAdminForm>
         RuleFor(x => x.Telephone)
             .NotEmpty()
             .WithMessage("É necessário um telefone")
-            .Must(x => !Regex.Match(x, TelephoneRegex).Success)
+            .Must(x => Regex.Match(x, TelephoneRegex).Success)
             .WithMessage("Número de telefone inválido");
 
         RuleFor(x => x.Address)
@@ -47,7 +47,7 @@ public class CandidateAdminFormValidator : AbstractValidator<CandidateAdminForm>
         RuleFor(x => x.Cpf)
             .NotEmpty()
             .WithMessage("É necessário um CPF")
-            .Must(x => !Regex.Match(x, CpfRegex).Success)
+            .Must(x => Regex.Match(x, CpfRegex).Success)
             .WithMessage("CPF inválido");
 
         RuleFor(x => x.BirthDate)
