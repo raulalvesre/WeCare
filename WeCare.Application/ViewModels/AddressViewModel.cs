@@ -11,4 +11,18 @@ public class AddressViewModel
     public string Neighborhood { get; set; }
     public State State { get; set; }
     public string PostalCode { get; set; }
+    
+    public AddressViewModel() {}
+
+    public AddressViewModel(User user)
+    {
+        Street = user.Street;
+        Number = user.Number;
+        Complement = user.Complement;
+        City = user.City;
+        Neighborhood = user.Neighborhood;
+        State = user.State;
+        PostalCode = user.PostalCode;
+    }
+    
 }
