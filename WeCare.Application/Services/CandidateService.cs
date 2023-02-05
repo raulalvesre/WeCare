@@ -77,7 +77,8 @@ public class CandidateService
         if (await _candidateRepository.ExistsByIdNotAndTelephone(existingCandidateId, telephone))
             errorMessages.Add("Telefone já cadastrado");
 
-        throw new UnprocessableEntityException(errorMessages);
+        if (errorMessages.Any())
+            throw new UnprocessableEntityException(errorMessages);
     }
     
     public async Task<CandidateViewModel> Update(long candidateId, CandidateForm form)
