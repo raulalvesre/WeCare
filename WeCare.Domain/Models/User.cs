@@ -1,6 +1,6 @@
 namespace WeCare.Domain;
 
-public class User
+public abstract class User
 {
     public long Id { get; set; }
     public string Type { get; set; } = string.Empty;
