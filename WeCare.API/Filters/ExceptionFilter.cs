@@ -39,5 +39,16 @@ public class ExceptionFilter : IExceptionFilter
                 Message = exception.Message
             });
         }
+        
+        if (context.Exception is UnprocessableEntityException)
+        {
+            var exception = context.Exception as UnprocessableEntityException;
+            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
+            context.Result = new JsonResult(new
+            {
+                Message = exception.Message,
+                Errors = exception.Errors
+            });
+        }
     }
 }
