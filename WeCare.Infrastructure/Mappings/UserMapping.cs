@@ -10,10 +10,13 @@ public class UserMapping : IEntityTypeConfiguration<User>
     {
         builder.ToTable("users");
 
-        builder.HasDiscriminator<string>("user_type")
+        builder.HasDiscriminator<string>(x => x.Type)
             .HasValue<Candidate>("CANDIDATE")
             .HasValue<Institution>("INSTITUTION");
 
+        builder.Property(x => x.Type)
+            .HasMaxLength(100);
+        
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Email)

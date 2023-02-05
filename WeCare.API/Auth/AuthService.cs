@@ -1,16 +1,13 @@
-using System.ComponentModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using WeCare.Application.Exceptions;
+using WeCare.Application.Services;
 using WeCare.Application.ViewModels;
-using WeCare.Domain;
-using WeCare.Infrastructure.Repositories;
-
 using WeCare.Infrastructure;
 
-namespace WeCare.Application.Services;
+namespace WeCare.API.Auth;
 
 public class AuthService
 {

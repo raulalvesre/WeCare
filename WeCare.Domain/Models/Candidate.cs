@@ -6,4 +6,5 @@ public class Candidate : User
     public DateTime BirthDate { get; set; }
 
     public IEnumerable<Qualification> Qualifications { get; set; } = new List<Qualification>();
+    
 }

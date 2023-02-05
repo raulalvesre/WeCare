@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WeCare.API.Auth;
 using WeCare.Application.Services;
 using WeCare.Application.ViewModels;
 

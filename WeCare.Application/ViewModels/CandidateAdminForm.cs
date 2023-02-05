@@ -17,21 +17,5 @@ public class CandidateAdminForm
     public Task<ValidationResult> ValidateAsync() {
         return new CandidateAdminFormValidator().ValidateAsync(this);
     }
-
-    public Candidate toModel() {
-        return new Candidate {
-            Email = Email,
-            Name = Name,
-            Telephone = Telephone,
-            Street = Address.Street,
-            Number = Address.Number,
-            Complement = Address.Complement,
-            City = Address.City,
-            Neighborhood = Address.Neighborhood,
-            State = Address.State,
-            PostalCode = Address.PostalCode,
-            Cpf = Cpf,
-            BirthDate = BirthDate
-        };
-    }
+    
 }

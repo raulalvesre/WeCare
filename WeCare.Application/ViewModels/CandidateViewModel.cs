@@ -11,15 +11,5 @@ public class CandidateViewModel
     public AddressViewModel Address { get; set; }
     public string Cpf { get; set; } = string.Empty;
     public DateTime BirthDate { get; set; }
-
-    public CandidateViewModel(Candidate candidate)
-    {
-        Id = candidate.Id;
-        Email = candidate.Email;
-        Name = candidate.Name;
-        Telephone = candidate.Telephone;
-        Address = new AddressViewModel(candidate);
-        Cpf = candidate.Cpf;
-        BirthDate = candidate.BirthDate;
-    }
+    
 }

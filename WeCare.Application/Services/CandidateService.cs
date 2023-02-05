@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using WeCare.Application.Exceptions;
+using WeCare.Application.Mappers;
 using WeCare.Application.SearchParams;
 using WeCare.Application.ViewModels;
 using WeCare.Domain;
@@ -10,10 +10,12 @@ namespace WeCare.Application.Services;
 public class CandidateService
 {
     private readonly CandidateRepository _candidateRepository;
+    private readonly CandidateMapper _mapper;
 
-    public CandidateService(CandidateRepository candidateRepository)
+    public CandidateService(CandidateRepository candidateRepository, CandidateMapper mapper)
     {
         _candidateRepository = candidateRepository;
+        _mapper = mapper;
     }
 
     public async Task<CandidateViewModel> GetById(long id)
@@ -23,7 +25,7 @@ public class CandidateService
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");
 
-        return new CandidateViewModel(candidate);
+        return _mapper.FromModel(candidate);
     }
 
     public async Task<Pagination<CandidateViewModel>> GetPage(CandidateSearchParams searchParams)
@@ -35,7 +37,7 @@ public class CandidateService
             modelPage.PageSize,
             modelPage.TotalCount,
             modelPage.TotalPages,
-            modelPage.Data.Select(x => new CandidateViewModel(x)));
+            modelPage.Data.Select(x => _mapper.FromModel(x)));
     }
 
     public async Task<CandidateViewModel> Save(CandidateForm form)
@@ -44,15 +46,11 @@ public class CandidateService
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
-        var candidate = new Candidate
-        {
-            Email = form.Email,
-            Name = form.Name,
-        };
+        var candidate = _mapper.ToModel(form);
 
         await _candidateRepository.Save(candidate);
 
-        return new CandidateViewModel(candidate);
+        return _mapper.FromModel(candidate);
     }
 
     public async Task<CandidateViewModel> Save(CandidateAdminForm form)
@@ -61,11 +59,27 @@ public class CandidateService
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
-        var candidate = form.toModel();
+        var candidate = _mapper.ToModel(form);
 
         await _candidateRepository.Save(candidate);
 
-        return new CandidateViewModel(candidate);
+        return _mapper.FromModel(candidate);
+    }
+    
+    public async Task<CandidateViewModel> Update(long candidateId, CandidateForm form)
+    {
+        var validationResult = await form.ValidateAsync();
+        if (!validationResult.IsValid)
+            throw new BadRequestException(validationResult.Errors);
+
+        var candidate = await _candidateRepository.GetById(candidateId);
+        if (candidate is null)
+            throw new NotFoundException("Candidato não encontrado");
+
+        _mapper.Merge(candidate, form);
+        await _candidateRepository.Update(candidate);
+
+        return _mapper.FromModel(candidate);
     }
 
     public async Task<CandidateViewModel> Update(long candidateId, CandidateAdminForm form)
@@ -78,10 +92,10 @@ public class CandidateService
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");
 
-        candidate = form.toModel();
+        _mapper.Merge(candidate, form);
         await _candidateRepository.Update(candidate);
 
-        return new CandidateViewModel(candidate);
+        return _mapper.FromModel(candidate);
     }
 
     public async Task Remove(long candidateId)
