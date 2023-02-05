@@ -24,7 +24,6 @@ public class CandidateMapper
     public Candidate ToModel(CandidateForm form)
     {
         return new Candidate {
-            Type = "CANDIDATE",
             Email = form.Email,
             Name = form.Name,
             Password = StringCipher.Encrypt(form.Password),
@@ -61,7 +60,6 @@ public class CandidateMapper
     public Candidate ToModel(CandidateAdminForm form)
     {
         return new Candidate {
-            Type = "CANDIDATE",
             Email = form.Email,
             Name = form.Name,
             Password = StringCipher.Encrypt(form.Password),

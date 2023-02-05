@@ -9,11 +9,13 @@ public class UserMapping : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable("users");
-        
-        builder.HasDiscriminator(x => x.Type)
+
+        builder.HasDiscriminator(x => x.UserType)
             .HasValue<Candidate>("CANDIDATE")
             .HasValue<Institution>("INSTITUTION");
 
+        builder.Property(x => x.UserType);
+        
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Email)
