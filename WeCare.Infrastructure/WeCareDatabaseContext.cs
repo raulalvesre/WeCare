@@ -10,11 +10,12 @@ public class WeCareDatabaseContext : DbContext
     private static readonly string _connStr = @"
         Host=localhost;
         Port=5432;
-        Database=wecare;
+        Database=postgres;
         User Id=postgres;
         Password=rar432;
     ";
-    
+
+    public DbSet<User> Users { get; set; } = null!;
     public DbSet<Candidate> Candidates { get; set; } = null!;
     public DbSet<Institution> Institutions  { get; set; } = null!;
     public DbSet<VolunteerOpportunity> VolunteerOpportunities { get; set; } = null!;
