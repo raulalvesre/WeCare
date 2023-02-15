@@ -24,7 +24,7 @@ public class UserRepository : BaseRepository<User>
             .FirstOrDefaultAsync(x => x.Email.Equals(email));
     }
     
-    protected Task<bool> ExistsByIdNotAndEmail(long id, string email)
+    public Task<bool> ExistsByIdNotAndEmail(long id, string email)
     {
         return Query.AnyAsync(x => x.Id != id && x.Email.Equals(email));
     }

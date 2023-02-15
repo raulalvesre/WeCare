@@ -23,20 +23,11 @@ public class CandidateRepository : BaseRepository<Candidate>
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Email.Equals(email));
     }
-    
-    public Task<bool> ExistsByIdNotAndEmail(long id, string email)
-    {
-        return Query.AnyAsync(x => x.Id != id && x.Email.Equals(email));
-    }
-    
+
     public Task<bool> ExistsByIdNotAndCpf(long id, string cpf)
     {
         return Query.AnyAsync(x => x.Id != id && x.Cpf.Equals(cpf));
     }
     
-    public Task<bool> ExistsByIdNotAndTelephone(long id, string telephone)
-    {
-        return Query.AnyAsync(x => x.Id != id && x.Telephone.Equals(telephone));
-    }
  
 }

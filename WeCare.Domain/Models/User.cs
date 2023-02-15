@@ -3,7 +3,7 @@ namespace WeCare.Domain;
 public abstract class User
 {
     public long Id { get; set; }
-    public string UserType { get; set; }
+    public string Type { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
@@ -15,6 +15,7 @@ public abstract class User
     public string Neighborhood { get; set; } = string.Empty;
     public State State { get; set; }
     public string PostalCode { get; set; } = string.Empty;
+    public bool Enabled { get; set; }
     public DateTime CreationDate { get; set; }
     public DateTime? LastUpdateDate { get; set; }
     

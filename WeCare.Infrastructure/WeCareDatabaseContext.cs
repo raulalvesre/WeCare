@@ -19,6 +19,7 @@ public class WeCareDatabaseContext : DbContext
     public DbSet<Candidate> Candidates { get; set; } = null!;
     public DbSet<Institution> Institutions  { get; set; } = null!;
     public DbSet<VolunteerOpportunity> VolunteerOpportunities { get; set; } = null!;
+    public DbSet<ConfirmationToken> ConfirmationTokens { get; set; } = null;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

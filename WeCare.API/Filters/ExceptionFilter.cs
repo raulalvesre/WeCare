@@ -50,5 +50,16 @@ public class ExceptionFilter : IExceptionFilter
                 Errors = exception.Errors
             });
         }
+
+        if (context.Exception is GoneException)
+        {
+            var exception = context.Exception as GoneException;
+            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Gone;
+            context.Result = new JsonResult(new
+            {
+                Message = exception.Message
+            });
+        }
     }
+    
 }

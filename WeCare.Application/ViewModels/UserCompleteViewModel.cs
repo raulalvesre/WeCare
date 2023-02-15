@@ -17,7 +17,7 @@ public class UserCompleteViewModel
     public UserCompleteViewModel(User user)
     {
         Id = user.Id;
-        Type = user.UserType;
+        Type = user.Type;
         Email = user.Email;
         Name = user.Name;
         Password = user.Password;

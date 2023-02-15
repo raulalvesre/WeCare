@@ -10,7 +10,7 @@ public class CandidateForm
     public string Email { get; set; }
     public string Password { get; set; } = string.Empty;
     public string Telephone { get; set; } = string.Empty;
-    public AddressViewModel Address { get; set; }
+    public AddressViewModel Address { get; set; }   
     public string Cpf { get; set; } = string.Empty;
     public DateTime BirthDate { get; set; }
 

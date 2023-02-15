@@ -10,11 +10,11 @@ public class UserMapping : IEntityTypeConfiguration<User>
     {
         builder.ToTable("users");
 
-        builder.HasDiscriminator(x => x.UserType)
+        builder.HasDiscriminator(x => x.Type)
             .HasValue<Candidate>("CANDIDATE")
             .HasValue<Institution>("INSTITUTION");
 
-        builder.Property(x => x.UserType);
+        builder.Property(x => x.Type);
         
         builder.HasKey(x => x.Id);
 
@@ -53,6 +53,9 @@ public class UserMapping : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.Property(x => x.PostalCode)
+            .IsRequired();
+
+        builder.Property(x => x.Enabled)
             .IsRequired();
 
         builder.Property(x => x.CreationDate)

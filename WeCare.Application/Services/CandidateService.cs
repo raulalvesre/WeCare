@@ -10,12 +10,14 @@ namespace WeCare.Application.Services;
 public class CandidateService
 {
     private readonly CandidateRepository _candidateRepository;
+    private readonly UserRepository _userRepository;
     private readonly CandidateMapper _mapper;
 
-    public CandidateService(CandidateRepository candidateRepository, CandidateMapper mapper)
+    public CandidateService(CandidateRepository candidateRepository, CandidateMapper mapper, UserRepository userRepository)
     {
         _candidateRepository = candidateRepository;
         _mapper = mapper;
+        _userRepository = userRepository;
     }
 
     public async Task<CandidateViewModel> GetById(long id)
@@ -68,13 +70,13 @@ public class CandidateService
         var cpf = form.Cpf;
         var telephone = form.Telephone;
 
-        if (await _candidateRepository.ExistsByIdNotAndEmail(existingCandidateId, email))
+        if (await _userRepository.ExistsByIdNotAndEmail(existingCandidateId, email))
             errorMessages.Add("Email já cadastrado");
         
         if (await _candidateRepository.ExistsByIdNotAndCpf(existingCandidateId, cpf))
             errorMessages.Add("CPF já cadastrado");
         
-        if (await _candidateRepository.ExistsByIdNotAndTelephone(existingCandidateId, telephone))
+        if (await _userRepository.ExistsByIdNotAndTelephone(existingCandidateId, telephone))
             errorMessages.Add("Telefone já cadastrado");
 
         if (errorMessages.Any())
@@ -127,13 +129,13 @@ public class CandidateService
         var cpf = form.Cpf;
         var telephone = form.Telephone;
 
-        if (await _candidateRepository.ExistsByIdNotAndEmail(existingCandidateId, email))
+        if (await _userRepository.ExistsByIdNotAndEmail(existingCandidateId, email))
             errorMessages.Add("Email já cadastrado");
         
         if (await _candidateRepository.ExistsByIdNotAndCpf(existingCandidateId, cpf))
             errorMessages.Add("CPF já cadastrado");
         
-        if (await _candidateRepository.ExistsByIdNotAndTelephone(existingCandidateId, telephone))
+        if (await _userRepository.ExistsByIdNotAndTelephone(existingCandidateId, telephone))
             errorMessages.Add("Telefone já cadastrado");
 
         if (errorMessages.Any())

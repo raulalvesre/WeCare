@@ -21,6 +21,27 @@ public class AuthController : ControllerBase
     public async ValueTask<ActionResult<TokenViewModel>> Login(LoginRequest loginRequest)
     {
         return Ok(await _authService.AuthenticateUser(loginRequest));
-    } 
-    
+    }
+
+    [HttpPost("candidate/register")]
+    public async ValueTask<ActionResult> RegisterCandidate(CandidateForm form)
+    {
+        await _authService.RegisterCandidate(form);
+        return NoContent();
+    }
+
+    [HttpGet]
+    public async ValueTask<ActionResult> ConfirmEmail([FromQuery(Name = "token")] string confirmationToken)
+    {
+        await _authService.ConfirmEmail(confirmationToken);
+        return NoContent();
+    }
+
+    [HttpPost("/restorePassword")]
+    public async ValueTask<ActionResult> RestoreUserPassword()
+    {
+        return NoContent();
+    }
+
+
 }
