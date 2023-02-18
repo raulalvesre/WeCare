@@ -48,7 +48,7 @@ public class CandidateService
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
-        await ValidateUniqueFields(form);
+        await ValidateUniqueFields(form.Email, form.Cpf, form.Telephone);
 
         var candidate = _mapper.ToModel(form);
 
@@ -56,19 +56,10 @@ public class CandidateService
 
         return _mapper.FromModel(candidate);
     }
-
-    private async Task ValidateUniqueFields(CandidateForm form)
-    {
-        await ValidateUniqueFields(0L, form);
-    }
-
-    private async Task ValidateUniqueFields(long existingCandidateId, CandidateForm form)
+    
+    private async Task ValidateUniqueFields(string email, string cpf, string telephone, long existingCandidateId = 0)
     {
         var errorMessages = new List<string>();
-
-        var email = form.Email;
-        var cpf = form.Cpf;
-        var telephone = form.Telephone;
 
         if (await _userRepository.ExistsByIdNotAndEmail(existingCandidateId, email))
             errorMessages.Add("Email já cadastrado");
@@ -93,7 +84,7 @@ public class CandidateService
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");
         
-        await ValidateUniqueFields(candidateId, form);
+        await ValidateUniqueFields(form.Email, form.Cpf, form.Telephone, candidateId);
 
         _mapper.Merge(candidate, form);
         await _candidateRepository.Update(candidate);
@@ -107,7 +98,7 @@ public class CandidateService
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
         
-        await ValidateUniqueFields(form);
+        await ValidateUniqueFields(form.Email, form.Cpf, form.Telephone);
 
         var candidate = _mapper.ToModel(form);
 
@@ -115,34 +106,7 @@ public class CandidateService
 
         return _mapper.FromModel(candidate);
     }
-    
-    private async Task ValidateUniqueFields(CandidateAdminForm form)
-    {
-        await ValidateUniqueFields(0L, form);
-    }
 
-    private async Task ValidateUniqueFields(long existingCandidateId, CandidateAdminForm form)
-    {
-        var errorMessages = new List<string>();
-
-        var email = form.Email;
-        var cpf = form.Cpf;
-        var telephone = form.Telephone;
-
-        if (await _userRepository.ExistsByIdNotAndEmail(existingCandidateId, email))
-            errorMessages.Add("Email já cadastrado");
-        
-        if (await _candidateRepository.ExistsByIdNotAndCpf(existingCandidateId, cpf))
-            errorMessages.Add("CPF já cadastrado");
-        
-        if (await _userRepository.ExistsByIdNotAndTelephone(existingCandidateId, telephone))
-            errorMessages.Add("Telefone já cadastrado");
-
-        if (errorMessages.Any())
-            throw new UnprocessableEntityException(errorMessages);
-    }
-    
-    
     public async Task<CandidateViewModel> Update(long candidateId, CandidateAdminForm form)
     {
         var validationResult = await form.ValidateAsync();
@@ -153,7 +117,7 @@ public class CandidateService
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");
         
-        await ValidateUniqueFields(candidateId, form);
+        await ValidateUniqueFields(form.Email, form.Cpf, form.Telephone, candidateId);
 
         _mapper.Merge(candidate, form);
         await _candidateRepository.Update(candidate);

@@ -38,6 +38,7 @@ public class EmailService
                 }
             }
         }
+        
         builder.HtmlBody = emailRequest.Body;
         email.Body = builder.ToMessageBody();
         using var smtp = new SmtpClient();
