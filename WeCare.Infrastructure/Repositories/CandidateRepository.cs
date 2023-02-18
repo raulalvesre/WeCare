@@ -29,5 +29,4 @@ public class CandidateRepository : BaseRepository<Candidate>
         return Query.AnyAsync(x => x.Id != id && x.Cpf.Equals(cpf));
     }
     
- 
 }

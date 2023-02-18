@@ -35,4 +35,5 @@ public class CandidatesController : ControllerBase
     {
         return Ok(await _candidateService.Save(form));
     }
+    
 }

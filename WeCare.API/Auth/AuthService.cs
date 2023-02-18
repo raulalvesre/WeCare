@@ -1,5 +1,4 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
@@ -7,7 +6,6 @@ using WeCare.Application.Exceptions;
 using WeCare.Application.Services;
 using WeCare.Application.ViewModels;
 using WeCare.Infrastructure;
-using WeCare.Infrastructure.Repositories;
 
 namespace WeCare.API.Auth;
 
@@ -76,23 +74,37 @@ public class AuthService
     {
         var candidateViewModel = await _candidateService.Save(form);
 
-        await _confirmationTokenService.Save(new ConfirmationTokenForm(Guid.NewGuid().ToString(), candidateViewModel.Id));
-        
+        var token = Guid.NewGuid().ToString();
+        await _confirmationTokenService.Save(new ConfirmationTokenForm(token, candidateViewModel.Id));
+        await SendAccountConfirmationEmail(form.Email, token);
+    }
+    
+    public async Task RegisterInstitution(CandidateForm form)
+    {
+        var candidateViewModel = await _candidateService.Save(form);
+
+        var token = Guid.NewGuid().ToString();
+        await _confirmationTokenService.Save(new ConfirmationTokenForm(token, candidateViewModel.Id));
+        await SendAccountConfirmationEmail(form.Email, token);
+    }
+
+    private async Task SendAccountConfirmationEmail(string email, string confirmationToken)
+    {
         var emailRequest = new EmailRequest
         {
-            ToEmail = form.Email,
+            ToEmail = email,
             Subject = "WeCare - Ativação de conta",
-            Body = "<a href='http://localhost:5098/api/auth/login'>Clique aqui para ativar sua conta.</a>"
+            Body = $"<a href='http://localhost:5098/api/auth/activateAccount?token={confirmationToken}'>Clique aqui para ativar sua conta.</a>"
         };
         
-        await _emailService.SendEmailAsync(emailRequest);
+        // await _emailService.SendEmailAsync(emailRequest);
     }
 
     public async Task ConfirmEmail(string token)
     {
         var confirmationToken = await _confirmationTokenService.GetByToken(token);
         if (DateTime.Now.Subtract(confirmationToken.CreationDate).TotalHours > 2)
-            throw new GoneException("Token de confirmação expirou");
+            throw new GoneException("Token de confirmação expirado");
 
         await _userService.SetUserEnabled(confirmationToken.UserId, true);
     }
@@ -109,6 +121,18 @@ public class AuthService
             Subject = "WeCare - Recuperação de senha",
             Body = "<a href='http://localhost:5098/api/auth/login'>Clique aqui para recuperar sua senha.</a>"
         };
+    }
+    
+    private async Task SendPasswordRecoveryEmail(string email, string confirmationToken)
+    {
+        var emailRequest = new EmailRequest
+        {
+            ToEmail = email,
+            Subject = "WeCare - Recuperação de senha",
+            Body = $"<a href='http://localhost:5098/api/auth/login'>Clique aqui para recuperar sua senha.</a>"
+        };
+        
+        // await _emailService.SendEmailAsync(emailRequest);
     }
     
 }

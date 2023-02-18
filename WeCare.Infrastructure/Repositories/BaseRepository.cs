@@ -60,4 +60,5 @@ public abstract class BaseRepository<T> where T : class
 
         return new Pagination<T>(pageNumber, pageSize, totalCount, totalPages, recordList);
     }
+    
 }
