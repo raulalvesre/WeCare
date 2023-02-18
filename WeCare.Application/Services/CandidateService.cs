@@ -125,7 +125,7 @@ public class CandidateService
         return _mapper.FromModel(candidate);
     }
 
-    public async Task Remove(long candidateId)
+    public async Task Delete(long candidateId)
     {
         var candidate = await _candidateRepository.GetById(candidateId);
         if (candidate is null)

@@ -3,9 +3,9 @@ using WeCare.Application.ViewModels;
 
 namespace WeCare.Application.Validators;
 
-public class CandidateFormValidator : AbstractValidator<CandidateForm>
+public class InstitutionFormValidator : AbstractValidator<InstitutionForm>
 {
-    public CandidateFormValidator()
+    public InstitutionFormValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty()
@@ -38,18 +38,10 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
         RuleFor(x => x.Address)
             .SetValidator(new AddressViewModelValidator());
 
-        RuleFor(x => x.Cpf)
+        RuleFor(x => x.Cnpj)
             .NotEmpty()
-            .WithMessage("É necessário um CPF")
-            .Must(ValidatorsUtils.IsInvalidCpf)
-            .WithMessage("CPF inválido");
-
-        RuleFor(x => x.BirthDate)
-            .NotEmpty()
-            .WithMessage("É necessário uma data de nascimento")
-            .LessThan(DateTime.Now)
-            .WithMessage("Data de nascimento inválida")
-            .Must(ValidatorsUtils.IsNotOfAdultAge)
-            .WithMessage("Menor de idade");
+            .WithMessage("É necessário um CNPJ")
+            .Must(ValidatorsUtils.IsInvalidCnpj)
+            .WithMessage("CNPJ inválido");
     }
 }

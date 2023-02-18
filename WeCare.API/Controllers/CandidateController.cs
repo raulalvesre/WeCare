@@ -8,32 +8,44 @@ namespace WeCare.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CandidatesController : ControllerBase
+public class CandidateController : ControllerBase
 {
     private readonly CandidateService _candidateService;
 
-    public CandidatesController(CandidateService candidateService)
+    public CandidateController(CandidateService candidateService)
     {
         _candidateService = candidateService;
     }
 
     [HttpGet("{id:long:min(0)}")]
-    public async ValueTask<ActionResult<Candidate>> GetById(long id)
+    public async ValueTask<ActionResult<CandidateViewModel>> GetById(long id)
     {
         return Ok(await _candidateService.GetById(id));
     }
     
     [HttpGet("search")]
-    public async ValueTask<ActionResult<Pagination<Candidate>>> Search([FromQuery] CandidateSearchParams searchParams)
+    public async ValueTask<ActionResult<Pagination<CandidateViewModel>>> Search([FromQuery] CandidateSearchParams searchParams)
     {
         var candidatePage = await _candidateService.GetPage(searchParams);
         return Ok(candidatePage);
     }
 
     [HttpPost]
-    public async ValueTask<ActionResult<Candidate>> Save(CandidateForm form)
+    public async ValueTask<ActionResult<CandidateViewModel>> Save(CandidateForm form)
     {
         return Ok(await _candidateService.Save(form));
     }
     
+    [HttpPut("id:long")]
+    public async ValueTask<ActionResult<CandidateViewModel>> Update(long id, CandidateForm form)
+    {
+        return Ok(await _candidateService.Update(id, form));
+    }
+
+    [HttpPut("id:long")]
+    public async ValueTask<ActionResult> Delete(long id)
+    {
+        await _candidateService.Delete(id);
+        return NoContent();
+    }
 }

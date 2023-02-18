@@ -44,7 +44,7 @@ public class CandidateAdminController : ControllerBase
     [HttpDelete("{candidateId:long}")]
     public async ValueTask<ActionResult> Delete(long candidateId)
     {
-        await _candidateService.Remove(candidateId);
+        await _candidateService.Delete(candidateId);
         return NoContent();
     }
     

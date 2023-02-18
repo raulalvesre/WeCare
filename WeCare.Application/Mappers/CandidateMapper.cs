@@ -6,7 +6,6 @@ namespace WeCare.Application.Mappers;
 
 public class CandidateMapper
 {
-
     public CandidateViewModel FromModel(Candidate candidate)
     {
         return new CandidateViewModel
@@ -92,5 +91,4 @@ public class CandidateMapper
         candidate.Cpf = form.Cpf;
         candidate.BirthDate = form.BirthDate;
     }
-    
 }
