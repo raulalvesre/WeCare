@@ -32,7 +32,7 @@ public class InstitutionAdminFormValidator : AbstractValidator<InstitutionAdminF
         RuleFor(x => x.Telephone)
             .NotEmpty()
             .WithMessage("É necessário um telefone")
-            .Must(ValidatorsUtils.IsInvalidTelephone)
+            .Must(ValidatorsUtils.IsValidTelephone)
             .WithMessage("Número de telefone inválido");
 
         RuleFor(x => x.Address)
@@ -41,7 +41,7 @@ public class InstitutionAdminFormValidator : AbstractValidator<InstitutionAdminF
         RuleFor(x => x.Cnpj)
             .NotEmpty()
             .WithMessage("É necessário um CNPJ")
-            .Must(ValidatorsUtils.IsInvalidCnpj)
+            .Must(ValidatorsUtils.IsValidCnpj)
             .WithMessage("CNPJ inválido");
     }
 }

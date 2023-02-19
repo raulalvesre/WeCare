@@ -32,7 +32,7 @@ public class CandidateAdminFormValidator : AbstractValidator<CandidateAdminForm>
         RuleFor(x => x.Telephone)
             .NotEmpty()
             .WithMessage("É necessário um telefone")
-            .Must(ValidatorsUtils.IsInvalidTelephone)
+            .Must(ValidatorsUtils.IsValidTelephone)
             .WithMessage("Número de telefone inválido");
 
         RuleFor(x => x.Address)
@@ -41,7 +41,7 @@ public class CandidateAdminFormValidator : AbstractValidator<CandidateAdminForm>
         RuleFor(x => x.Cpf)
             .NotEmpty()
             .WithMessage("É necessário um CPF")
-            .Must(ValidatorsUtils.IsInvalidCpf)
+            .Must(ValidatorsUtils.IsValidCpf)
             .WithMessage("CPF inválido");
 
         RuleFor(x => x.BirthDate)
@@ -49,7 +49,7 @@ public class CandidateAdminFormValidator : AbstractValidator<CandidateAdminForm>
             .WithMessage("É necessário uma data de nascimento")
             .LessThan(DateTime.Now)
             .WithMessage("Data de nascimento inválida")
-            .Must(ValidatorsUtils.IsNotOfAdultAge)
+            .Must(ValidatorsUtils.IsAdult)
             .WithMessage("Menor de idade");
     }
 }
