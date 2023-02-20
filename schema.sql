@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS users
     neighborhood     TEXT                              default '',
     state            TEXT                     NOT NULL default '',
     postal_code      TEXT                     NOT NULL default '',
-    birth_date       date                     NOT NULL,
+    birth_date       date                              default null,
     enabled          boolean                  NOT NULL default false,
     creation_date    timestamp with time zone NOT NULL default now(),
     last_update_date timestamp with time zone
@@ -112,5 +112,5 @@ CREATE TABLE IF NOT EXISTS confirmation_tokens
     creation_date timestamp with time zone NOT NULL default now(),
 
     FOREIGN KEY (user_id)
-        REFERENCES "users" (id)
+        REFERENCES "users" (id) ON DELETE CASCADE
 );

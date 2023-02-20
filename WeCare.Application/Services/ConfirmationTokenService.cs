@@ -1,6 +1,7 @@
 using WeCare.Application.Exceptions;
 using WeCare.Application.ViewModels;
 using WeCare.Domain;
+using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
 
 namespace WeCare.Application.Services;
@@ -8,10 +9,12 @@ namespace WeCare.Application.Services;
 public class ConfirmationTokenService
 {
     private readonly ConfirmationTokenRepository _confirmationTokenRepository;
+    private readonly UnitOfWork _unitOfWork;
 
-    public ConfirmationTokenService(ConfirmationTokenRepository confirmationTokenRepository)
+    public ConfirmationTokenService(ConfirmationTokenRepository confirmationTokenRepository, UnitOfWork unitOfWork)
     {
         _confirmationTokenRepository = confirmationTokenRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<ConfirmationToken> GetByToken(string token)
@@ -31,8 +34,9 @@ public class ConfirmationTokenService
             UserId = form.UserId
         };
 
-        await _confirmationTokenRepository.Save(confirmationToken);
-        
+        await _confirmationTokenRepository.Add(confirmationToken);
+        await _unitOfWork.SaveAsync();
+
         return new ConfirmationTokenViewModel(confirmationToken);
     }
     

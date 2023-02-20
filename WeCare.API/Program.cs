@@ -25,6 +25,8 @@ builder.Services.AddSingleton(builder.Configuration.GetSection("EmailSettings").
     
 builder.Services.AddDbContext<WeCareDatabaseContext>();
 
+builder.Services.AddScoped<UnitOfWork>();
+
 builder.Services.AddScoped<CandidateRepository>();
 builder.Services.AddScoped<VolunteerOpportunityRepository>();
 builder.Services.AddScoped<InstitutionRepository>();
@@ -32,8 +34,10 @@ builder.Services.AddScoped<ConfirmationTokenRepository>();
 builder.Services.AddScoped<UserRepository>();
 
 builder.Services.AddScoped<CandidateMapper>();
+builder.Services.AddScoped<InstitutionMapper>();
 
 builder.Services.AddScoped<CandidateService>();
+builder.Services.AddScoped<InstitutionService>();
 builder.Services.AddScoped<VolunteerOpportunityService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<ConfirmationTokenService>();

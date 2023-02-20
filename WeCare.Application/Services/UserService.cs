@@ -1,5 +1,6 @@
 using WeCare.Application.Exceptions;
 using WeCare.Application.ViewModels;
+using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
 
 namespace WeCare.Application.Services;
@@ -7,10 +8,12 @@ namespace WeCare.Application.Services;
 public class UserService
 {
     private readonly UserRepository _userRepository;
+    private readonly UnitOfWork _unitOfWork;
 
-    public UserService(UserRepository userRepository)
+    public UserService(UserRepository userRepository, UnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
     }
     
     public async Task<UserCompleteViewModel> GetById(long id)
@@ -43,7 +46,18 @@ public class UserService
 
         user.Enabled = enabled;
 
-        await _userRepository.Save(user);
+        await _userRepository.Update(user);
+        await _unitOfWork.SaveAsync();
+    }
+
+    public async Task<bool> IsEmailAlreadyRegistered(string email)
+    {
+        return await _userRepository.ExistsByIdNotAndEmail(0, email);
+    }
+
+    public async Task<bool> IsTelephoneAlreadyRegistered(string telephone)
+    {
+        return await _userRepository.ExistsByIdNotAndTelephone(0, telephone);
     }
     
 }

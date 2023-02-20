@@ -13,6 +13,7 @@ public class AuthService
 {
     private readonly UserService _userService;
     private readonly CandidateService _candidateService;
+    private readonly InstitutionService _institutionService;
     private readonly EmailService _emailService;
     private readonly ConfirmationTokenService _confirmationTokenService;
     private readonly IConfiguration _config;
@@ -21,13 +22,15 @@ public class AuthService
         IConfiguration config,
         CandidateService candidateService,
         EmailService emailService, 
-        ConfirmationTokenService confirmationTokenService)
+        ConfirmationTokenService confirmationTokenService, 
+        InstitutionService institutionService)
     {
         _userService = userService;
         _config = config;
         _candidateService = candidateService;
         _emailService = emailService;
         _confirmationTokenService = confirmationTokenService;
+        _institutionService = institutionService;
     }
 
     public async Task<TokenViewModel> AuthenticateUser(LoginRequest loginRequest)
@@ -39,7 +42,7 @@ public class AuthService
         if (!LoginRequestPasswordAndUserModelPasswordAreTheSame(loginRequest, user))
             throw new UnauthorizedException("Usuário ou senha inválidos");
 
-        return GenerateJWTForUser(user);
+        return GenerateJwt(user);
     }
     
     private bool LoginRequestPasswordAndUserModelPasswordAreTheSame(LoginRequest req, UserCompleteViewModel userCompleteViewModel)
@@ -47,7 +50,7 @@ public class AuthService
         return StringCipher.Decrypt(userCompleteViewModel.Password).Equals(req.Password);
     }
 
-    private TokenViewModel GenerateJWTForUser(UserCompleteViewModel user)
+    private TokenViewModel GenerateJwt(UserCompleteViewModel user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_config.GetValue<string>("jwt-secret"));
@@ -79,15 +82,6 @@ public class AuthService
         await SendAccountConfirmationEmail(form.Email, token);
     }
     
-    public async Task RegisterInstitution(CandidateForm form)
-    {
-        var candidateViewModel = await _candidateService.Save(form);
-
-        var token = Guid.NewGuid().ToString();
-        await _confirmationTokenService.Save(new ConfirmationTokenForm(token, candidateViewModel.Id));
-        await SendAccountConfirmationEmail(form.Email, token);
-    }
-
     private async Task SendAccountConfirmationEmail(string email, string confirmationToken)
     {
         var emailRequest = new EmailRequest
@@ -97,16 +91,25 @@ public class AuthService
             Body = $"<a href='http://localhost:5098/api/auth/activateAccount?token={confirmationToken}'>Clique aqui para ativar sua conta.</a>"
         };
         
-        // await _emailService.SendEmailAsync(emailRequest);
+        await _emailService.SendEmailAsync(emailRequest);
     }
+    
+    public async Task RegisterInstitution(InstitutionForm form)
+    {
+        var candidateViewModel = await _institutionService.Save(form);
 
+        var token = Guid.NewGuid().ToString();
+        await _confirmationTokenService.Save(new ConfirmationTokenForm(token, candidateViewModel.Id));
+        await SendAccountConfirmationEmail(form.Email, token);
+    }
+    
     public async Task ConfirmEmail(string token)
     {
         var confirmationToken = await _confirmationTokenService.GetByToken(token);
         if (DateTime.Now.Subtract(confirmationToken.CreationDate).TotalHours > 2)
             throw new GoneException("Token de confirmação expirado");
 
-        await _userService.SetUserEnabled(confirmationToken.UserId, true);
+        // await _userService.SetUserEnabled(confirmationToken.UserId, true);
     }
     
     public async Task RestoreUserPassword(long userId)
@@ -133,6 +136,27 @@ public class AuthService
         };
         
         // await _emailService.SendEmailAsync(emailRequest);
+    }
+
+    public async Task<bool> IsEmailAlreadyRegistered(string email)
+    {
+        return await _userService.IsEmailAlreadyRegistered(email);
+    }
+
+    public async Task<bool> IsTelephoneAlreadyRegistered(string telephone)
+    {
+        return await _userService.IsTelephoneAlreadyRegistered(telephone);
+
+    }
+    
+    public async Task<bool> IsCpfAlreadyRegistered(string cpf)
+    {
+        return await _candidateService.IsCpfAlreadyRegistered(cpf);
+    }
+    
+    public async Task<bool> IsCnpjAlreadyRegistered(string cnpj)
+    {
+        return await _institutionService.IsCnpjAlreadyRegistered(cnpj);
     }
     
 }

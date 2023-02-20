@@ -3,6 +3,7 @@ using WeCare.Application.Mappers;
 using WeCare.Application.SearchParams;
 using WeCare.Application.ViewModels;
 using WeCare.Domain;
+using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
 
 namespace WeCare.Application.Services;
@@ -11,13 +12,18 @@ public class CandidateService
 {
     private readonly CandidateRepository _candidateRepository;
     private readonly UserRepository _userRepository;
+    private readonly UnitOfWork _unitOfWork;
     private readonly CandidateMapper _mapper;
 
-    public CandidateService(CandidateRepository candidateRepository, CandidateMapper mapper, UserRepository userRepository)
+    public CandidateService(CandidateRepository candidateRepository,
+        CandidateMapper mapper,
+        UserRepository userRepository,
+        UnitOfWork unitOfWork)
     {
         _candidateRepository = candidateRepository;
         _mapper = mapper;
         _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<CandidateViewModel> GetById(long id)
@@ -52,7 +58,8 @@ public class CandidateService
 
         var candidate = _mapper.ToModel(form);
 
-        await _candidateRepository.Save(candidate);
+        await _candidateRepository.Add(candidate);
+        await _unitOfWork.SaveAsync();
 
         return _mapper.FromModel(candidate);
     }
@@ -88,6 +95,7 @@ public class CandidateService
 
         _mapper.Merge(candidate, form);
         await _candidateRepository.Update(candidate);
+        await _unitOfWork.SaveAsync();
 
         return _mapper.FromModel(candidate);
     }
@@ -102,7 +110,8 @@ public class CandidateService
 
         var candidate = _mapper.ToModel(form);
 
-        await _candidateRepository.Save(candidate);
+        await _candidateRepository.Add(candidate);
+        await _unitOfWork.SaveAsync();
 
         return _mapper.FromModel(candidate);
     }
@@ -121,6 +130,7 @@ public class CandidateService
 
         _mapper.Merge(candidate, form);
         await _candidateRepository.Update(candidate);
+        await _unitOfWork.SaveAsync();
 
         return _mapper.FromModel(candidate);
     }
@@ -132,6 +142,11 @@ public class CandidateService
             throw new NotFoundException("Candidato não encontrado");
 
         await _candidateRepository.Remove(candidate);
+        await _unitOfWork.SaveAsync();
     }
-    
+
+    public async Task<bool> IsCpfAlreadyRegistered(string cpf)
+    {
+        return await _candidateRepository.ExistsByIdNotAndCpf(0, cpf);
+    }
 }

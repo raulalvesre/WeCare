@@ -19,7 +19,6 @@ public class InstitutionRepository : BaseRepository<Institution>
     public Task<Institution?> GetById(long id)
     {
         return Query
-            .AsNoTracking()            
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 

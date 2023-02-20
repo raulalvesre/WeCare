@@ -12,8 +12,7 @@ public class UserRepository : BaseRepository<User>
     
     public Task<User?> GetById(long id)
     {
-        return Query
-            .AsNoTracking()            
+        return Query            
             .FirstOrDefaultAsync(user => user.Id == id);
     }
     
@@ -33,5 +32,5 @@ public class UserRepository : BaseRepository<User>
     {
         return Query.AnyAsync(x => x.Id != id && x.Telephone.Equals(telephone));
     }
-    
+
 }

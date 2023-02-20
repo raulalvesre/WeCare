@@ -3,6 +3,7 @@ using WeCare.Application.Mappers;
 using WeCare.Application.SearchParams;
 using WeCare.Application.ViewModels;
 using WeCare.Domain;
+using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
 
 namespace WeCare.Application.Services;
@@ -11,13 +12,18 @@ public class InstitutionService
 {
     private readonly InstitutionRepository _institutionRepository;
     private readonly UserRepository _userRepository;
+    private readonly UnitOfWork _unitOfWork;
     private readonly InstitutionMapper _mapper;
 
-    public InstitutionService(InstitutionRepository institutionRepository, UserRepository userRepository, InstitutionMapper mapper)
+    public InstitutionService(InstitutionRepository institutionRepository,
+        UserRepository userRepository,
+        InstitutionMapper mapper,
+        UnitOfWork unitOfWork)
     {
         _institutionRepository = institutionRepository;
         _userRepository = userRepository;
         _mapper = mapper;
+        _unitOfWork = unitOfWork;
     }
     
      public async Task<InstitutionViewModel> GetById(long id)
@@ -52,7 +58,8 @@ public class InstitutionService
 
         var institution = _mapper.ToModel(form);
 
-        await _institutionRepository.Save(institution);
+        await _institutionRepository.Add(institution);
+        await _unitOfWork.SaveAsync();
 
         return _mapper.FromModel(institution);
     }
@@ -88,6 +95,7 @@ public class InstitutionService
 
         _mapper.Merge(institution, form);
         await _institutionRepository.Update(institution);
+        await _unitOfWork.SaveAsync();
 
         return _mapper.FromModel(institution);
     }
@@ -102,7 +110,8 @@ public class InstitutionService
 
         var institution = _mapper.ToModel(form);
 
-        await _institutionRepository.Save(institution);
+        await _institutionRepository.Add(institution);
+        await _unitOfWork.SaveAsync();
 
         return _mapper.FromModel(institution);
     }
@@ -121,6 +130,7 @@ public class InstitutionService
 
         _mapper.Merge(institution, form);
         await _institutionRepository.Update(institution);
+        await _unitOfWork.SaveAsync();
 
         return _mapper.FromModel(institution);
     }
@@ -132,6 +142,11 @@ public class InstitutionService
             throw new NotFoundException("Candidato não encontrado");
 
         await _institutionRepository.Remove(institution);
+        await _unitOfWork.SaveAsync();
     }
-    
+
+    public async Task<bool> IsCnpjAlreadyRegistered(string cnpj)
+    {
+        return await _institutionRepository.ExistsByIdNotAndCnpj(0, cnpj);
+    }
 }

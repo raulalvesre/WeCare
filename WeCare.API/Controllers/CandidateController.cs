@@ -36,13 +36,13 @@ public class CandidateController : ControllerBase
         return Ok(await _candidateService.Save(form));
     }
     
-    [HttpPut("id:long")]
+    [HttpPut("{id:long}")]
     public async ValueTask<ActionResult<CandidateViewModel>> Update(long id, CandidateForm form)
     {
         return Ok(await _candidateService.Update(id, form));
     }
 
-    [HttpPut("id:long")]
+    [HttpDelete("{id:long}")]
     public async ValueTask<ActionResult> Delete(long id)
     {
         await _candidateService.Delete(id);

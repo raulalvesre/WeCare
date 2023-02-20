@@ -6,16 +6,16 @@ namespace WeCare.Application.Mappers;
 
 public class InstitutionMapper
 {
-     public InstitutionViewModel FromModel(Institution Institution)
+     public InstitutionViewModel FromModel(Institution institution)
     {
         return new InstitutionViewModel
         {
-            Id = Institution.Id,
-            Name = Institution.Name,
-            Email = Institution.Email,
-            Cnpj = Institution.Cnpj,
-            Telephone = Institution.Telephone,
-            Address = new AddressViewModel(Institution),
+            Id = institution.Id,
+            Name = institution.Name,
+            Email = institution.Email,
+            Cnpj = institution.Cnpj,
+            Telephone = institution.Telephone,
+            Address = new AddressViewModel(institution),
         };
     }
 
@@ -37,20 +37,20 @@ public class InstitutionMapper
         };
     }
 
-    public void Merge(Institution Institution, InstitutionForm form)
+    public void Merge(Institution institution, InstitutionForm form)
     {
-        Institution.Email = form.Email;
-        Institution.Password = StringCipher.Encrypt(form.Password);
-        Institution.Name = form.Name;
-        Institution.Telephone = form.Telephone;
-        Institution.Street = form.Address.Street;
-        Institution.Number = form.Address.Number;
-        Institution.Complement = form.Address.Complement;
-        Institution.City = form.Address.City;
-        Institution.Neighborhood = form.Address.Neighborhood;
-        Institution.State = form.Address.State;
-        Institution.PostalCode = form.Address.PostalCode;
-        Institution.Cnpj = form.Cnpj;
+        institution.Email = form.Email;
+        institution.Password = StringCipher.Encrypt(form.Password);
+        institution.Name = form.Name;
+        institution.Telephone = form.Telephone;
+        institution.Street = form.Address.Street;
+        institution.Number = form.Address.Number;
+        institution.Complement = form.Address.Complement;
+        institution.City = form.Address.City;
+        institution.Neighborhood = form.Address.Neighborhood;
+        institution.State = form.Address.State;
+        institution.PostalCode = form.Address.PostalCode;
+        institution.Cnpj = form.Cnpj;
     }
 
     public Institution ToModel(InstitutionAdminForm form)
@@ -71,19 +71,19 @@ public class InstitutionMapper
         };
     }
 
-    public void Merge(Institution Institution, InstitutionAdminForm form)
+    public void Merge(Institution institution, InstitutionAdminForm form)
     {
-        Institution.Email = form.Email;
-        Institution.Password = StringCipher.Encrypt(form.Password);
-        Institution.Name = form.Name;
-        Institution.Telephone = form.Telephone;
-        Institution.Street = form.Address.Street;
-        Institution.Number = form.Address.Number;
-        Institution.Complement = form.Address.Complement;
-        Institution.City = form.Address.City;
-        Institution.Neighborhood = form.Address.Neighborhood;
-        Institution.State = form.Address.State;
-        Institution.PostalCode = form.Address.PostalCode;
-        Institution.Cnpj = form.Cnpj;
+        institution.Email = form.Email;
+        institution.Password = StringCipher.Encrypt(form.Password);
+        institution.Name = form.Name;
+        institution.Telephone = form.Telephone;
+        institution.Street = form.Address.Street;
+        institution.Number = form.Address.Number;
+        institution.Complement = form.Address.Complement;
+        institution.City = form.Address.City;
+        institution.Neighborhood = form.Address.Neighborhood;
+        institution.State = form.Address.State;
+        institution.PostalCode = form.Address.PostalCode;
+        institution.Cnpj = form.Cnpj;
     }
 }

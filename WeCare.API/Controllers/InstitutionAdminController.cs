@@ -7,7 +7,7 @@ using WeCare.Domain;
 namespace WeCare.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/admin/institution")]
 public class InstitutionController : ControllerBase
 {
     private readonly InstitutionService _institutionService;
@@ -31,21 +31,22 @@ public class InstitutionController : ControllerBase
     }
 
     [HttpPost]
-    public async ValueTask<ActionResult<InstitutionViewModel>> Save(InstitutionForm form)
+    public async ValueTask<ActionResult<InstitutionViewModel>> Save(InstitutionAdminForm form)
     {
         return Ok(await _institutionService.Save(form));
     }
     
-    [HttpPut("id:long")]
-    public async ValueTask<ActionResult<InstitutionViewModel>> Update(long id, InstitutionForm form)
+    [HttpPut("{id:long}")]
+    public async ValueTask<ActionResult<InstitutionViewModel>> Update(long id, InstitutionAdminForm form)
     {
         return Ok(await _institutionService.Update(id, form));
     }
 
-    [HttpPut("id:long")]
+    [HttpDelete("{id:long}")]
     public async ValueTask<ActionResult> Delete(long id)
     {
         await _institutionService.Delete(id);
         return NoContent();
     }
+    
 }

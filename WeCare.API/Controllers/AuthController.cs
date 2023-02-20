@@ -31,9 +31,9 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("institution/register")]
-    public async ValueTask<ActionResult> RegisterInstitution(CandidateForm form)
+    public async ValueTask<ActionResult> RegisterInstitution(InstitutionForm form)
     {
-        await _authService.RegisterCandidate(form);
+        await _authService.RegisterInstitution(form);
         return NoContent();
     }
 
@@ -49,5 +49,33 @@ public class AuthController : ControllerBase
     {
         return NoContent();
     }
+
+    [HttpGet("isEmailRegistered")]
+    public async ValueTask<ActionResult<bool>> IsEmailAlreadyRegistered([FromQuery(Name = "email")] string email)
+    {
+        
+        return Ok(await _authService.IsEmailAlreadyRegistered(email));
+    }
     
+    [HttpGet("isTelephoneRegistered")]
+    public async ValueTask<ActionResult<bool>> IsTelephoneAlreadyRegistered([FromQuery(Name = "telephone")] string telephone)
+    {
+        
+        return Ok(await _authService.IsTelephoneAlreadyRegistered(telephone));
+    }
+    
+    [HttpGet("isCpfRegistered")]
+    public async ValueTask<ActionResult<bool>> IsCpfAlreadyRegistered([FromQuery(Name = "cpf")] string cpf)
+    {
+        
+        return Ok(await _authService.IsCpfAlreadyRegistered(cpf));
+    }
+    
+    [HttpGet("isCnpjRegistered")]
+    public async ValueTask<ActionResult<bool>> IsCnpjAlreadyRegistered([FromQuery(Name = "cnpj")] string cnpj)
+    {
+        
+        return Ok(await _authService.IsCnpjAlreadyRegistered(cnpj));
+    }
+
 }

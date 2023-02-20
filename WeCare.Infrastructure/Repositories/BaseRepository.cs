@@ -20,10 +20,9 @@ public abstract class BaseRepository<T> where T : class
 
     public virtual IQueryable<T> Query => _set.AsQueryable();
 
-    public async Task Save(T record)
+    public async Task Add(T record)
     {
         await _set.AddAsync(record);
-        await WeCareDatabaseContext.SaveChangesAsync();
     }
 
     public Task Update(T record)
