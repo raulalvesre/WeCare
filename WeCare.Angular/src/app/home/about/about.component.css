@@ -1,0 +1,8 @@
+.paragraph {
+    background: aliceblue;
+    padding:  5% 20% 5% 20%;
+    margin: 15% 0% 20% 0%;
+    border-style: solid;
+    border-width: 5px;
+    border-image: linear-gradient(to left, rgba(0, 251, 217, 0.8), rgba(255, 0, 217, 0.8), rgba(0, 251, 217, 0.8))90% 0%/5px 0px;
+   }
