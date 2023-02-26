@@ -91,7 +91,7 @@ public class AuthService
             Body = $"<a href='http://localhost:5098/api/auth/activateAccount?token={confirmationToken}'>Clique aqui para ativar sua conta.</a>"
         };
         
-        await _emailService.SendEmailAsync(emailRequest);
+        // await _emailService.SendEmailAsync(emailRequest);
     }
     
     public async Task RegisterInstitution(InstitutionForm form)
@@ -100,7 +100,7 @@ public class AuthService
 
         var token = Guid.NewGuid().ToString();
         await _confirmationTokenService.Save(new ConfirmationTokenForm(token, candidateViewModel.Id));
-        await SendAccountConfirmationEmail(form.Email, token);
+        // await SendAccountConfirmationEmail(form.Email, token);
     }
     
     public async Task ConfirmEmail(string token)

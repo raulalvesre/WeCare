@@ -7,7 +7,7 @@ using WeCare.Domain;
 namespace WeCare.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/candidate")]
 public class CandidateController : ControllerBase
 {
     private readonly CandidateService _candidateService;
