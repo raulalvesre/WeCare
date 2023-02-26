@@ -31,7 +31,7 @@ public class InstitutionService
         var institution = await _institutionRepository.GetById(id);
 
         if (institution is null)
-            throw new NotFoundException("Candidato não encontrado");
+            throw new NotFoundException("Instituição não encontrada");
 
         return _mapper.FromModel(institution);
     }
@@ -72,7 +72,7 @@ public class InstitutionService
             errorMessages.Add("Email já cadastrado");
         
         if (await _institutionRepository.ExistsByIdNotAndCnpj(existingInstitutionId, cnpj))
-            errorMessages.Add("CPF já cadastrado");
+            errorMessages.Add("CNPJ já cadastrado");
         
         if (await _userRepository.ExistsByIdNotAndTelephone(existingInstitutionId, telephone))
             errorMessages.Add("Telefone já cadastrado");
@@ -89,7 +89,7 @@ public class InstitutionService
 
         var institution = await _institutionRepository.GetById(institutionId);
         if (institution is null)
-            throw new NotFoundException("Candidato não encontrado");
+            throw new NotFoundException("Instituição não encontrada");
         
         await ValidateUniqueFields(form.Email, form.Cnpj, form.Telephone, institutionId);
 
@@ -124,7 +124,7 @@ public class InstitutionService
 
         var institution = await _institutionRepository.GetById(institutionId);
         if (institution is null)
-            throw new NotFoundException("Candidato não encontrado");
+            throw new NotFoundException("Instituição não encontrada");
         
         await ValidateUniqueFields(form.Email, form.Cnpj, form.Telephone, institutionId);
 
@@ -139,7 +139,7 @@ public class InstitutionService
     {
         var institution = await _institutionRepository.GetById(institutionId);
         if (institution is null)
-            throw new NotFoundException("Candidato não encontrado");
+            throw new NotFoundException("Instituição não encontrada");
 
         await _institutionRepository.Remove(institution);
         await _unitOfWork.SaveAsync();

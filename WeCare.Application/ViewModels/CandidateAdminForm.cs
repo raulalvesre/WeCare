@@ -12,7 +12,7 @@ public class CandidateAdminForm
     public string Telephone { get; set; }
     public AddressViewModel Address { get; set; }
     public string Cpf { get; set; }
-    public DateTime BirthDate { get; set; }
+    public DateOnly BirthDate { get; set; }
 
     public Task<ValidationResult> ValidateAsync() {
         return new CandidateAdminFormValidator().ValidateAsync(this);

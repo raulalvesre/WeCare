@@ -47,7 +47,7 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
         RuleFor(x => x.BirthDate)
             .NotEmpty()
             .WithMessage("É necessário uma data de nascimento")
-            .LessThan(DateTime.Now)
+            .LessThan(DateOnly.FromDateTime(DateTime.Now))
             .WithMessage("Data de nascimento inválida")
             .Must(ValidatorsUtils.IsAdult)
             .WithMessage("Menor de idade");

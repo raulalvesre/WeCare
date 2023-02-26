@@ -28,7 +28,6 @@ builder.Services.AddDbContext<WeCareDatabaseContext>();
 builder.Services.AddScoped<UnitOfWork>();
 
 builder.Services.AddScoped<CandidateRepository>();
-builder.Services.AddScoped<VolunteerOpportunityRepository>();
 builder.Services.AddScoped<InstitutionRepository>();
 builder.Services.AddScoped<ConfirmationTokenRepository>();
 builder.Services.AddScoped<UserRepository>();
@@ -38,7 +37,6 @@ builder.Services.AddScoped<InstitutionMapper>();
 
 builder.Services.AddScoped<CandidateService>();
 builder.Services.AddScoped<InstitutionService>();
-builder.Services.AddScoped<VolunteerOpportunityService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<ConfirmationTokenService>();
 builder.Services.AddScoped<EmailService>();

@@ -18,9 +18,9 @@ public class ValidatorsUtils
         return Regex.Match(cpf, CpfRegex).Success;
     }
     
-    public static bool IsAdult(DateTime birthDate)
+    public static bool IsAdult(DateOnly birthDate)
     {
-        return birthDate.AddYears(18) <= DateTime.Today;
+        return birthDate.AddYears(18) <= DateOnly.FromDateTime(DateTime.Now);
     }
 
     public static bool IsValidCnpj(string cnpj)

@@ -1,10 +1,8 @@
-﻿namespace WeCare.Domain;
+﻿namespace WeCare.Domain.Models;
 
 public class Candidate : User
 {
     public string Cpf { get; set; } = string.Empty;
-    public DateTime BirthDate { get; set; }
-
-    public IEnumerable<Qualification> Qualifications { get; set; } = new List<Qualification>();
+    public DateOnly BirthDate { get; set; }
     
 }

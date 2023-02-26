@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using WeCare.Domain;
+using WeCare.Domain.Models;
 
 namespace WeCare.Infrastructure;
 
@@ -10,7 +11,7 @@ public class WeCareDatabaseContext : DbContext
     private static readonly string _connStr = @"
         Host=localhost;
         Port=5432;
-        Database=postgres;
+        Database=wecare;
         User Id=postgres;
         Password=rar432;
     ";
@@ -18,8 +19,7 @@ public class WeCareDatabaseContext : DbContext
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Candidate> Candidates { get; set; } = null!;
     public DbSet<Institution> Institutions  { get; set; } = null!;
-    public DbSet<VolunteerOpportunity> VolunteerOpportunities { get; set; } = null!;
-    public DbSet<ConfirmationToken> ConfirmationTokens { get; set; } = null;
+    public DbSet<ConfirmationToken> ConfirmationTokens { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

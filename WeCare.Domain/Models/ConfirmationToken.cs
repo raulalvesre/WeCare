@@ -1,4 +1,4 @@
-namespace WeCare.Domain;
+namespace WeCare.Domain.Models;
 
 public class ConfirmationToken
 {

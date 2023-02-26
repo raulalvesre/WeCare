@@ -1,4 +1,5 @@
 using WeCare.Domain;
+using WeCare.Domain.Models;
 
 namespace WeCare.Application.ViewModels;
 

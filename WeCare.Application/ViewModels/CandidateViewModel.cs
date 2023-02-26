@@ -8,6 +8,6 @@ public class CandidateViewModel
     public string Telephone { get; set; }
     public AddressViewModel Address { get; set; }
     public string Cpf { get; set; } = string.Empty;
-    public DateTime BirthDate { get; set; }
+    public DateOnly BirthDate { get; set; }
     
 }

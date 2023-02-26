@@ -1,6 +1,7 @@
 using WeCare.Application.Exceptions;
 using WeCare.Application.ViewModels;
 using WeCare.Domain;
+using WeCare.Domain.Models;
 using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
 
