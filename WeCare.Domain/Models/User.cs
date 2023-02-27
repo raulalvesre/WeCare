@@ -9,6 +9,7 @@ public abstract class User
     public string Name { get; set; } = string.Empty;
     public string Telephone { get; set; } = string.Empty;
     public string Bio { get; set; } = string.Empty;
+    public byte[] Photo { get; set; }
     public string Street { get; set; } = string.Empty;
     public string Number { get; set; } = string.Empty;
     public string Complement { get; set; } = string.Empty;
