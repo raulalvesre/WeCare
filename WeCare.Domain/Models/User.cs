@@ -8,6 +8,7 @@ public abstract class User
     public string Password { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string Telephone { get; set; } = string.Empty;
+    public string Bio { get; set; } = string.Empty;
     public string Street { get; set; } = string.Empty;
     public string Number { get; set; } = string.Empty;
     public string Complement { get; set; } = string.Empty;

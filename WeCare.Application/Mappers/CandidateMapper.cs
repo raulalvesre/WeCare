@@ -1,5 +1,4 @@
 using WeCare.Application.ViewModels;
-using WeCare.Domain;
 using WeCare.Domain.Models;
 using WeCare.Infrastructure;
 
@@ -16,6 +15,7 @@ public class CandidateMapper
             Email = candidate.Email,
             Cpf = candidate.Cpf,
             Telephone = candidate.Telephone,
+            Bio = candidate.Bio,
             Address = new AddressViewModel(candidate),
             BirthDate = candidate.BirthDate
         };
@@ -28,6 +28,7 @@ public class CandidateMapper
             Name = form.Name,
             Password = StringCipher.Encrypt(form.Password),
             Telephone = form.Telephone,
+            Bio = form.Bio,
             Street = form.Address.Street,
             Number =  form.Address.Number,
             Complement =  form.Address.Complement,
@@ -46,6 +47,7 @@ public class CandidateMapper
         candidate.Password = StringCipher.Encrypt(form.Password);
         candidate.Name = form.Name;
         candidate.Telephone = form.Telephone;
+        candidate.Bio = form.Bio;
         candidate.Street = form.Address.Street;
         candidate.Number = form.Address.Number;
         candidate.Complement = form.Address.Complement;
@@ -64,6 +66,7 @@ public class CandidateMapper
             Name = form.Name,
             Password = StringCipher.Encrypt(form.Password),
             Telephone = form.Telephone,
+            Bio = form.Bio,
             Street = form.Address.Street,
             Number =  form.Address.Number,
             Complement =  form.Address.Complement,
@@ -82,6 +85,7 @@ public class CandidateMapper
         candidate.Password = StringCipher.Encrypt(form.Password);
         candidate.Name = form.Name;
         candidate.Telephone = form.Telephone;
+        candidate.Bio = form.Bio;
         candidate.Street = form.Address.Street;
         candidate.Number = form.Address.Number;
         candidate.Complement = form.Address.Complement;

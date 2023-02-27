@@ -35,6 +35,10 @@ public class CandidateAdminFormValidator : AbstractValidator<CandidateAdminForm>
             .Must(ValidatorsUtils.IsValidTelephone)
             .WithMessage("Número de telefone inválido");
 
+        RuleFor(x => x.Bio)
+            .MaximumLength(1024)
+            .WithMessage("Uma bio deve ter no máximo 1024 caracteres");
+
         RuleFor(x => x.Address)
             .SetValidator(new AddressViewModelValidator());
 

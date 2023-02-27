@@ -6,8 +6,9 @@ public class CandidateViewModel
     public string Email { get; set; }
     public string Name { get; set; }
     public string Telephone { get; set; }
+    public string Bio { get; set; }
     public AddressViewModel Address { get; set; }
-    public string Cpf { get; set; } = string.Empty;
+    public string Cpf { get; set; }
     public DateOnly BirthDate { get; set; }
     
 }

@@ -1,5 +1,4 @@
 using WeCare.Application.ViewModels;
-using WeCare.Domain;
 using WeCare.Domain.Models;
 using WeCare.Infrastructure;
 
@@ -16,6 +15,7 @@ public class InstitutionMapper
             Email = institution.Email,
             Cnpj = institution.Cnpj,
             Telephone = institution.Telephone,
+            Bio = institution.Bio,
             Address = new AddressViewModel(institution),
         };
     }
@@ -27,6 +27,7 @@ public class InstitutionMapper
             Name = form.Name,
             Password = StringCipher.Encrypt(form.Password),
             Telephone = form.Telephone,
+            Bio = form.Bio,
             Street = form.Address.Street,
             Number =  form.Address.Number,
             Complement =  form.Address.Complement,
@@ -44,6 +45,7 @@ public class InstitutionMapper
         institution.Password = StringCipher.Encrypt(form.Password);
         institution.Name = form.Name;
         institution.Telephone = form.Telephone;
+        institution.Bio = form.Bio;
         institution.Street = form.Address.Street;
         institution.Number = form.Address.Number;
         institution.Complement = form.Address.Complement;
@@ -61,6 +63,7 @@ public class InstitutionMapper
             Name = form.Name,
             Password = StringCipher.Encrypt(form.Password),
             Telephone = form.Telephone,
+            Bio = form.Bio,
             Street = form.Address.Street,
             Number =  form.Address.Number,
             Complement =  form.Address.Complement,
@@ -78,6 +81,7 @@ public class InstitutionMapper
         institution.Password = StringCipher.Encrypt(form.Password);
         institution.Name = form.Name;
         institution.Telephone = form.Telephone;
+        institution.Bio = form.Bio;
         institution.Street = form.Address.Street;
         institution.Number = form.Address.Number;
         institution.Complement = form.Address.Complement;
