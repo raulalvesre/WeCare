@@ -31,9 +31,11 @@ public class UserMapping : IEntityTypeConfiguration<User>
         builder.Property(x => x.Telephone)
             .IsRequired();
 
-        builder.Property(x => x.Bio);
+        builder.Property(x => x.Bio)
+            .IsRequired(false);;
 
-        builder.Property(x => x.Photo);
+        builder.Property(x => x.Photo)
+            .IsRequired(false);
 
         builder.Property(x => x.Street)
             .IsRequired();
@@ -42,10 +44,7 @@ public class UserMapping : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.Property(x => x.Complement);
-
-        builder.Property(x => x.City)
-            .IsRequired();
-
+        
         builder.Property(x => x.City)
             .IsRequired();
 
