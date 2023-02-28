@@ -149,4 +149,21 @@ public class InstitutionService
     {
         return await _institutionRepository.ExistsByIdNotAndCnpj(0, cnpj);
     }
+    
+    public async Task AddPhoto(long candidateId, ImageUploadForm form)
+    {
+        var institution = await _institutionRepository.GetById(candidateId);
+        if (institution is null)
+            throw new NotFoundException("Instituição não encontrada");
+
+        var validationResult = await form.ValidateAsync();
+        if (!validationResult.IsValid)
+            throw new BadRequestException(validationResult.Errors);
+
+        using var memoryStream = new MemoryStream();
+        await form.Photo.CopyToAsync(memoryStream);
+        
+        institution.Photo = memoryStream.ToArray();
+        await _unitOfWork.SaveAsync();
+    }
 }

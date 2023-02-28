@@ -23,14 +23,14 @@ public class AuthController : ControllerBase
         return Ok(await _authService.AuthenticateUser(loginRequest));
     }
 
-    [HttpPost("candidate/register")]
+    [HttpPost("register-candidate")]
     public async ValueTask<ActionResult> RegisterCandidate(CandidateForm form)
     {
         await _authService.RegisterCandidate(form);
         return NoContent();
     }
 
-    [HttpPost("institution/register")]
+    [HttpPost("register-institution")]
     public async ValueTask<ActionResult> RegisterInstitution(InstitutionForm form)
     {
         await _authService.RegisterInstitution(form);
