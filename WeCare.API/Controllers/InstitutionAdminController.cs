@@ -49,4 +49,11 @@ public class InstitutionController : ControllerBase
         return NoContent();
     }
     
+    [HttpPatch("upload-photo/{institutionId:long}")]
+    public async ValueTask<ActionResult> AddPhoto(long institutionId, [FromForm] ImageUploadForm form)
+    {
+        await _institutionService.AddPhoto(institutionId, form);
+        return NoContent();
+    }
+    
 }

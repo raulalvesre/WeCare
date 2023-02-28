@@ -33,6 +33,8 @@ public class UserMapping : IEntityTypeConfiguration<User>
 
         builder.Property(x => x.Bio);
 
+        builder.Property(x => x.Photo);
+
         builder.Property(x => x.Street)
             .IsRequired();
 

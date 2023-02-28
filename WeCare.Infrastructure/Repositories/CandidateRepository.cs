@@ -14,7 +14,6 @@ public class CandidateRepository : BaseRepository<Candidate>
     public Task<Candidate?> GetById(long id)
     {
         return Query
-            .AsNoTracking()            
             .FirstOrDefaultAsync(candidate => candidate.Id == id);
     }
 

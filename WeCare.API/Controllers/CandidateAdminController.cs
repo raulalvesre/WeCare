@@ -47,5 +47,12 @@ public class CandidateAdminController : ControllerBase
         await _candidateService.Delete(candidateId);
         return NoContent();
     }
-    
+
+    [HttpPatch("upload-photo/{candidateId:long}")]
+    public async ValueTask<ActionResult> AddPhoto(long candidateId, [FromForm] ImageUploadForm form)
+    {
+        await _candidateService.AddPhoto(candidateId, form);
+        return NoContent();
+    }
+
 }

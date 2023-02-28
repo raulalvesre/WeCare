@@ -149,4 +149,22 @@ public class CandidateService
     {
         return await _candidateRepository.ExistsByIdNotAndCpf(0, cpf);
     }
+
+    public async Task AddPhoto(long candidateId, ImageUploadForm form)
+    {
+        var candidate = await _candidateRepository.GetById(candidateId);
+        if (candidate is null)
+            throw new NotFoundException("Candidato não encontrado");
+
+        var validationResult = await form.ValidateAsync();
+        if (!validationResult.IsValid)
+            throw new BadRequestException(validationResult.Errors);
+
+        using var memoryStream = new MemoryStream();
+        await form.Photo.CopyToAsync(memoryStream);
+        
+        candidate.Photo = memoryStream.ToArray();
+        await _unitOfWork.SaveAsync();
+    }
+    
 }
