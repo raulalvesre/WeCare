@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WeCare.Domain;
+using WeCare.Domain.Core;
 
 namespace WeCare.Infrastructure.Repositories.Base;
 

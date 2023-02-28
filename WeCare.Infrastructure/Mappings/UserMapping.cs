@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WeCare.Domain;
+using WeCare.Domain.Core;
 using WeCare.Domain.Models;
 
 namespace WeCare.Infrastructure.Mappings;

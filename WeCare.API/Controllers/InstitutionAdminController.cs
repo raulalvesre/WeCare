@@ -3,6 +3,7 @@ using WeCare.Application.SearchParams;
 using WeCare.Application.Services;
 using WeCare.Application.ViewModels;
 using WeCare.Domain;
+using WeCare.Domain.Core;
 
 namespace WeCare.API.Controllers;
 

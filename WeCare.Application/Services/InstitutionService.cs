@@ -3,6 +3,7 @@ using WeCare.Application.Mappers;
 using WeCare.Application.SearchParams;
 using WeCare.Application.ViewModels;
 using WeCare.Domain;
+using WeCare.Domain.Core;
 using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
 
