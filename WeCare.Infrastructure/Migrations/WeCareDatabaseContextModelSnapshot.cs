@@ -230,7 +230,6 @@ namespace WeCare.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Bio")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("bio");
 
@@ -284,7 +283,6 @@ namespace WeCare.Infrastructure.Migrations
                         .HasColumnName("password");
 
                     b.Property<byte[]>("Photo")
-                        .IsRequired()
                         .HasColumnType("bytea")
                         .HasColumnName("photo");
 
