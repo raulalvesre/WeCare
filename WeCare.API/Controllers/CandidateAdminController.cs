@@ -49,9 +49,9 @@ public class CandidateAdminController : ControllerBase
     }
 
     [HttpPatch("upload-photo/{candidateId:long}")]
-    public async ValueTask<ActionResult> AddPhoto(long candidateId, IFormFile photo)
+    public async ValueTask<ActionResult> AddPhoto(long candidateId, [FromForm] ImageUploadForm form)
     {
-        await _candidateService.AddPhoto(candidateId, photo);
+        await _candidateService.AddPhoto(candidateId, form);
         return NoContent();
     }
 

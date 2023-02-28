@@ -1,5 +1,3 @@
-using System.Net.Mime;
-using Microsoft.AspNetCore.Http;
 using WeCare.Application.Exceptions;
 using WeCare.Application.Mappers;
 using WeCare.Application.SearchParams;
@@ -152,24 +150,21 @@ public class CandidateService
         return await _candidateRepository.ExistsByIdNotAndCpf(0, cpf);
     }
 
-    public async Task AddPhoto(long candidateId, IFormFile photo)
+    public async Task AddPhoto(long candidateId, ImageUploadForm form)
     {
         var candidate = await _candidateRepository.GetById(candidateId);
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");
 
-        using var memoryStream = new MemoryStream();
-        await photo.CopyToAsync(memoryStream);
+        var validationResult = await form.ValidateAsync();
+        if (!validationResult.IsValid)
+            throw new BadRequestException(validationResult.Errors);
 
-        if (memoryStream.Length < 1048576)
-        {
-            candidate.Photo = memoryStream.ToArray();
-            await _unitOfWork.SaveAsync();
-        }
-        else
-        {
-            throw new RequestEntityTooLargeException("Imagem maior que 1mb");
-        }
+        using var memoryStream = new MemoryStream();
+        await form.Photo.CopyToAsync(memoryStream);
+        
+        candidate.Photo = memoryStream.ToArray();
+        await _unitOfWork.SaveAsync();
     }
     
 }
