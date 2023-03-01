@@ -22,6 +22,13 @@ public class InstitutionRepository : BaseRepository<Institution>
         return Query
             .FirstOrDefaultAsync(x => x.Id == id);
     }
+    
+    public Task<Institution?> GetByIdNoTracking(long id)
+    {
+        return Query
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
 
     public async Task<bool> ExistsByIdNotAndCnpj(long id, string cnpj)
     {

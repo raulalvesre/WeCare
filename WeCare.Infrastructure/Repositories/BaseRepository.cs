@@ -10,7 +10,7 @@ public abstract class BaseRepository<T> where T : class
 
     protected readonly DbSet<T> _set;
 
-    public BaseRepository(WeCareDatabaseContext weCareDatabaseContext)
+    protected BaseRepository(WeCareDatabaseContext weCareDatabaseContext)
     {
         WeCareDatabaseContext = weCareDatabaseContext;
         _set = weCareDatabaseContext.Set<T>();
@@ -21,7 +21,7 @@ public abstract class BaseRepository<T> where T : class
 
     public virtual IQueryable<T> Query => _set.AsQueryable();
 
-    public async Task Add(T record)
+    public virtual async Task Add(T record)
     {
         await _set.AddAsync(record);
     }
@@ -60,5 +60,4 @@ public abstract class BaseRepository<T> where T : class
 
         return new Pagination<T>(pageNumber, pageSize, totalCount, totalPages, recordList);
     }
-    
 }

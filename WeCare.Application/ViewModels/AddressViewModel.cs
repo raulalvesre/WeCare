@@ -27,4 +27,16 @@ public class AddressViewModel
         PostalCode = user.PostalCode;
     }
     
+    
+    public AddressViewModel(VolunteerOpportunity opportunity)
+    {
+        Street = opportunity.Street;
+        Number = opportunity.Number;
+        Complement = opportunity.Complement;
+        City = opportunity.City;
+        Neighborhood = opportunity.Neighborhood;
+        State = opportunity.State;
+        PostalCode = opportunity.PostalCode;
+    }
+    
 }

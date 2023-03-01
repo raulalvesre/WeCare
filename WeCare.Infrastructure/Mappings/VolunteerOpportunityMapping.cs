@@ -15,12 +15,14 @@ public class VolunteerOpportunityMapping : IEntityTypeConfiguration<VolunteerOpp
         builder.Property(x => x.Name)
             .IsRequired();
 
-        builder.Property(x => x.Description);
+        builder.Property(x => x.Description)
+            .IsRequired();
         
         builder.Property(x => x.OpportunityDate)
             .IsRequired();
 
-        builder.Property(x => x.Photo);
+        builder.Property(x => x.Photo)
+            .IsRequired();
         
          builder.Property(x => x.LastUpdateDate);
 
