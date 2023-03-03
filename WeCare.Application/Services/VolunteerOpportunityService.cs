@@ -1,6 +1,8 @@
 using WeCare.Application.Exceptions;
 using WeCare.Application.Mappers;
+using WeCare.Application.SearchParams;
 using WeCare.Application.ViewModels;
+using WeCare.Domain.Core;
 using WeCare.Domain.Models;
 using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
@@ -24,6 +26,26 @@ public class VolunteerOpportunityService
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
+    
+    public async Task<VolunteerOpportunityViewModel> GetById(long id)
+    {
+        var opportunity = await _volunteerOpportunityRepository.GetById(id);
+        if (opportunity is null)
+            throw new NotFoundException("Oportunidade não encontrada");
+
+        return _mapper.FromModel(opportunity);
+    }
+    
+    public async Task<Pagination<VolunteerOpportunityViewModel>> GetPage(VolunteerOpportunitySearchParam searchParams)
+    {
+        var opportunitiesPage = await _volunteerOpportunityRepository.Paginate(searchParams);
+        return new Pagination<VolunteerOpportunityViewModel>(
+            opportunitiesPage.PageNumber, 
+            opportunitiesPage.PageSize,
+            opportunitiesPage.TotalCount,
+            opportunitiesPage.TotalPages,
+            opportunitiesPage.Data.Select(x => _mapper.FromModel(x)));
+    }
 
     public async Task<VolunteerOpportunityViewModel> Save(long institutionId, VolunteerOpportunityForm form)
     {
@@ -42,4 +64,5 @@ public class VolunteerOpportunityService
         return _mapper.FromModel(opportunity);
     }
 
+   
 }

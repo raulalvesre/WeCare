@@ -21,6 +21,7 @@ public class VolunteerOpportunityRepository : BaseRepository<VolunteerOpportunit
     public Task<VolunteerOpportunity?> GetById(long id)
     {
         return Query
+            .Include(x => x.Causes)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 }

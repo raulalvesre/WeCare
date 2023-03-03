@@ -16,7 +16,7 @@ public class VolunteerOpportunityMapper
             Name = opportunity.Name,
             Description = opportunity.Description,
             OpportunityDate = opportunity.OpportunityDate,
-            Photo = Convert.ToBase64String(opportunity.Photo),
+            Photo = opportunity.Photo,
             Address = new AddressViewModel(opportunity),
             Causes = opportunity.Causes.Select(x => x.Name),
             CreationDate = opportunity.CreationDate

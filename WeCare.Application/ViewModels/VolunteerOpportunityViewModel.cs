@@ -1,6 +1,3 @@
-using WeCare.Domain.Core;
-using WeCare.Domain.Models;
-
 namespace WeCare.Application.ViewModels;
 
 public class VolunteerOpportunityViewModel
@@ -10,7 +7,7 @@ public class VolunteerOpportunityViewModel
     public string Name { get; set; }
     public string Description { get; set; }
     public DateTime OpportunityDate { get; set; }
-    public string Photo { get; set; }
+    public byte[] Photo { get; set; }
     public AddressViewModel Address { get; set; }
     public DateTime CreationDate { get; set; }
     
