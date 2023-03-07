@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace WeCare.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddVolunteerOpportunityAndOpportunityCause : Migration
+    public partial class AddVolunteerOpportunityAndCauses : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,9 +37,12 @@ namespace WeCare.Infrastructure.Migrations
                 schema: "public",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "text", nullable: false)
+                    code = table.Column<string>(type: "text", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    primary_color_code = table.Column<string>(type: "text", nullable: true),
+                    secondary_color_code = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -85,7 +88,7 @@ namespace WeCare.Infrastructure.Migrations
                 schema: "public",
                 columns: table => new
                 {
-                    causes_id = table.Column<int>(type: "integer", nullable: false),
+                    causes_id = table.Column<long>(type: "bigint", nullable: false),
                     volunteer_opportunities_id = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -110,34 +113,35 @@ namespace WeCare.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 schema: "public",
                 table: "opportunity_causes",
-                columns: new[] { "id", "name" },
+                columns: new[] { "id", "code", "name", "primary_color_code", "secondary_color_code" },
                 values: new object[,]
                 {
-                    { 1, "POLITICS" },
-                    { 2, "CITIZEN_PARTICIPATION" },
-                    { 3, "FIGHT_AGAINST_HUNGER" },
-                    { 4, "FIGHT_AGAINST_POVERTY" },
-                    { 5, "CONSCIOUS_CONSUMPTION" },
-                    { 6, "CHILDREN_AND_YOUTH" },
-                    { 7, "CULTURE_SPORTS_AND_ART" },
-                    { 8, "COMMUNITY_DEVELOPMENT" },
-                    { 9, "EDUCATION" },
-                    { 10, "RACIAL_EQUITY" },
-                    { 11, "SPORTS" },
-                    { 12, "ELDERLY" },
-                    { 13, "YOUTH" },
-                    { 14, "LGBTI" },
-                    { 15, "ENVIRONMENT" },
-                    { 16, "URBAN_MOBILITY" },
-                    { 17, "WOMEN" },
-                    { 18, "DISABLED_PEOPLE" },
-                    { 19, "HOMELESS_POPULATION" },
-                    { 20, "INDIGENOUS_PEOPLE" },
-                    { 21, "ANIMAL_PROTECTION" },
-                    { 22, "REFUGEES" },
-                    { 23, "HEALTH" },
-                    { 24, "SUSTAINABILITY" },
-                    { 25, "PROFESSIONAL_TRAINING" }
+                    { 1L, "politics", "Advocacy | Políticas Públicas", null, null },
+                    { 2L, "citizen-participation", "Cidadania", null, null },
+                    { 3L, "fight-against-hunger", "Combate à Fome", null, null },
+                    { 4L, "fight-against-poverty", "Combate a Pobreza", null, null },
+                    { 5L, "conscious-consumption", "Consumo Consciente", null, null },
+                    { 6L, "children-and-youth", "Crianças", null, null },
+                    { 7L, "culture-and-art", "Cultura e Arte", null, null },
+                    { 8L, "community-development", "Desenvolvimento Comunitário", null, null },
+                    { 9L, "human-rights", "Direitos humanos", null, null },
+                    { 10L, "education", "education", null, null },
+                    { 11L, "racial-equity", "Equidade Racial", null, null },
+                    { 12L, "sports", "Esportes", null, null },
+                    { 13L, "elderly", "Idosos", null, null },
+                    { 14L, "youth", "Jovens", null, null },
+                    { 15L, "lgbti", "LGBTI+", null, null },
+                    { 16L, "environment", "Meio Ambiente", null, null },
+                    { 17L, "urban-mobility", "Mobilidade Urbana", null, null },
+                    { 18L, "women", "Mulheres", null, null },
+                    { 19L, "disabled-people", "Pessoas com deficiência", null, null },
+                    { 20L, "homeless-population", "População em Situação de Rua", null, null },
+                    { 21L, "indigenous-people", "Povos Indígenas", null, null },
+                    { 22L, "animal-protection", "Proteção Animal", null, null },
+                    { 23L, "refugees", "Refugiados", null, null },
+                    { 24L, "health", "Saúde", null, null },
+                    { 25L, "sustainability", "Sustentabilidade", null, null },
+                    { 26L, "professional-training", "Treinamento profissional", null, null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -147,10 +151,10 @@ namespace WeCare.Infrastructure.Migrations
                 column: "volunteer_opportunities_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_opportunity_causes_name",
+                name: "ix_opportunity_causes_code",
                 schema: "public",
                 table: "opportunity_causes",
-                column: "name");
+                column: "code");
 
             migrationBuilder.CreateIndex(
                 name: "ix_volunteer_opportunities_institution_id",

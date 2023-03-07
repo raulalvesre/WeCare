@@ -33,6 +33,7 @@ builder.Services.AddScoped<InstitutionRepository>();
 builder.Services.AddScoped<ConfirmationTokenRepository>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<VolunteerOpportunityRepository>();
+builder.Services.AddScoped<OpportunityCauseRepository>();
 
 builder.Services.AddScoped<CandidateMapper>();
 builder.Services.AddScoped<InstitutionMapper>();

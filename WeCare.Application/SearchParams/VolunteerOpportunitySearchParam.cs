@@ -39,7 +39,7 @@ public class VolunteerOpportunitySearchParam : PaginationFilterParamsBase<Volunt
         if (Causes.Any())
         {
             And(vo => vo.Causes
-                .Any(oc => Causes.Contains(oc.Name))
+                .Any(oc => Causes.Contains(oc.Code))
             );
         }
     }

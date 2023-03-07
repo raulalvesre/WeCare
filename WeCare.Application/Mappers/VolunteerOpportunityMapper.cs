@@ -1,5 +1,4 @@
 using WeCare.Application.ViewModels;
-using WeCare.Domain.Core;
 using WeCare.Domain.Models;
 using WeCare.Infrastructure.Repositories;
 
@@ -7,6 +6,14 @@ namespace WeCare.Application.Mappers;
 
 public class VolunteerOpportunityMapper
 {
+
+    private readonly OpportunityCauseRepository _opportunityCauseRepository;
+
+    public VolunteerOpportunityMapper(OpportunityCauseRepository opportunityCauseRepository)
+    {
+        _opportunityCauseRepository = opportunityCauseRepository;
+    }
+
     public VolunteerOpportunityViewModel FromModel(VolunteerOpportunity opportunity)
     {
         return new VolunteerOpportunityViewModel()
@@ -25,10 +32,10 @@ public class VolunteerOpportunityMapper
     
     public VolunteerOpportunity ToModel(long institutionId, VolunteerOpportunityForm form)
     {
-        var causes = OpportunityCauseMapper.ToModels(form.Causes);
-        
+        var causes = _opportunityCauseRepository.FindByCodeIn(form.Causes);
+
         using var memoryStream = new MemoryStream();
-        form.Photo.Photo.CopyTo(memoryStream);
+        form.Photo.CopyTo(memoryStream);
         
         return new VolunteerOpportunity()
         {
@@ -50,10 +57,10 @@ public class VolunteerOpportunityMapper
 
     public void Merge(VolunteerOpportunity opportunity, VolunteerOpportunityForm form)
     {
-        var causes = OpportunityCauseMapper.ToModels(form.Causes);
+        var causes = _opportunityCauseRepository.FindByCodeIn(form.Causes);
         
         using var memoryStream = new MemoryStream();
-        form.Photo.Photo.CopyTo(memoryStream);
+        form.Photo.CopyTo(memoryStream);
 
         opportunity.Name = form.Name;
         opportunity.Description = form.Description;

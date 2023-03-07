@@ -1,13 +1,18 @@
-using System.Data;
 using FluentValidation;
 using WeCare.Application.ViewModels;
+using WeCare.Infrastructure.Repositories;
 
 namespace WeCare.Application.Validators;
 
 public class VolunteerOpportunityFormValidator : AbstractValidator<VolunteerOpportunityForm>
 {
-    public VolunteerOpportunityFormValidator()
+
+    private readonly OpportunityCauseRepository _opportunityCauseRepository;
+    
+    public VolunteerOpportunityFormValidator(OpportunityCauseRepository opportunityCauseRepository)
     {
+        _opportunityCauseRepository = opportunityCauseRepository;
+        
         RuleFor(x => x.Name)
             .NotEmpty()
             .WithMessage("O nome da oportunidade não pode ser vazio")
@@ -27,9 +32,26 @@ public class VolunteerOpportunityFormValidator : AbstractValidator<VolunteerOppo
             .WithMessage("A oportunidade não pode acontecer em menos de 24 horas");
 
         RuleFor(x => x.Photo)
-            .SetValidator(new ImageUploadFormValidator());
+            .SetValidator(new ImageValidator());
 
         RuleFor(x => x.Address)
             .SetValidator(new AddressViewModelValidator());
+
+        RuleFor(x => x.Causes)
+            .Custom(AllCauseCodesExists);
+    }
+
+    private void AllCauseCodesExists(IEnumerable<string> formCausesCodes, ValidationContext<VolunteerOpportunityForm> context)
+    {
+        var modelCausesCodes = _opportunityCauseRepository.FindByCodeIn(formCausesCodes)
+            .Select(x => x.Code);
+        
+        foreach (var causeCode in formCausesCodes)
+        {
+            if (!modelCausesCodes.Contains(causeCode))
+            {
+                context.AddFailure($"Causa com o código {causeCode} não existe");
+            }
+        }
     }
 }

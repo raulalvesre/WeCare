@@ -25,8 +25,8 @@ namespace WeCare.Infrastructure.Migrations
 
             modelBuilder.Entity("OpportunityCauseVolunteerOpportunity", b =>
                 {
-                    b.Property<int>("CausesId")
-                        .HasColumnType("integer")
+                    b.Property<long>("CausesId")
+                        .HasColumnType("bigint")
                         .HasColumnName("causes_id");
 
                     b.Property<long>("VolunteerOpportunitiesId")
@@ -78,151 +78,195 @@ namespace WeCare.Infrastructure.Migrations
 
             modelBuilder.Entity("WeCare.Domain.Models.OpportunityCause", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("bigint")
                         .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("code");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
 
+                    b.Property<string>("PrimaryColorCode")
+                        .HasColumnType("text")
+                        .HasColumnName("primary_color_code");
+
+                    b.Property<string>("SecondaryColorCode")
+                        .HasColumnType("text")
+                        .HasColumnName("secondary_color_code");
+
                     b.HasKey("Id")
                         .HasName("pk_opportunity_causes");
 
-                    b.HasIndex("Name")
-                        .HasDatabaseName("ix_opportunity_causes_name");
+                    b.HasIndex("Code")
+                        .HasDatabaseName("ix_opportunity_causes_code");
 
                     b.ToTable("opportunity_causes", "public");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            Name = "POLITICS"
+                            Id = 1L,
+                            Code = "politics",
+                            Name = "Advocacy | Políticas Públicas"
                         },
                         new
                         {
-                            Id = 2,
-                            Name = "CITIZEN_PARTICIPATION"
+                            Id = 2L,
+                            Code = "citizen-participation",
+                            Name = "Cidadania"
                         },
                         new
                         {
-                            Id = 3,
-                            Name = "FIGHT_AGAINST_HUNGER"
+                            Id = 3L,
+                            Code = "fight-against-hunger",
+                            Name = "Combate à Fome"
                         },
                         new
                         {
-                            Id = 4,
-                            Name = "FIGHT_AGAINST_POVERTY"
+                            Id = 4L,
+                            Code = "fight-against-poverty",
+                            Name = "Combate a Pobreza"
                         },
                         new
                         {
-                            Id = 5,
-                            Name = "CONSCIOUS_CONSUMPTION"
+                            Id = 5L,
+                            Code = "conscious-consumption",
+                            Name = "Consumo Consciente"
                         },
                         new
                         {
-                            Id = 6,
-                            Name = "CHILDREN_AND_YOUTH"
+                            Id = 6L,
+                            Code = "children-and-youth",
+                            Name = "Crianças"
                         },
                         new
                         {
-                            Id = 7,
-                            Name = "CULTURE_SPORTS_AND_ART"
+                            Id = 7L,
+                            Code = "culture-and-art",
+                            Name = "Cultura e Arte"
                         },
                         new
                         {
-                            Id = 8,
-                            Name = "COMMUNITY_DEVELOPMENT"
+                            Id = 8L,
+                            Code = "community-development",
+                            Name = "Desenvolvimento Comunitário"
                         },
                         new
                         {
-                            Id = 9,
-                            Name = "EDUCATION"
+                            Id = 9L,
+                            Code = "human-rights",
+                            Name = "Direitos humanos"
                         },
                         new
                         {
-                            Id = 10,
-                            Name = "RACIAL_EQUITY"
+                            Id = 10L,
+                            Code = "education",
+                            Name = "education"
                         },
                         new
                         {
-                            Id = 11,
-                            Name = "SPORTS"
+                            Id = 11L,
+                            Code = "racial-equity",
+                            Name = "Equidade Racial"
                         },
                         new
                         {
-                            Id = 12,
-                            Name = "ELDERLY"
+                            Id = 12L,
+                            Code = "sports",
+                            Name = "Esportes"
                         },
                         new
                         {
-                            Id = 13,
-                            Name = "YOUTH"
+                            Id = 13L,
+                            Code = "elderly",
+                            Name = "Idosos"
                         },
                         new
                         {
-                            Id = 14,
-                            Name = "LGBTI"
+                            Id = 14L,
+                            Code = "youth",
+                            Name = "Jovens"
                         },
                         new
                         {
-                            Id = 15,
-                            Name = "ENVIRONMENT"
+                            Id = 15L,
+                            Code = "lgbti",
+                            Name = "LGBTI+"
                         },
                         new
                         {
-                            Id = 16,
-                            Name = "URBAN_MOBILITY"
+                            Id = 16L,
+                            Code = "environment",
+                            Name = "Meio Ambiente"
                         },
                         new
                         {
-                            Id = 17,
-                            Name = "WOMEN"
+                            Id = 17L,
+                            Code = "urban-mobility",
+                            Name = "Mobilidade Urbana"
                         },
                         new
                         {
-                            Id = 18,
-                            Name = "DISABLED_PEOPLE"
+                            Id = 18L,
+                            Code = "women",
+                            Name = "Mulheres"
                         },
                         new
                         {
-                            Id = 19,
-                            Name = "HOMELESS_POPULATION"
+                            Id = 19L,
+                            Code = "disabled-people",
+                            Name = "Pessoas com deficiência"
                         },
                         new
                         {
-                            Id = 20,
-                            Name = "INDIGENOUS_PEOPLE"
+                            Id = 20L,
+                            Code = "homeless-population",
+                            Name = "População em Situação de Rua"
                         },
                         new
                         {
-                            Id = 21,
-                            Name = "ANIMAL_PROTECTION"
+                            Id = 21L,
+                            Code = "indigenous-people",
+                            Name = "Povos Indígenas"
                         },
                         new
                         {
-                            Id = 22,
-                            Name = "REFUGEES"
+                            Id = 22L,
+                            Code = "animal-protection",
+                            Name = "Proteção Animal"
                         },
                         new
                         {
-                            Id = 23,
-                            Name = "HEALTH"
+                            Id = 23L,
+                            Code = "refugees",
+                            Name = "Refugiados"
                         },
                         new
                         {
-                            Id = 24,
-                            Name = "SUSTAINABILITY"
+                            Id = 24L,
+                            Code = "health",
+                            Name = "Saúde"
                         },
                         new
                         {
-                            Id = 25,
-                            Name = "PROFESSIONAL_TRAINING"
+                            Id = 25L,
+                            Code = "sustainability",
+                            Name = "Sustentabilidade"
+                        },
+                        new
+                        {
+                            Id = 26L,
+                            Code = "professional-training",
+                            Name = "Treinamento profissional"
                         });
                 });
 

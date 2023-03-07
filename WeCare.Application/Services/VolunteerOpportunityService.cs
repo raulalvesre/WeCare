@@ -1,6 +1,7 @@
 using WeCare.Application.Exceptions;
 using WeCare.Application.Mappers;
 using WeCare.Application.SearchParams;
+using WeCare.Application.Validators;
 using WeCare.Application.ViewModels;
 using WeCare.Domain.Core;
 using WeCare.Domain.Models;
@@ -12,19 +13,24 @@ namespace WeCare.Application.Services;
 public class VolunteerOpportunityService
 {
     private readonly VolunteerOpportunityRepository _volunteerOpportunityRepository;
+    private readonly OpportunityCauseRepository _opportunityCauseRepository;
     private readonly InstitutionRepository _institutionRepository;
-    private readonly VolunteerOpportunityMapper _mapper;
+    private readonly VolunteerOpportunityFormValidator _volunteerOpportunityFormValidator;
     private readonly UnitOfWork _unitOfWork;
+    private readonly VolunteerOpportunityMapper _mapper;
 
     public VolunteerOpportunityService(VolunteerOpportunityRepository volunteerOpportunityRepository,
         InstitutionRepository institutionRepository,
-        UnitOfWork unitOfWork, 
+        UnitOfWork unitOfWork,
+        OpportunityCauseRepository opportunityCauseRepository, 
         VolunteerOpportunityMapper mapper)
     {
         _volunteerOpportunityRepository = volunteerOpportunityRepository;
         _institutionRepository = institutionRepository;
         _unitOfWork = unitOfWork;
+        _opportunityCauseRepository = opportunityCauseRepository;
         _mapper = mapper;
+        _volunteerOpportunityFormValidator = new VolunteerOpportunityFormValidator(opportunityCauseRepository);
     }
     
     public async Task<VolunteerOpportunityViewModel> GetById(long id)
@@ -44,7 +50,7 @@ public class VolunteerOpportunityService
             opportunitiesPage.PageSize,
             opportunitiesPage.TotalCount,
             opportunitiesPage.TotalPages,
-            opportunitiesPage.Data.Select(x => _mapper.FromModel(x)));
+            opportunitiesPage.Data.Select(_mapper.FromModel));
     }
 
     public async Task<VolunteerOpportunityViewModel> Save(long institutionId, VolunteerOpportunityForm form)
@@ -53,17 +59,16 @@ public class VolunteerOpportunityService
         if (institution is null)
             throw new NotFoundException("Instituição não encontrada");
         
-        var validationResult = await form.ValidateAsync();
+        var validationResult = await _volunteerOpportunityFormValidator.ValidateAsync(form);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
-
+        
         var opportunity = _mapper.ToModel(institutionId, form);
         await _volunteerOpportunityRepository.Add(opportunity);
         await _unitOfWork.SaveAsync();
 
         return _mapper.FromModel(opportunity);
     }
-
 
     public async Task<VolunteerOpportunityViewModel> Update(long institutionId, long opportunityId, VolunteerOpportunityForm form)
     {
@@ -75,7 +80,7 @@ public class VolunteerOpportunityService
         if (opportunity is null)
             throw new NotFoundException("Oportunidade não encontrada");
         
-        var validationResult = await form.ValidateAsync();
+        var validationResult = await _volunteerOpportunityFormValidator.ValidateAsync(form);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
