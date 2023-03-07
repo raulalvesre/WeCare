@@ -25,9 +25,7 @@ public class VolunteerOpportunityMapper
     
     public VolunteerOpportunity ToModel(long institutionId, VolunteerOpportunityForm form)
     {
-        var causes = form.Causes
-            .Select(x => Enumeration.FromDisplayName<OpportunityCause>(x))
-            .ToList();
+        var causes = OpportunityCauseMapper.ToModels(form.Causes);
         
         using var memoryStream = new MemoryStream();
         form.Photo.Photo.CopyTo(memoryStream);
@@ -49,4 +47,26 @@ public class VolunteerOpportunityMapper
             InstitutionId = institutionId
         };
     }
+
+    public void Merge(VolunteerOpportunity opportunity, VolunteerOpportunityForm form)
+    {
+        var causes = OpportunityCauseMapper.ToModels(form.Causes);
+        
+        using var memoryStream = new MemoryStream();
+        form.Photo.Photo.CopyTo(memoryStream);
+
+        opportunity.Name = form.Name;
+        opportunity.Description = form.Description;
+        opportunity.OpportunityDate = form.OpportunityDate;
+        opportunity.Photo = memoryStream.ToArray();
+        opportunity.Street = form.Address.Street;
+        opportunity.Number = form.Address.Number;
+        opportunity.Complement = form.Address.Complement;
+        opportunity.City = form.Address.City;
+        opportunity.Neighborhood = form.Address.Neighborhood;
+        opportunity.State = form.Address.State;
+        opportunity.PostalCode = form.Address.PostalCode;
+        opportunity.Causes = causes;
+    }
+    
 }

@@ -18,7 +18,7 @@ public class VolunteerOpportunityRepository : BaseRepository<VolunteerOpportunit
         return base.Add(record);
     }
 
-    public Task<VolunteerOpportunity?> GetById(long id)
+    public Task<VolunteerOpportunity?> GetByIdIncludingCauses(long id)
     {
         return Query
             .Include(x => x.Causes)

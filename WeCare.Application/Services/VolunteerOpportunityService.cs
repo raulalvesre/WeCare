@@ -29,7 +29,7 @@ public class VolunteerOpportunityService
     
     public async Task<VolunteerOpportunityViewModel> GetById(long id)
     {
-        var opportunity = await _volunteerOpportunityRepository.GetById(id);
+        var opportunity = await _volunteerOpportunityRepository.GetByIdIncludingCauses(id);
         if (opportunity is null)
             throw new NotFoundException("Oportunidade não encontrada");
 
@@ -49,7 +49,7 @@ public class VolunteerOpportunityService
 
     public async Task<VolunteerOpportunityViewModel> Save(long institutionId, VolunteerOpportunityForm form)
     {
-        var institution = _institutionRepository.GetByIdNoTracking(institutionId);
+        var institution = await _institutionRepository.GetByIdNoTracking(institutionId);
         if (institution is null)
             throw new NotFoundException("Instituição não encontrada");
         
@@ -64,5 +64,39 @@ public class VolunteerOpportunityService
         return _mapper.FromModel(opportunity);
     }
 
-   
+
+    public async Task<VolunteerOpportunityViewModel> Update(long institutionId, long opportunityId, VolunteerOpportunityForm form)
+    {
+        var institution = await _institutionRepository.GetByIdNoTracking(institutionId);
+        if (institution is null)
+            throw new NotFoundException("Instituição não encontrada");
+        
+        var opportunity = await _volunteerOpportunityRepository.GetByIdIncludingCauses(opportunityId);
+        if (opportunity is null)
+            throw new NotFoundException("Oportunidade não encontrada");
+        
+        var validationResult = await form.ValidateAsync();
+        if (!validationResult.IsValid)
+            throw new BadRequestException(validationResult.Errors);
+
+        _mapper.Merge(opportunity, form);
+        await _volunteerOpportunityRepository.Update(opportunity);
+        await _unitOfWork.SaveAsync();
+
+        return _mapper.FromModel(opportunity);
+    }
+
+    public async Task Delete(long institutionId, long opportunityId)
+    {
+        var institution = await _institutionRepository.GetByIdNoTracking(institutionId);
+        if (institution is null)
+            throw new NotFoundException("Instituição não encontrada");
+        
+        var opportunity = await _volunteerOpportunityRepository.GetByIdIncludingCauses(opportunityId);
+        if (opportunity is null)
+            throw new NotFoundException("Oportunidade não encontrada");
+
+        await _volunteerOpportunityRepository.Remove(opportunity);
+        await _unitOfWork.SaveAsync();
+    }
 }

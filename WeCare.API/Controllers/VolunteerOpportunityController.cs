@@ -36,4 +36,18 @@ public class VolunteerOpportunityController : ControllerBase
     {
         return Ok(await _volunteerOpportunityService.Save(institutionId, form));
     }
+
+    [HttpPut("{institutionId:long}/{opportunityId:long}")]
+    public async ValueTask<ActionResult<VolunteerOpportunityViewModel>> Update(long institutionId, long opportunityId, [FromForm] VolunteerOpportunityForm form)
+    {
+        return Ok(await _volunteerOpportunityService.Update(institutionId, opportunityId, form));
+    }
+    
+    [HttpDelete("{institutionId:long}/{opportunityId:long}")]
+    public async ValueTask<ActionResult> Delete(long institutionId, long opportunityId)
+    {
+        await _volunteerOpportunityService.Delete(institutionId, opportunityId);
+        return NoContent();
+    }
+    
 }
