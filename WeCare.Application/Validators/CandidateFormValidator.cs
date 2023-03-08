@@ -24,7 +24,9 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
             .NotEmpty()
             .WithMessage("É necessário um email")
             .EmailAddress()
-            .WithMessage("O email deve ser válido");
+            .WithMessage("O email deve ser válido")
+            .MustAsync((x, email, cT) => UniqueEmail(x, email))
+            .WithMessage("Email já cadastrado");
 
         RuleFor(x => x.Password)
             .NotEmpty()
@@ -33,13 +35,15 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
             .WithMessage("A senha precisa ter no minínmo 6 caracteres")
             .MaximumLength(500)
             .WithMessage("A senha precisa ter no máximo 500 caracteres");
-        
+
         RuleFor(x => x.Telephone)
             .NotEmpty()
             .WithMessage("É necessário um telefone")
             .Must(ValidatorsUtils.IsValidTelephone)
-            .WithMessage("Número de telefone inválido");
-        
+            .WithMessage("Número de telefone inválido")
+            .MustAsync((x, telephone, cT) => UniqueTelephone(x, telephone))
+            .WithMessage("Telefone já cadastrado");;
+
         RuleFor(x => x.Bio)
             .MaximumLength(1024)
             .WithMessage("Uma bio deve ter no máximo 1024 caracteres");
@@ -51,7 +55,9 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
             .NotEmpty()
             .WithMessage("É necessário um CPF")
             .Must(ValidatorsUtils.IsValidCpf)
-            .WithMessage("CPF inválido");
+            .WithMessage("CPF inválido")
+            .MustAsync((x, cpf, cT) => UniqueCpf(x, cpf))
+            .WithMessage("CPF já cadastrado");;
 
         RuleFor(x => x.BirthDate)
             .NotEmpty()
@@ -61,4 +67,20 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
             .Must(ValidatorsUtils.IsAdult)
             .WithMessage("Menor de idade");
     }
+    
+    private async Task<bool> UniqueEmail(CandidateForm form, string email)
+    {
+        return !await _candidateRepository.ExistsByIdNotAndEmail(form.Id, email);
+    }
+    
+    private async Task<bool> UniqueTelephone(CandidateForm form, string telephone)
+    {
+        return !await _candidateRepository.ExistsByIdNotAndTelephone(form.Id, telephone);
+    }
+    
+    private async Task<bool> UniqueCpf(CandidateForm form, string cpf)
+    {
+        return !await _candidateRepository.ExistsByIdNotAndCpf(form.Id, cpf);
+    }
+
 }
