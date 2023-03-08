@@ -71,6 +71,7 @@ public class InstitutionService
     
     public async Task<InstitutionViewModel> Update(long institutionId, InstitutionForm form)
     {
+        form.Id = institutionId;
         var validationResult = await _institutionFormValidator.ValidateAsync(form);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
@@ -102,6 +103,7 @@ public class InstitutionService
 
     public async Task<InstitutionViewModel> Update(long institutionId, InstitutionAdminForm form)
     {
+        form.Id = institutionId;
         var validationResult = await _institutionAdminFormValidator.ValidateAsync(form);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
