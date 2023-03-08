@@ -1,6 +1,7 @@
 using WeCare.Application.Exceptions;
 using WeCare.Application.Mappers;
 using WeCare.Application.SearchParams;
+using WeCare.Application.Validators;
 using WeCare.Application.ViewModels;
 using WeCare.Domain;
 using WeCare.Infrastructure;
@@ -14,16 +15,22 @@ public class CandidateService
     private readonly UserRepository _userRepository;
     private readonly UnitOfWork _unitOfWork;
     private readonly CandidateMapper _mapper;
+    private readonly CandidateAdminFormValidator _candidateAdminFormValidator;
+    private readonly CandidateFormValidator _candidateFormValidator;
 
     public CandidateService(CandidateRepository candidateRepository,
         CandidateMapper mapper,
         UserRepository userRepository,
-        UnitOfWork unitOfWork)
+        UnitOfWork unitOfWork, 
+        CandidateAdminFormValidator candidateAdminFormValidator,
+        CandidateFormValidator candidateFormValidator)
     {
         _candidateRepository = candidateRepository;
         _mapper = mapper;
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
+        _candidateAdminFormValidator = candidateAdminFormValidator;
+        _candidateFormValidator = candidateFormValidator;
     }
 
     public async Task<CandidateViewModel> GetById(long id)
@@ -50,11 +57,9 @@ public class CandidateService
 
     public async Task<CandidateViewModel> Save(CandidateForm form)
     {
-        var validationResult = await form.ValidateAsync();
+        var validationResult = await _candidateFormValidator.ValidateAsync(form);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
-
-        await ValidateUniqueFields(form.Email, form.Cpf, form.Telephone);
 
         var candidate = _mapper.ToModel(form);
 
@@ -64,26 +69,10 @@ public class CandidateService
         return _mapper.FromModel(candidate);
     }
     
-    private async Task ValidateUniqueFields(string email, string cpf, string telephone, long existingCandidateId = 0)
-    {
-        var errorMessages = new List<string>();
-
-        if (await _userRepository.ExistsByIdNotAndEmail(existingCandidateId, email))
-            errorMessages.Add("Email já cadastrado");
-        
-        if (await _candidateRepository.ExistsByIdNotAndCpf(existingCandidateId, cpf))
-            errorMessages.Add("CPF já cadastrado");
-        
-        if (await _userRepository.ExistsByIdNotAndTelephone(existingCandidateId, telephone))
-            errorMessages.Add("Telefone já cadastrado");
-
-        if (errorMessages.Any())
-            throw new UnprocessableEntityException(errorMessages);
-    }
-    
     public async Task<CandidateViewModel> Update(long candidateId, CandidateForm form)
     {
-        var validationResult = await form.ValidateAsync();
+        form.Id = candidateId;
+        var validationResult = await _candidateFormValidator.ValidateAsync(form);;
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
@@ -91,8 +80,6 @@ public class CandidateService
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");
         
-        await ValidateUniqueFields(form.Email, form.Cpf, form.Telephone, candidateId);
-
         _mapper.Merge(candidate, form);
         await _candidateRepository.Update(candidate);
         await _unitOfWork.SaveAsync();
@@ -102,12 +89,10 @@ public class CandidateService
 
     public async Task<CandidateViewModel> Save(CandidateAdminForm form)
     {
-        var validationResult = await form.ValidateAsync();
+        var validationResult = await _candidateAdminFormValidator.ValidateAsync(form);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
         
-        await ValidateUniqueFields(form.Email, form.Cpf, form.Telephone);
-
         var candidate = _mapper.ToModel(form);
 
         await _candidateRepository.Add(candidate);
@@ -118,15 +103,14 @@ public class CandidateService
 
     public async Task<CandidateViewModel> Update(long candidateId, CandidateAdminForm form)
     {
-        var validationResult = await form.ValidateAsync();
+        form.Id = candidateId;
+        var validationResult = await _candidateAdminFormValidator.ValidateAsync(form);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
         var candidate = await _candidateRepository.GetById(candidateId);
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");
-        
-        await ValidateUniqueFields(form.Email, form.Cpf, form.Telephone, candidateId);
 
         _mapper.Merge(candidate, form);
         await _candidateRepository.Update(candidate);
