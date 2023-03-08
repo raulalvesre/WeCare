@@ -6,6 +6,7 @@ import { ContentComponent } from './home/content/content.component';
 import { FormsComponent } from './users/forms/forms.component';
 import { AboutComponent } from './home/about/about.component';
 import { LoginComponent } from './home/login/login.component';
+import { UsermainComponent } from './users/usermain/usermain.component';
 
 const routes: Routes = [
   { path: 'home', 
@@ -19,6 +20,9 @@ const routes: Routes = [
   },
   { path: 'about', 
   component: AboutComponent
+  },
+  { path: 'profile', 
+  component: UsermainComponent
   }
 ];
 

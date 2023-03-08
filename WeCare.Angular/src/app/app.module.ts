@@ -14,6 +14,7 @@ import { CarouselComponent } from './home/carousel/carousel.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AboutComponent } from './home/about/about.component';
 import { LoginComponent } from './home/login/login.component';
+import { UsermainComponent } from './users/usermain/usermain.component';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { LoginComponent } from './home/login/login.component';
     CarouselComponent,
     AboutComponent,
     LoginComponent,
+    UsermainComponent,
   ],
   imports: [
     BrowserModule,

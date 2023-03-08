@@ -26,7 +26,10 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.css"
+              "src/styles.css",
+              {
+                "input": "src/theme/variables.css"
+              }
             ],
             "scripts": []
           },
@@ -92,11 +95,8 @@
             ],
             "scripts": []
           }
-        }
+        }      
       }
     }
-  },
-  "cli": {
-    "analytics": false
   }
 }

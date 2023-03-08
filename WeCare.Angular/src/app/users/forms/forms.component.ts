@@ -11,12 +11,14 @@ import { FormGroup, FormControl }  from '@angular/forms';
 export class FormsComponent {
 
   formUser: FormGroup;
+  userName = '';
 
   ngOnInit(){
     this.creatForm(new User());
   }
 
   creatForm(user: User){
+    user.name = 'teste'
     this.formUser = new FormGroup({
       name: new FormControl(user.name),
       cpf: new FormControl(user.cpf)

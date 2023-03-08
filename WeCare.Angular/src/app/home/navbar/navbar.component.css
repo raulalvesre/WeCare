@@ -1,5 +1,6 @@
 nav.navbar-transparent{
-	background: rgba(0,0,0,0.8);
+	background: rgba(14, 164, 233, 0.7);
+	border-style: solid;
 	 
 }
 
@@ -9,13 +10,12 @@ nav.navbar-transparent{
 
 .bordaDegrade{
 	border-style: solid;
- 	border-width: 5px;
-	border-image: linear-gradient(to left, rgba(0, 251, 217, 0.8), rgba(255, 0, 217, 0.8), rgba(0, 251, 217, 0.8))90% 0%/5px 0px;
+ 	border-width: 1px;
+	border-image: linear-gradient(to left, rgba(0, 251, 217, 0.8), rgba(231, 223, 230, 0.8), rgba(0, 251, 217, 0.8))90% 0%/5px 0px;
 }
 
 
 #corpo .topo{
-	
 	width: 99%;
 	height: 30vh; 
 }
@@ -93,7 +93,7 @@ footer .logo{
 }
 
 .separatorfooter{
-	border-right: 2px solid white;
+	border-right: 2px solid rgb(8, 1, 1);
 }
 
 .imagem{
