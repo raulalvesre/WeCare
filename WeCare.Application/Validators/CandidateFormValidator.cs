@@ -42,7 +42,7 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
             .Must(ValidatorsUtils.IsValidTelephone)
             .WithMessage("Número de telefone inválido")
             .MustAsync((x, telephone, cT) => UniqueTelephone(x, telephone))
-            .WithMessage("Telefone já cadastrado");;
+            .WithMessage("Telefone já cadastrado");
 
         RuleFor(x => x.Bio)
             .MaximumLength(1024)
@@ -57,7 +57,7 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
             .Must(ValidatorsUtils.IsValidCpf)
             .WithMessage("CPF inválido")
             .MustAsync((x, cpf, cT) => UniqueCpf(x, cpf))
-            .WithMessage("CPF já cadastrado");;
+            .WithMessage("CPF já cadastrado");
 
         RuleFor(x => x.BirthDate)
             .NotEmpty()
