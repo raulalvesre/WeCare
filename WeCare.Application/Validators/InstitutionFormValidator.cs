@@ -4,7 +4,7 @@ using WeCare.Infrastructure.Repositories;
 
 namespace WeCare.Application.Validators;
 
-public class InstitutionFormValidator : AbstractValidator<InstitutionAdminForm>
+public class InstitutionFormValidator : AbstractValidator<InstitutionForm>
 {
     private readonly InstitutionRepository _institutionRepository;
     
@@ -60,17 +60,17 @@ public class InstitutionFormValidator : AbstractValidator<InstitutionAdminForm>
             .WithMessage("CNPJ já cadastrado");
     }
 
-    private async Task<bool> UniqueEmail(InstitutionAdminForm form, string email)
+    private async Task<bool> UniqueEmail(InstitutionForm form, string email)
     {
         return !await _institutionRepository.ExistsByIdNotAndEmail(form.Id, email);
     }
     
-    private async Task<bool> UniqueTelephone(InstitutionAdminForm form, string telephone)
+    private async Task<bool> UniqueTelephone(InstitutionForm form, string telephone)
     {
         return !await _institutionRepository.ExistsByIdNotAndTelephone(form.Id, telephone);
     }
     
-    private async Task<bool> UniqueCnpj(InstitutionAdminForm form, string cnpj)
+    private async Task<bool> UniqueCnpj(InstitutionForm form, string cnpj)
     {
         return !await _institutionRepository.ExistsByIdNotAndCnpj(form.Id, cnpj);
     }

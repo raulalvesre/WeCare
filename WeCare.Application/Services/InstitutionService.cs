@@ -61,31 +61,12 @@ public class InstitutionService
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
-        await ValidateUniqueFields(form.Email, form.Cnpj, form.Telephone);
-
         var institution = _mapper.ToModel(form);
 
         await _institutionRepository.Add(institution);
         await _unitOfWork.SaveAsync();
 
         return _mapper.FromModel(institution);
-    }
-    
-    private async Task ValidateUniqueFields(string email, string cnpj, string telephone, long existingInstitutionId = 0)
-    {
-        var errorMessages = new List<string>();
-
-        if (await _userRepository.ExistsByIdNotAndEmail(existingInstitutionId, email))
-            errorMessages.Add("Email já cadastrado");
-        
-        if (await _institutionRepository.ExistsByIdNotAndCnpj(existingInstitutionId, cnpj))
-            errorMessages.Add("CNPJ já cadastrado");
-        
-        if (await _userRepository.ExistsByIdNotAndTelephone(existingInstitutionId, telephone))
-            errorMessages.Add("Telefone já cadastrado");
-
-        if (errorMessages.Any())
-            throw new UnprocessableEntityException(errorMessages);
     }
     
     public async Task<InstitutionViewModel> Update(long institutionId, InstitutionForm form)
@@ -98,8 +79,6 @@ public class InstitutionService
         if (institution is null)
             throw new NotFoundException("Instituição não encontrada");
         
-        await ValidateUniqueFields(form.Email, form.Cnpj, form.Telephone, institutionId);
-
         _mapper.Merge(institution, form);
         await _institutionRepository.Update(institution);
         await _unitOfWork.SaveAsync();
@@ -113,8 +92,6 @@ public class InstitutionService
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
         
-        await ValidateUniqueFields(form.Email, form.Cnpj, form.Telephone);
-
         var institution = _mapper.ToModel(form);
 
         await _institutionRepository.Add(institution);
@@ -132,8 +109,6 @@ public class InstitutionService
         var institution = await _institutionRepository.GetById(institutionId);
         if (institution is null)
             throw new NotFoundException("Instituição não encontrada");
-        
-        await ValidateUniqueFields(form.Email, form.Cnpj, form.Telephone, institutionId);
 
         _mapper.Merge(institution, form);
         await _institutionRepository.Update(institution);
