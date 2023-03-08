@@ -1,12 +1,17 @@
 using FluentValidation;
 using WeCare.Application.ViewModels;
+using WeCare.Infrastructure.Repositories;
 
 namespace WeCare.Application.Validators;
 
 public class CandidateFormValidator : AbstractValidator<CandidateForm>
 {
-    public CandidateFormValidator()
+    private readonly CandidateRepository _candidateRepository;
+    
+    public CandidateFormValidator(CandidateRepository candidateRepository)
     {
+        _candidateRepository = candidateRepository;
+        
         RuleFor(x => x.Name)
             .NotEmpty()
             .WithMessage("É necessário um nome")

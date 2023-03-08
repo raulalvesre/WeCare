@@ -14,9 +14,4 @@ public class CandidateForm
     public AddressViewModel Address { get; set; }   
     public string Cpf { get; set; }
     public DateOnly BirthDate { get; set; }
-
-    public Task<ValidationResult> ValidateAsync()
-    {
-        return new CandidateFormValidator().ValidateAsync(this);
-    }
 }

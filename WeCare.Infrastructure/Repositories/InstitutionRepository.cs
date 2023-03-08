@@ -22,6 +22,16 @@ public class InstitutionRepository : BaseRepository<Institution>
         return Query
             .FirstOrDefaultAsync(x => x.Id == id);
     }
+    
+    public Task<bool> ExistsByIdNotAndEmail(long id, string email)
+    {
+        return Query.AnyAsync(x => x.Id != id && x.Email.Equals(email));
+    }
+    
+    public Task<bool> ExistsByIdNotAndTelephone(long id, string telephone)
+    {
+        return Query.AnyAsync(x => x.Id != id && x.Telephone.Equals(telephone));
+    }
 
     public async Task<bool> ExistsByIdNotAndCnpj(long id, string cnpj)
     {

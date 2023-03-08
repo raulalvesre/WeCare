@@ -1,6 +1,7 @@
 using WeCare.Application.Exceptions;
 using WeCare.Application.Mappers;
 using WeCare.Application.SearchParams;
+using WeCare.Application.Validators;
 using WeCare.Application.ViewModels;
 using WeCare.Domain;
 using WeCare.Infrastructure;
@@ -14,16 +15,22 @@ public class InstitutionService
     private readonly UserRepository _userRepository;
     private readonly UnitOfWork _unitOfWork;
     private readonly InstitutionMapper _mapper;
+    private readonly InstitutionAdminFormValidator _institutionAdminFormValidator;
+    private readonly InstitutionFormValidator _institutionFormValidator;
 
     public InstitutionService(InstitutionRepository institutionRepository,
         UserRepository userRepository,
         InstitutionMapper mapper,
-        UnitOfWork unitOfWork)
+        UnitOfWork unitOfWork, 
+        InstitutionAdminFormValidator institutionAdminFormValidator, 
+        InstitutionFormValidator institutionFormValidator)
     {
         _institutionRepository = institutionRepository;
         _userRepository = userRepository;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
+        _institutionAdminFormValidator = institutionAdminFormValidator;
+        _institutionFormValidator = institutionFormValidator;
     }
     
      public async Task<InstitutionViewModel> GetById(long id)
@@ -50,7 +57,7 @@ public class InstitutionService
 
     public async Task<InstitutionViewModel> Save(InstitutionForm form)
     {
-        var validationResult = await form.ValidateAsync();
+        var validationResult = await _institutionFormValidator.ValidateAsync(form);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
@@ -83,7 +90,7 @@ public class InstitutionService
     
     public async Task<InstitutionViewModel> Update(long institutionId, InstitutionForm form)
     {
-        var validationResult = await form.ValidateAsync();
+        var validationResult = await _institutionFormValidator.ValidateAsync(form);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
@@ -102,7 +109,7 @@ public class InstitutionService
 
     public async Task<InstitutionViewModel> Save(InstitutionAdminForm form)
     {
-        var validationResult = await form.ValidateAsync();
+        var validationResult = await _institutionAdminFormValidator.ValidateAsync(form);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
         
@@ -118,7 +125,7 @@ public class InstitutionService
 
     public async Task<InstitutionViewModel> Update(long institutionId, InstitutionAdminForm form)
     {
-        var validationResult = await form.ValidateAsync();
+        var validationResult = await _institutionAdminFormValidator.ValidateAsync(form);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 

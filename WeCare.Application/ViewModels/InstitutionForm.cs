@@ -13,9 +13,4 @@ public class InstitutionForm
     public string Bio { get; set; }
     public AddressViewModel Address { get; set; }   
     public string Cnpj { get; set; }
-
-    public Task<ValidationResult> ValidateAsync()
-    {
-        return new InstitutionFormValidator().ValidateAsync(this);
-    }
 }
