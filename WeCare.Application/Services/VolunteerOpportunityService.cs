@@ -23,19 +23,30 @@ public class VolunteerOpportunityService
         InstitutionRepository institutionRepository,
         UnitOfWork unitOfWork,
         OpportunityCauseRepository opportunityCauseRepository, 
+        VolunteerOpportunityFormValidator volunteerOpportunityFormValidator,
         VolunteerOpportunityMapper mapper)
     {
         _volunteerOpportunityRepository = volunteerOpportunityRepository;
         _institutionRepository = institutionRepository;
         _unitOfWork = unitOfWork;
         _opportunityCauseRepository = opportunityCauseRepository;
+        _volunteerOpportunityFormValidator = volunteerOpportunityFormValidator;
         _mapper = mapper;
-        _volunteerOpportunityFormValidator = new VolunteerOpportunityFormValidator(opportunityCauseRepository);
     }
     
     public async Task<VolunteerOpportunityViewModel> GetById(long id)
     {
         var opportunity = await _volunteerOpportunityRepository.GetByIdIncludingCauses(id);
+        if (opportunity is null)
+            throw new NotFoundException("Oportunidade não encontrada");
+
+        return _mapper.FromModel(opportunity);
+    }
+
+    public async Task<VolunteerOpportunityViewModel> GetByInstitutionIdAndOpportunityId(long institutionId, long opportunityId)
+    {
+        var opportunity = await _volunteerOpportunityRepository
+            .GetByInstitutionIdAndIdIncludingCauses(institutionId, opportunityId);
         if (opportunity is null)
             throw new NotFoundException("Oportunidade não encontrada");
 

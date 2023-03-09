@@ -7,27 +7,26 @@ using WeCare.Domain.Core;
 namespace WeCare.API.Controllers;
 
 [ApiController]
-[Route("api/volunteer-opportunity")]
-public class VolunteerOpportunityController : ControllerBase
+[Route("api/admin/volunteer-opportunity")]
+public class VolunteerOpportunityAdminController : ControllerBase
 {
     private readonly VolunteerOpportunityService _volunteerOpportunityService;
 
-    public VolunteerOpportunityController(VolunteerOpportunityService volunteerOpportunityService)
+    public VolunteerOpportunityAdminController(VolunteerOpportunityService volunteerOpportunityService)
     {
         _volunteerOpportunityService = volunteerOpportunityService;
     }
     
     
-    [HttpGet("{institutionId:long}/{opportunityId:long}")]
-    public async ValueTask<ActionResult<VolunteerOpportunityViewModel>> GetById(long institutionId, long opportunityId)
+    [HttpGet("{opportunity:long:min(0)}")]
+    public async ValueTask<ActionResult<VolunteerOpportunityViewModel>> GetById(long opportunity)
     {
-        return Ok(await _volunteerOpportunityService.GetByInstitutionIdAndOpportunityId(institutionId, opportunityId));
+        return Ok(await _volunteerOpportunityService.GetById(opportunity));
     }
     
-    [HttpGet("{institutionId:long}/search")]
-    public async ValueTask<ActionResult<Pagination<VolunteerOpportunityViewModel>>> Search(long institutionId, [FromQuery] VolunteerOpportunitySearchParam searchParams)
+    [HttpGet("search")]
+    public async ValueTask<ActionResult<Pagination<VolunteerOpportunityViewModel>>> Search([FromQuery] VolunteerOpportunitySearchParam searchParams)
     {
-        searchParams.InstitutionId = institutionId;
         var candidatePage = await _volunteerOpportunityService.GetPage(searchParams);
         return Ok(candidatePage);
     }

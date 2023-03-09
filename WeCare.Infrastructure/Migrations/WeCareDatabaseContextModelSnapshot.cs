@@ -53,7 +53,7 @@ namespace WeCare.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("creation_date")
                         .HasDefaultValueSql("NOW()");
 
@@ -295,7 +295,7 @@ namespace WeCare.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("creation_date")
                         .HasDefaultValueSql("NOW()");
 
@@ -309,7 +309,7 @@ namespace WeCare.Infrastructure.Migrations
                         .HasColumnName("enabled");
 
                     b.Property<DateTime?>("LastUpdateDate")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("last_update_date");
 
                     b.Property<string>("Name")
@@ -392,7 +392,7 @@ namespace WeCare.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("creation_date")
                         .HasDefaultValueSql("now()");
 
@@ -406,7 +406,7 @@ namespace WeCare.Infrastructure.Migrations
                         .HasColumnName("institution_id");
 
                     b.Property<DateTime?>("LastUpdateDate")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("last_update_date");
 
                     b.Property<string>("Name")
@@ -425,7 +425,7 @@ namespace WeCare.Infrastructure.Migrations
                         .HasColumnName("number");
 
                     b.Property<DateTime>("OpportunityDate")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("opportunity_date");
 
                     b.Property<byte[]>("Photo")

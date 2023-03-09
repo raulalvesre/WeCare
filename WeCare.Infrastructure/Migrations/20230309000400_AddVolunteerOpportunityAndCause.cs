@@ -9,28 +9,42 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace WeCare.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddVolunteerOpportunityAndCauses : Migration
+    public partial class AddVolunteerOpportunityAndCause : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<byte[]>(
-                name: "photo",
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "last_update_date",
                 schema: "public",
                 table: "users",
-                type: "bytea",
+                type: "timestamp with time zone",
                 nullable: true,
-                oldClrType: typeof(byte[]),
-                oldType: "bytea");
+                oldClrType: typeof(DateTime),
+                oldType: "timestamp without time zone",
+                oldNullable: true);
 
-            migrationBuilder.AlterColumn<string>(
-                name: "bio",
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "creation_date",
                 schema: "public",
                 table: "users",
-                type: "text",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "text");
+                type: "timestamp with time zone",
+                nullable: false,
+                defaultValueSql: "NOW()",
+                oldClrType: typeof(DateTime),
+                oldType: "timestamp without time zone",
+                oldDefaultValueSql: "NOW()");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "creation_date",
+                schema: "public",
+                table: "confirmation_tokens",
+                type: "timestamp with time zone",
+                nullable: false,
+                defaultValueSql: "NOW()",
+                oldClrType: typeof(DateTime),
+                oldType: "timestamp without time zone",
+                oldDefaultValueSql: "NOW()");
 
             migrationBuilder.CreateTable(
                 name: "opportunity_causes",
@@ -58,7 +72,7 @@ namespace WeCare.Infrastructure.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "text", nullable: false),
-                    opportunity_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    opportunity_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     photo = table.Column<byte[]>(type: "bytea", nullable: false),
                     street = table.Column<string>(type: "text", nullable: false),
                     number = table.Column<string>(type: "text", nullable: false),
@@ -67,8 +81,8 @@ namespace WeCare.Infrastructure.Migrations
                     neighborhood = table.Column<string>(type: "text", nullable: false),
                     state = table.Column<int>(type: "integer", nullable: false),
                     postal_code = table.Column<string>(type: "text", nullable: false),
-                    creation_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()"),
-                    last_update_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    creation_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()"),
+                    last_update_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     institution_id = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -178,27 +192,37 @@ namespace WeCare.Infrastructure.Migrations
                 name: "volunteer_opportunities",
                 schema: "public");
 
-            migrationBuilder.AlterColumn<byte[]>(
-                name: "photo",
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "last_update_date",
                 schema: "public",
                 table: "users",
-                type: "bytea",
-                nullable: false,
-                defaultValue: new byte[0],
-                oldClrType: typeof(byte[]),
-                oldType: "bytea",
+                type: "timestamp without time zone",
+                nullable: true,
+                oldClrType: typeof(DateTime),
+                oldType: "timestamp with time zone",
                 oldNullable: true);
 
-            migrationBuilder.AlterColumn<string>(
-                name: "bio",
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "creation_date",
                 schema: "public",
                 table: "users",
-                type: "text",
+                type: "timestamp without time zone",
                 nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "text",
-                oldNullable: true);
+                defaultValueSql: "NOW()",
+                oldClrType: typeof(DateTime),
+                oldType: "timestamp with time zone",
+                oldDefaultValueSql: "NOW()");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "creation_date",
+                schema: "public",
+                table: "confirmation_tokens",
+                type: "timestamp without time zone",
+                nullable: false,
+                defaultValueSql: "NOW()",
+                oldClrType: typeof(DateTime),
+                oldType: "timestamp with time zone",
+                oldDefaultValueSql: "NOW()");
         }
     }
 }

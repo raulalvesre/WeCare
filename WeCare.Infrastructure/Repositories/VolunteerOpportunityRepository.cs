@@ -12,9 +12,6 @@ public class VolunteerOpportunityRepository : BaseRepository<VolunteerOpportunit
 
     public override Task Add(VolunteerOpportunity record)
     {
-        foreach (var opportunityCause in record.Causes)
-            WeCareDatabaseContext.Attach(opportunityCause);
-
         return base.Add(record);
     }
 
@@ -23,5 +20,12 @@ public class VolunteerOpportunityRepository : BaseRepository<VolunteerOpportunit
         return Query
             .Include(x => x.Causes)
             .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public Task<VolunteerOpportunity?> GetByInstitutionIdAndIdIncludingCauses(long institutionId, long opportunityId)
+    {
+        return Query
+            .Include(x => x.Causes)
+            .FirstOrDefaultAsync(x => x.InstitutionId == institutionId && x.Id == opportunityId);
     }
 }
