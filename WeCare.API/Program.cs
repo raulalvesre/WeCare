@@ -38,6 +38,11 @@ builder.Services.AddScoped<OpportunityCauseRepository>();
 
 builder.Services.AddScoped<VolunteerOpportunityFormValidator>();
 
+builder.Services.AddScoped<CandidateAdminFormValidator>();
+builder.Services.AddScoped<CandidateFormValidator>();
+builder.Services.AddScoped<InstitutionAdminFormValidator>();
+builder.Services.AddScoped<InstitutionFormValidator>();
+
 builder.Services.AddScoped<CandidateMapper>();
 builder.Services.AddScoped<InstitutionMapper>();
 builder.Services.AddScoped<VolunteerOpportunityMapper>();
@@ -55,8 +60,6 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.Configure<JsonOptions>(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 var app = builder.Build();
-
-var configuration = app.Configuration;
 
 app.MapControllers();
 app.UseSwagger();
