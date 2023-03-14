@@ -18,37 +18,45 @@ public class VolunteerOpportunityController : ControllerBase
     }
     
     
-    [HttpGet("{institutionId:long}/{opportunityId:long}")]
-    public async ValueTask<ActionResult<VolunteerOpportunityViewModel>> GetById(long institutionId, long opportunityId)
+    [HttpGet("{opportunityId:long}")]
+    public async ValueTask<ActionResult<VolunteerOpportunityViewModel>> GetById(long opportunityId)
     {
-        return Ok(await _volunteerOpportunityService.GetByInstitutionIdAndOpportunityId(institutionId, opportunityId));
+        //TODO get institution id from jwt
+        long jwtId = 1L;
+        return Ok(await _volunteerOpportunityService.GetByInstitutionIdAndOpportunityId(jwtId, opportunityId));
     }
     
-    [HttpGet("{institutionId:long}/search")]
-    public async ValueTask<ActionResult<Pagination<VolunteerOpportunityViewModel>>> Search(long institutionId, [FromQuery] VolunteerOpportunitySearchParam searchParams)
+    [HttpGet("search")]
+    public async ValueTask<ActionResult<Pagination<VolunteerOpportunityViewModel>>> Search([FromQuery] VolunteerOpportunitySearchParam searchParams)
     {
-        searchParams.InstitutionId = institutionId;
-        var candidatePage = await _volunteerOpportunityService.GetPage(searchParams);
+        //TODO get institution id from jwt
+        long jwtId = 1L;
+        var candidatePage = await _volunteerOpportunityService.GetPage(jwtId, searchParams);
         return Ok(candidatePage);
     }
 
-    [HttpPost("{institutionId:long}")]
-    public async ValueTask<ActionResult<VolunteerOpportunityViewModel>> Save(long institutionId, [FromForm] VolunteerOpportunityForm form)
+    [HttpPost]
+    public async ValueTask<ActionResult<VolunteerOpportunityViewModel>> Save([FromForm] VolunteerOpportunityForm form)
     {
-        return Ok(await _volunteerOpportunityService.Save(institutionId, form));
+        //TODO get institution id from jwt
+        long jwtId = 1L;
+        return Ok(await _volunteerOpportunityService.Save(jwtId, form));
     }
 
-    [HttpPut("{institutionId:long}/{opportunityId:long}")]
-    public async ValueTask<ActionResult<VolunteerOpportunityViewModel>> Update(long institutionId, long opportunityId, [FromForm] VolunteerOpportunityForm form)
+    [HttpPut("{opportunityId:long}")]
+    public async ValueTask<ActionResult<VolunteerOpportunityViewModel>> Update(long opportunityId, [FromForm] VolunteerOpportunityForm form)
     {
-        return Ok(await _volunteerOpportunityService.Update(institutionId, opportunityId, form));
+        //TODO get institution id from jwt
+        long jwtId = 1L;
+        return Ok(await _volunteerOpportunityService.Update(jwtId, opportunityId, form));
     }
     
-    [HttpDelete("{institutionId:long}/{opportunityId:long}")]
-    public async ValueTask<ActionResult> Delete(long institutionId, long opportunityId)
+    [HttpDelete("{opportunityId:long}")]
+    public async ValueTask<ActionResult> Delete(long opportunityId)
     {
-        await _volunteerOpportunityService.Delete(institutionId, opportunityId);
+        //TODO get institution id from jwt
+        long jwtId = 1L;
+        await _volunteerOpportunityService.Delete(jwtId, opportunityId);
         return NoContent();
     }
-    
 }

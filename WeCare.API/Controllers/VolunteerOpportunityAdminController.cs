@@ -18,16 +18,16 @@ public class VolunteerOpportunityAdminController : ControllerBase
     }
     
     
-    [HttpGet("{opportunity:long:min(0)}")]
-    public async ValueTask<ActionResult<VolunteerOpportunityViewModel>> GetById(long opportunity)
+    [HttpGet("{opportunityId:long:min(0)}")]
+    public async ValueTask<ActionResult<VolunteerOpportunityViewModel>> GetById(long opportunityId)
     {
-        return Ok(await _volunteerOpportunityService.GetById(opportunity));
+        return Ok(await _volunteerOpportunityService.GetById(opportunityId));
     }
     
-    [HttpGet("search")]
-    public async ValueTask<ActionResult<Pagination<VolunteerOpportunityViewModel>>> Search([FromQuery] VolunteerOpportunitySearchParam searchParams)
+    [HttpGet("{institutionId:long}/search")]
+    public async ValueTask<ActionResult<Pagination<VolunteerOpportunityViewModel>>> Search(long institutionId, [FromQuery] VolunteerOpportunitySearchParam searchParams)
     {
-        var candidatePage = await _volunteerOpportunityService.GetPage(searchParams);
+        var candidatePage = await _volunteerOpportunityService.GetPage(institutionId, searchParams);
         return Ok(candidatePage);
     }
 
@@ -37,17 +37,16 @@ public class VolunteerOpportunityAdminController : ControllerBase
         return Ok(await _volunteerOpportunityService.Save(institutionId, form));
     }
 
-    [HttpPut("{institutionId:long}/{opportunityId:long}")]
-    public async ValueTask<ActionResult<VolunteerOpportunityViewModel>> Update(long institutionId, long opportunityId, [FromForm] VolunteerOpportunityForm form)
+    [HttpPut("{opportunityId:long}")]
+    public async ValueTask<ActionResult<VolunteerOpportunityViewModel>> Update(long opportunityId, [FromForm] VolunteerOpportunityForm form)
     {
-        return Ok(await _volunteerOpportunityService.Update(institutionId, opportunityId, form));
+        return Ok(await _volunteerOpportunityService.Update(opportunityId, form));
     }
     
-    [HttpDelete("{institutionId:long}/{opportunityId:long}")]
-    public async ValueTask<ActionResult> Delete(long institutionId, long opportunityId)
+    [HttpDelete("{opportunityId:long}")]
+    public async ValueTask<ActionResult> Delete(long opportunityId)
     {
-        await _volunteerOpportunityService.Delete(institutionId, opportunityId);
+        await _volunteerOpportunityService.Delete(opportunityId);
         return NoContent();
     }
-    
 }

@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using WeCare.Domain.Core;
 using WeCare.Domain.Models;
@@ -7,6 +8,7 @@ namespace WeCare.Application.SearchParams;
 
 public class VolunteerOpportunitySearchParam : PaginationFilterParamsBase<VolunteerOpportunity>
 {
+    [JsonIgnore]
     public long? InstitutionId { get; set; }
     public DateTime? PeriodStart { get; set; }
     public DateTime? PeriodEnd { get; set; }
