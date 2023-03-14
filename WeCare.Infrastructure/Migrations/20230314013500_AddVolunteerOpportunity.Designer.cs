@@ -12,8 +12,8 @@ using WeCare.Infrastructure;
 namespace WeCare.Infrastructure.Migrations
 {
     [DbContext(typeof(WeCareDatabaseContext))]
-    [Migration("20230309000400_AddVolunteerOpportunityAndCause")]
-    partial class AddVolunteerOpportunityAndCause
+    [Migration("20230314013500_AddVolunteerOpportunity")]
+    partial class AddVolunteerOpportunity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,7 +56,7 @@ namespace WeCare.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("creation_date")
                         .HasDefaultValueSql("NOW()");
 
@@ -298,7 +298,7 @@ namespace WeCare.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("creation_date")
                         .HasDefaultValueSql("NOW()");
 
@@ -312,7 +312,7 @@ namespace WeCare.Infrastructure.Migrations
                         .HasColumnName("enabled");
 
                     b.Property<DateTime?>("LastUpdateDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("last_update_date");
 
                     b.Property<string>("Name")
@@ -395,7 +395,7 @@ namespace WeCare.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("creation_date")
                         .HasDefaultValueSql("now()");
 
@@ -409,7 +409,7 @@ namespace WeCare.Infrastructure.Migrations
                         .HasColumnName("institution_id");
 
                     b.Property<DateTime?>("LastUpdateDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("last_update_date");
 
                     b.Property<string>("Name")
@@ -428,7 +428,7 @@ namespace WeCare.Infrastructure.Migrations
                         .HasColumnName("number");
 
                     b.Property<DateTime>("OpportunityDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("opportunity_date");
 
                     b.Property<byte[]>("Photo")
@@ -441,8 +441,9 @@ namespace WeCare.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("postal_code");
 
-                    b.Property<int>("State")
-                        .HasColumnType("integer")
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasColumnName("state");
 
                     b.Property<string>("Street")

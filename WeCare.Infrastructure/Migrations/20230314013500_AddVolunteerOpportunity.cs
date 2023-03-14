@@ -9,43 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace WeCare.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddVolunteerOpportunityAndCause : Migration
+    public partial class AddVolunteerOpportunity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "last_update_date",
-                schema: "public",
-                table: "users",
-                type: "timestamp with time zone",
-                nullable: true,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp without time zone",
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "creation_date",
-                schema: "public",
-                table: "users",
-                type: "timestamp with time zone",
-                nullable: false,
-                defaultValueSql: "NOW()",
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp without time zone",
-                oldDefaultValueSql: "NOW()");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "creation_date",
-                schema: "public",
-                table: "confirmation_tokens",
-                type: "timestamp with time zone",
-                nullable: false,
-                defaultValueSql: "NOW()",
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp without time zone",
-                oldDefaultValueSql: "NOW()");
-
             migrationBuilder.CreateTable(
                 name: "opportunity_causes",
                 schema: "public",
@@ -72,17 +40,17 @@ namespace WeCare.Infrastructure.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "text", nullable: false),
-                    opportunity_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    opportunity_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     photo = table.Column<byte[]>(type: "bytea", nullable: false),
                     street = table.Column<string>(type: "text", nullable: false),
                     number = table.Column<string>(type: "text", nullable: false),
                     complement = table.Column<string>(type: "text", nullable: false),
                     city = table.Column<string>(type: "text", nullable: false),
                     neighborhood = table.Column<string>(type: "text", nullable: false),
-                    state = table.Column<int>(type: "integer", nullable: false),
+                    state = table.Column<string>(type: "text", nullable: false),
                     postal_code = table.Column<string>(type: "text", nullable: false),
-                    creation_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()"),
-                    last_update_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    creation_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()"),
+                    last_update_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     institution_id = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -139,7 +107,7 @@ namespace WeCare.Infrastructure.Migrations
                     { 7L, "culture-and-art", "Cultura e Arte", null, null },
                     { 8L, "community-development", "Desenvolvimento Comunitário", null, null },
                     { 9L, "human-rights", "Direitos humanos", null, null },
-                    { 10L, "education", "education", null, null },
+                    { 10L, "education", "Educação", null, null },
                     { 11L, "racial-equity", "Equidade Racial", null, null },
                     { 12L, "sports", "Esportes", null, null },
                     { 13L, "elderly", "Idosos", null, null },
@@ -191,38 +159,6 @@ namespace WeCare.Infrastructure.Migrations
             migrationBuilder.DropTable(
                 name: "volunteer_opportunities",
                 schema: "public");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "last_update_date",
-                schema: "public",
-                table: "users",
-                type: "timestamp without time zone",
-                nullable: true,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp with time zone",
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "creation_date",
-                schema: "public",
-                table: "users",
-                type: "timestamp without time zone",
-                nullable: false,
-                defaultValueSql: "NOW()",
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp with time zone",
-                oldDefaultValueSql: "NOW()");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "creation_date",
-                schema: "public",
-                table: "confirmation_tokens",
-                type: "timestamp without time zone",
-                nullable: false,
-                defaultValueSql: "NOW()",
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp with time zone",
-                oldDefaultValueSql: "NOW()");
         }
     }
 }

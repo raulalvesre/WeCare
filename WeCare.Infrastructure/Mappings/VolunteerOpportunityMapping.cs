@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using WeCare.Domain.Core;
 using WeCare.Domain.Models;
 
 namespace WeCare.Infrastructure.Mappings;
@@ -40,6 +41,9 @@ public class VolunteerOpportunityMapping : IEntityTypeConfiguration<VolunteerOpp
          builder.Property(x => x.Neighborhood);
         
          builder.Property(x => x.State)
+             .HasConversion(
+                 x => x.ToString(),
+                 x => (State)Enum.Parse(typeof(State), x))
              .IsRequired();
         
          builder.Property(x => x.PostalCode)

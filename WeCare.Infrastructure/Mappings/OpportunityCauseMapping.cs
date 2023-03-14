@@ -33,7 +33,7 @@ public class OpportunityCauseMapping : IEntityTypeConfiguration<OpportunityCause
             new { Id = 7L, Code = "culture-and-art", Name = "Cultura e Arte" },
             new { Id = 8L, Code = "community-development", Name = "Desenvolvimento Comunitário" },
             new { Id = 9L, Code = "human-rights", Name = "Direitos humanos" },
-            new { Id = 10L, Code = "education", Name = "education" },
+            new { Id = 10L, Code = "education", Name = "Educação" },
             new { Id = 11L, Code = "racial-equity", Name = "Equidade Racial" },
             new { Id = 12L, Code = "sports", Name = "Esportes" },
             new { Id = 13L, Code = "elderly", Name = "Idosos" },
