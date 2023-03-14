@@ -32,7 +32,7 @@ public class ImageValidator : AbstractValidator<IFormFile>
                 }
             }
         };
-
+    
     public ImageValidator()
     {
         RuleFor(x => x)
@@ -61,15 +61,15 @@ public class ImageValidator : AbstractValidator<IFormFile>
     {
         using var ms = new MemoryStream();
         file.CopyTo(ms);
-
+        
         using var reader = new BinaryReader(ms);
         reader.BaseStream.Position = 0;
-
+        
         var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
         var signatures = _fileSignature[fileExtension];
         var headerBytes =  reader.ReadBytes(signatures.Max(m => m.Length));
 
         return signatures.Any(signature => headerBytes.Take(signature.Length).SequenceEqual(signature));
     }
-
+    
 }

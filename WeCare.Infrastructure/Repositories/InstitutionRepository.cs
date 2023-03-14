@@ -32,6 +32,13 @@ public class InstitutionRepository : BaseRepository<Institution>
     {
         return Query.AnyAsync(x => x.Id != id && x.Telephone.Equals(telephone));
     }
+    
+    public Task<Institution?> GetByIdNoTracking(long id)
+    {
+        return Query
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
 
     public async Task<bool> ExistsByIdNotAndCnpj(long id, string cnpj)
     {

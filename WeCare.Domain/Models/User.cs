@@ -1,3 +1,5 @@
+using WeCare.Domain.Core;
+
 namespace WeCare.Domain.Models;
 
 public abstract class User

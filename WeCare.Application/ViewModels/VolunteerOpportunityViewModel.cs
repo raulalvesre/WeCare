@@ -1,16 +1,15 @@
-using FluentValidation.Results;
-using Microsoft.AspNetCore.Http;
-using WeCare.Application.Validators;
-
 namespace WeCare.Application.ViewModels;
 
-public class VolunteerOpportunityForm
+public class VolunteerOpportunityViewModel
 {
+    public long Id { get; set; }
+    public long InstitutionId { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public DateTime OpportunityDate { get; set; }
-    public IFormFile Photo { set; get; }
+    public byte[] Photo { get; set; }
     public AddressViewModel Address { get; set; }
+    public DateTime CreationDate { get; set; }
+    
     public IEnumerable<string> Causes { get; set; } = new List<string>();
-
 }

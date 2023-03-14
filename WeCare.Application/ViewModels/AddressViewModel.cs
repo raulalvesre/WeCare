@@ -1,4 +1,5 @@
 using WeCare.Domain;
+using WeCare.Domain.Core;
 using WeCare.Domain.Models;
 
 namespace WeCare.Application.ViewModels;
@@ -24,6 +25,18 @@ public class AddressViewModel
         Neighborhood = user.Neighborhood;
         State = user.State;
         PostalCode = user.PostalCode;
+    }
+    
+    
+    public AddressViewModel(VolunteerOpportunity opportunity)
+    {
+        Street = opportunity.Street;
+        Number = opportunity.Number;
+        Complement = opportunity.Complement;
+        City = opportunity.City;
+        Neighborhood = opportunity.Neighborhood;
+        State = opportunity.State;
+        PostalCode = opportunity.PostalCode;
     }
     
 }

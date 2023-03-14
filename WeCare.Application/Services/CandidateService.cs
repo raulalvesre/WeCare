@@ -4,6 +4,7 @@ using WeCare.Application.SearchParams;
 using WeCare.Application.Validators;
 using WeCare.Application.ViewModels;
 using WeCare.Domain;
+using WeCare.Domain.Core;
 using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
 
