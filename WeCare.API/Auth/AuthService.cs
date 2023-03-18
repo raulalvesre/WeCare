@@ -56,8 +56,9 @@ public class AuthService
         var key = Encoding.ASCII.GetBytes(_config.GetValue<string>("jwt-secret"));
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new Claim[]
+            Subject = new ClaimsIdentity(new[]
             {
+                new Claim("Id", user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.Type)
             }),

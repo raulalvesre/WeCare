@@ -1,12 +1,15 @@
+using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using WeCare.API.Auth;
+using WeCare.API.Extensions;
 using WeCare.API.Filters;
 using WeCare.Application;
 using WeCare.Application.Mappers;
 using WeCare.Application.Services;
 using WeCare.Application.Validators;
-using WeCare.Domain.Models;
 using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
 
@@ -14,6 +17,32 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
+
+var key =  Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("jwt-secret"));
+
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ADMIN", policy => policy.RequireRole("ADMIN"));
+    options.AddPolicy("CANDIDATE", policy => policy.RequireRole("CANDIDATE"));
+    options.AddPolicy("INSTITUTION", policy => policy.RequireRole("INSTITUTION"));
+});
 
 builder.Services.AddControllers(opts =>
 {
@@ -47,6 +76,9 @@ builder.Services.AddScoped<CandidateMapper>();
 builder.Services.AddScoped<InstitutionMapper>();
 builder.Services.AddScoped<VolunteerOpportunityMapper>();
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<AspNetUser>();
+
 builder.Services.AddScoped<CandidateService>();
 builder.Services.AddScoped<InstitutionService>();
 builder.Services.AddScoped<UserService>();
@@ -61,6 +93,8 @@ builder.Services.Configure<JsonOptions>(o => o.JsonSerializerOptions.Converters.
 
 var app = builder.Build();
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.UseSwagger();
 app.UseSwaggerUI();

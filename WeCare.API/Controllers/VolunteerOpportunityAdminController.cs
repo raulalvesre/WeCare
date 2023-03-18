@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WeCare.Application.SearchParams;
 using WeCare.Application.Services;
@@ -8,6 +9,7 @@ namespace WeCare.API.Controllers;
 
 [ApiController]
 [Route("api/admin/volunteer-opportunity")]
+[Authorize(Roles = "ADMIN")]
 public class VolunteerOpportunityAdminController : ControllerBase
 {
     private readonly VolunteerOpportunityService _volunteerOpportunityService;
