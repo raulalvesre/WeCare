@@ -5,6 +5,8 @@ using WeCare.API.Filters;
 using WeCare.Application;
 using WeCare.Application.Mappers;
 using WeCare.Application.Services;
+using WeCare.Application.Validators;
+using WeCare.Domain.Models;
 using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
 
@@ -31,9 +33,19 @@ builder.Services.AddScoped<CandidateRepository>();
 builder.Services.AddScoped<InstitutionRepository>();
 builder.Services.AddScoped<ConfirmationTokenRepository>();
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<VolunteerOpportunityRepository>();
+builder.Services.AddScoped<OpportunityCauseRepository>();
+
+builder.Services.AddScoped<VolunteerOpportunityFormValidator>();
+
+builder.Services.AddScoped<CandidateAdminFormValidator>();
+builder.Services.AddScoped<CandidateFormValidator>();
+builder.Services.AddScoped<InstitutionAdminFormValidator>();
+builder.Services.AddScoped<InstitutionFormValidator>();
 
 builder.Services.AddScoped<CandidateMapper>();
 builder.Services.AddScoped<InstitutionMapper>();
+builder.Services.AddScoped<VolunteerOpportunityMapper>();
 
 builder.Services.AddScoped<CandidateService>();
 builder.Services.AddScoped<InstitutionService>();
@@ -41,14 +53,13 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<ConfirmationTokenService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<VolunteerOpportunityService>();
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.Configure<JsonOptions>(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 var app = builder.Build();
-
-var configuration = app.Configuration;
 
 app.MapControllers();
 app.UseSwagger();

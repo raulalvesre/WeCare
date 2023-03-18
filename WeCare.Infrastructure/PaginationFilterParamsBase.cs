@@ -3,6 +3,7 @@ using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using WeCare.Domain;
+using WeCare.Domain.Core;
 
 namespace WeCare.Infrastructure;
 

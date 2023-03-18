@@ -1,8 +1,10 @@
 using WeCare.Application.Exceptions;
 using WeCare.Application.Mappers;
 using WeCare.Application.SearchParams;
+using WeCare.Application.Validators;
 using WeCare.Application.ViewModels;
 using WeCare.Domain;
+using WeCare.Domain.Core;
 using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
 
@@ -14,16 +16,22 @@ public class InstitutionService
     private readonly UserRepository _userRepository;
     private readonly UnitOfWork _unitOfWork;
     private readonly InstitutionMapper _mapper;
+    private readonly InstitutionAdminFormValidator _institutionAdminFormValidator;
+    private readonly InstitutionFormValidator _institutionFormValidator;
 
     public InstitutionService(InstitutionRepository institutionRepository,
         UserRepository userRepository,
         InstitutionMapper mapper,
-        UnitOfWork unitOfWork)
+        UnitOfWork unitOfWork, 
+        InstitutionAdminFormValidator institutionAdminFormValidator, 
+        InstitutionFormValidator institutionFormValidator)
     {
         _institutionRepository = institutionRepository;
         _userRepository = userRepository;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
+        _institutionAdminFormValidator = institutionAdminFormValidator;
+        _institutionFormValidator = institutionFormValidator;
     }
     
      public async Task<InstitutionViewModel> GetById(long id)
@@ -50,11 +58,9 @@ public class InstitutionService
 
     public async Task<InstitutionViewModel> Save(InstitutionForm form)
     {
-        var validationResult = await form.ValidateAsync();
+        var validationResult = await _institutionFormValidator.ValidateAsync(form);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
-
-        await ValidateUniqueFields(form.Email, form.Cnpj, form.Telephone);
 
         var institution = _mapper.ToModel(form);
 
@@ -64,26 +70,10 @@ public class InstitutionService
         return _mapper.FromModel(institution);
     }
     
-    private async Task ValidateUniqueFields(string email, string cnpj, string telephone, long existingInstitutionId = 0)
-    {
-        var errorMessages = new List<string>();
-
-        if (await _userRepository.ExistsByIdNotAndEmail(existingInstitutionId, email))
-            errorMessages.Add("Email já cadastrado");
-        
-        if (await _institutionRepository.ExistsByIdNotAndCnpj(existingInstitutionId, cnpj))
-            errorMessages.Add("CNPJ já cadastrado");
-        
-        if (await _userRepository.ExistsByIdNotAndTelephone(existingInstitutionId, telephone))
-            errorMessages.Add("Telefone já cadastrado");
-
-        if (errorMessages.Any())
-            throw new UnprocessableEntityException(errorMessages);
-    }
-    
     public async Task<InstitutionViewModel> Update(long institutionId, InstitutionForm form)
     {
-        var validationResult = await form.ValidateAsync();
+        form.Id = institutionId;
+        var validationResult = await _institutionFormValidator.ValidateAsync(form);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
@@ -91,8 +81,6 @@ public class InstitutionService
         if (institution is null)
             throw new NotFoundException("Instituição não encontrada");
         
-        await ValidateUniqueFields(form.Email, form.Cnpj, form.Telephone, institutionId);
-
         _mapper.Merge(institution, form);
         await _institutionRepository.Update(institution);
         await _unitOfWork.SaveAsync();
@@ -102,12 +90,10 @@ public class InstitutionService
 
     public async Task<InstitutionViewModel> Save(InstitutionAdminForm form)
     {
-        var validationResult = await form.ValidateAsync();
+        var validationResult = await _institutionAdminFormValidator.ValidateAsync(form);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
         
-        await ValidateUniqueFields(form.Email, form.Cnpj, form.Telephone);
-
         var institution = _mapper.ToModel(form);
 
         await _institutionRepository.Add(institution);
@@ -118,15 +104,14 @@ public class InstitutionService
 
     public async Task<InstitutionViewModel> Update(long institutionId, InstitutionAdminForm form)
     {
-        var validationResult = await form.ValidateAsync();
+        form.Id = institutionId;
+        var validationResult = await _institutionAdminFormValidator.ValidateAsync(form);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
         var institution = await _institutionRepository.GetById(institutionId);
         if (institution is null)
             throw new NotFoundException("Instituição não encontrada");
-        
-        await ValidateUniqueFields(form.Email, form.Cnpj, form.Telephone, institutionId);
 
         _mapper.Merge(institution, form);
         await _institutionRepository.Update(institution);

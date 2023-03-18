@@ -1,4 +1,4 @@
-namespace WeCare.Domain;
+namespace WeCare.Domain.Core;
 
 public interface IPaginationFilterParams<T>
 {

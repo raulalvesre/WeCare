@@ -1,35 +1,57 @@
-// using FluentValidation;
-// using WeCare.Application.ViewModels;
-//
-// namespace WeCare.Application.Validators;
-//
-// public class VolunteerOpportunityFormValidator : AbstractValidator<VolunteerOpportunityForm>
-// {
-//     public VolunteerOpportunityFormValidator()
-//     {
-//         RuleFor(x => x.Id)
-//             .LessThan(1)
-//             .WithMessage("Id inválido");
-//
-//         RuleFor(x => x.Name)
-//             .NotEmpty()
-//             .WithMessage("O nome da oportunidade não pode ser vazio")
-//             .MaximumLength(255)
-//             .WithMessage("O nome da oportunidade deve ter no máximo 255 caracteres");
-//         
-//         RuleFor(x => x.Description)
-//             .NotEmpty()
-//             .WithMessage("A descrição da oportunidade não pode ser vazio")
-//             .MaximumLength(500)
-//             .WithMessage("A descrição da oportunidade deve ter no máximo 500 caracteres");
-//
-//         RuleFor(x => x.OpportunityDate)
-//             .NotNull()
-//             .WithMessage("A data da oportunidade não pode nula")
-//             .GreaterThan(DateTime.Now.AddDays(1))
-//             .WithMessage("A oportunidade não pode acontecer em menos de 24 horas");
-//
-//         RuleFor(x => x.Address)
-//             .SetValidator(new AddressViewModelValidator());
-//     }
-// }
+using FluentValidation;
+using WeCare.Application.ViewModels;
+using WeCare.Infrastructure.Repositories;
+
+namespace WeCare.Application.Validators;
+
+public class VolunteerOpportunityFormValidator : AbstractValidator<VolunteerOpportunityForm>
+{
+
+    private readonly OpportunityCauseRepository _opportunityCauseRepository;
+    
+    public VolunteerOpportunityFormValidator(OpportunityCauseRepository opportunityCauseRepository)
+    {
+        _opportunityCauseRepository = opportunityCauseRepository;
+        
+        RuleFor(x => x.Name)
+            .NotEmpty()
+            .WithMessage("O nome da oportunidade não pode ser vazio")
+            .MaximumLength(255)
+            .WithMessage("O nome da oportunidade deve ter no máximo 255 caracteres");
+        
+        RuleFor(x => x.Description)
+            .NotEmpty()
+            .WithMessage("A descrição da oportunidade não pode ser vazio")
+            .MaximumLength(500)
+            .WithMessage("A descrição da oportunidade deve ter no máximo 500 caracteres");
+
+        RuleFor(x => x.OpportunityDate)
+            .NotNull()
+            .WithMessage("A data da oportunidade não pode nula")
+            .GreaterThan(DateTime.Now.AddDays(1))
+            .WithMessage("A oportunidade não pode acontecer em menos de 24 horas");
+
+        RuleFor(x => x.Photo)
+            .SetValidator(new ImageValidator());
+
+        RuleFor(x => x.Address)
+            .SetValidator(new AddressViewModelValidator());
+
+        RuleFor(x => x.Causes)
+            .Custom(AllCauseCodesExists);
+    }
+
+    private void AllCauseCodesExists(IEnumerable<string> formCausesCodes, ValidationContext<VolunteerOpportunityForm> context)
+    {
+        var modelCausesCodes = _opportunityCauseRepository.FindByCodeIn(formCausesCodes)
+            .Select(x => x.Code);
+        
+        foreach (var causeCode in formCausesCodes)
+        {
+            if (!modelCausesCodes.Contains(causeCode))
+            {
+                context.AddFailure($"Causa com o código {causeCode} não existe");
+            }
+        }
+    }
+}

@@ -1,12 +1,17 @@
 using FluentValidation;
 using WeCare.Application.ViewModels;
+using WeCare.Infrastructure.Repositories;
 
 namespace WeCare.Application.Validators;
 
 public class InstitutionFormValidator : AbstractValidator<InstitutionForm>
 {
-    public InstitutionFormValidator()
+    private readonly InstitutionRepository _institutionRepository;
+    
+    public InstitutionFormValidator(InstitutionRepository institutionRepository)
     {
+        _institutionRepository = institutionRepository;
+        
         RuleFor(x => x.Name)
             .NotEmpty()
             .WithMessage("É necessário um nome")
@@ -19,7 +24,9 @@ public class InstitutionFormValidator : AbstractValidator<InstitutionForm>
             .NotEmpty()
             .WithMessage("É necessário um email")
             .EmailAddress()
-            .WithMessage("O email deve ser válido");
+            .WithMessage("O email deve ser válido")
+            .MustAsync((x, email, cT) => UniqueEmail(x, email))
+            .WithMessage("Telefone já cadastrado");
 
         RuleFor(x => x.Password)
             .NotEmpty()
@@ -33,7 +40,9 @@ public class InstitutionFormValidator : AbstractValidator<InstitutionForm>
             .NotEmpty()
             .WithMessage("É necessário um telefone")
             .Must(ValidatorsUtils.IsValidTelephone)
-            .WithMessage("Número de telefone inválido");
+            .WithMessage("Número de telefone inválido")
+            .MustAsync((x, telephone, cT) => UniqueTelephone(x, telephone))
+            .WithMessage("Telefone já cadastrado");
         
         RuleFor(x => x.Bio)
             .MaximumLength(1024)
@@ -46,6 +55,23 @@ public class InstitutionFormValidator : AbstractValidator<InstitutionForm>
             .NotEmpty()
             .WithMessage("É necessário um CNPJ")
             .Must(ValidatorsUtils.IsValidCnpj)
-            .WithMessage("CNPJ inválido");
+            .WithMessage("CNPJ inválido")
+            .MustAsync((x, cnpj, cT) => UniqueCnpj(x, cnpj))
+            .WithMessage("CNPJ já cadastrado");
+    }
+
+    private async Task<bool> UniqueEmail(InstitutionForm form, string email)
+    {
+        return !await _institutionRepository.ExistsByIdNotAndEmail(form.Id, email);
+    }
+    
+    private async Task<bool> UniqueTelephone(InstitutionForm form, string telephone)
+    {
+        return !await _institutionRepository.ExistsByIdNotAndTelephone(form.Id, telephone);
+    }
+    
+    private async Task<bool> UniqueCnpj(InstitutionForm form, string cnpj)
+    {
+        return !await _institutionRepository.ExistsByIdNotAndCnpj(form.Id, cnpj);
     }
 }
