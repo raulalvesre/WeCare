@@ -1,26 +1,53 @@
 <section>
-    <div class="form-box">
+  <div class="row">
+    <div class="col-12 d-flex justify-content-center">
+      <div class="form-box col-md-3 d-flex justify-content-center rounded-4">
         <div class="form-value">
-            <form action="">
-                <h2>Login</h2>
-                <div class="inputbox">
-                    <input type="email" required>
-                    <label for="">Email</label>
-                </div>
-                <div class="inputbox">
-                    <input type="password" required>
-                    <label for="">Password</label>
-                </div>
-                <!-- <div class="forget">
-                    <label for=""><input type="checkbox">Remember Me  <a href="#">Forget Password</a></label>
-                  
-                </div> -->
-                <button class="text-white">Log in</button>
-                <div class="register">
-                    <p>Não tem uma conta?<a routerLink="/user/create" class="nav-link" routerLinkActive="active"> Cadastre-se agora!</a></p>
-                </div>
-            </form>
+          <form [formGroup]="form">
+            <h2>Acesso</h2>
+            <div>
+              <div class="inputbox">
+                <input id="email" type="email" formControlName="email" />
+                <label for="email">E-mail</label>
+              </div>
+              <p *ngIf="form.get('email').invalid" class="text-start text-danger">
+                E-mail não preenchido
+              </p>
+            </div>
+            <div>
+              <div class="inputbox">
+                <input id="password" type="password" formControlName="password" />
+                <label for="password">Senha</label>
+              </div>
+              <p
+                *ngIf="form.get('password').invalid"
+                class="text-start text-danger"
+              >
+                Senha não preenchida
+              </p>
+            </div>
+            <button
+              type="button"
+              class="btn btn-primary text-white"
+              [disabled]="form.invalid"
+              (click)="login()"
+            >
+              Entrar
+            </button>
+            <div class="register">
+              <p>
+                Não tem uma conta?<a
+                  routerLink="/user/create"
+                  class="nav-link"
+                  routerLinkActive="active"
+                >
+                  Cadastre-se agora!</a
+                >
+              </p>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
+  </div>
 </section>
-
