@@ -9,20 +9,25 @@ import { LoginComponent } from './home/login/login.component';
 import { UsermainComponent } from './users/usermain/usermain.component';
 
 const routes: Routes = [
-  { path: 'home', 
-  component: ContentComponent
+  {
+    path: 'home',
+    component: ContentComponent
   },
-  { path: 'user/create', 
-  component: FormsComponent
+  {
+    path: 'user/create',
+    component: FormsComponent
   },
-  { path: 'login', 
-  component: LoginComponent
+  {
+    path: 'login',
+    component: LoginComponent
   },
-  { path: 'about', 
-  component: AboutComponent
+  {
+    path: 'about',
+    component: AboutComponent
   },
-  { path: 'profile', 
-  component: UsermainComponent
+  {
+    path: 'profile',
+    component: UsermainComponent
   }
 ];
 
