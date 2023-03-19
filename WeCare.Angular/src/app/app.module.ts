@@ -17,31 +17,33 @@ import { LoginComponent } from './home/login/login.component';
 import { UsermainComponent } from './users/usermain/usermain.component';
 import { InstitutionsFormsComponent } from './institutions/forms/forms.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToastsContainerComponent } from '../shared/components/toasts-container/toasts-container.component';
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    FormsComponent,
-    FooterComponent,
-    HeaderComponent,
-    ContentComponent,
-    NavbarComponent,
-    CarouselComponent,
-    AboutComponent,
-    LoginComponent,
-    UsermainComponent,
-    InstitutionsFormsComponent,
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    NgbModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        FormsComponent,
+        FooterComponent,
+        HeaderComponent,
+        ContentComponent,
+        NavbarComponent,
+        CarouselComponent,
+        AboutComponent,
+        LoginComponent,
+        UsermainComponent,
+        InstitutionsFormsComponent,
+    ],
+    providers: [],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        NgbModule,
+        ToastsContainerComponent
+    ]
 })
 export class AppModule { }
