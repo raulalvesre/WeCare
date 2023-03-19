@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from  '@angular/forms';
-import { ReactiveFormsModule } from  '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -18,32 +18,35 @@ import { UsermainComponent } from './users/usermain/usermain.component';
 import { InstitutionsFormsComponent } from './institutions/forms/forms.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastsContainerComponent } from '../shared/components/toasts-container/toasts-container.component';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        FormsComponent,
-        FooterComponent,
-        HeaderComponent,
-        ContentComponent,
-        NavbarComponent,
-        CarouselComponent,
-        AboutComponent,
-        LoginComponent,
-        UsermainComponent,
-        InstitutionsFormsComponent,
-    ],
-    providers: [],
-    bootstrap: [AppComponent],
-    imports: [
-        BrowserModule,
-        FormsModule,
-        ReactiveFormsModule,
-        AppRoutingModule,
-        HttpClientModule,
-        NgbModule,
-        ToastsContainerComponent
-    ]
+  declarations: [
+    AppComponent,
+    FormsComponent,
+    FooterComponent,
+    HeaderComponent,
+    ContentComponent,
+    NavbarComponent,
+    CarouselComponent,
+    AboutComponent,
+    LoginComponent,
+    UsermainComponent,
+    InstitutionsFormsComponent,
+  ],
+  providers: [provideNgxMask()],
+  bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AppRoutingModule,
+    HttpClientModule,
+    NgbModule,
+    ToastsContainerComponent,
+    NgxMaskDirective,
+    NgxMaskPipe
+  ]
 })
 export class AppModule { }
