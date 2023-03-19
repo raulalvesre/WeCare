@@ -16,6 +16,7 @@ import { AboutComponent } from './home/about/about.component';
 import { LoginComponent } from './home/login/login.component';
 import { UsermainComponent } from './users/usermain/usermain.component';
 import { InstitutionsFormsComponent } from './institutions/forms/forms.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { InstitutionsFormsComponent } from './institutions/forms/forms.component
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]
