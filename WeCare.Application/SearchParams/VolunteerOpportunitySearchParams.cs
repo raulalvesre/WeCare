@@ -6,7 +6,7 @@ using WeCare.Infrastructure;
 
 namespace WeCare.Application.SearchParams;
 
-public class VolunteerOpportunitySearchParam : PaginationFilterParamsBase<VolunteerOpportunity>
+public class VolunteerOpportunitySearchParams : PaginationFilterParamsBase<VolunteerOpportunity>
 {
     [JsonIgnore]
     public long? InstitutionId { get; set; }

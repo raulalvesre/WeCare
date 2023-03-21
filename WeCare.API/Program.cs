@@ -75,6 +75,7 @@ builder.Services.AddScoped<InstitutionFormValidator>();
 builder.Services.AddScoped<CandidateMapper>();
 builder.Services.AddScoped<InstitutionMapper>();
 builder.Services.AddScoped<VolunteerOpportunityMapper>();
+builder.Services.AddScoped<OpportunityCauseMapper>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<AspNetUser>();
@@ -86,6 +87,7 @@ builder.Services.AddScoped<ConfirmationTokenService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<VolunteerOpportunityService>();
+builder.Services.AddScoped<OpportunityCauseService>();
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 

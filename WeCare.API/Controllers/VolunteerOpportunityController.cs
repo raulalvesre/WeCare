@@ -30,7 +30,7 @@ public class VolunteerOpportunityController : ControllerBase
     }
     
     [HttpGet("search")]
-    public async ValueTask<ActionResult<Pagination<VolunteerOpportunityViewModel>>> Search([FromQuery] VolunteerOpportunitySearchParam searchParams)
+    public async ValueTask<ActionResult<Pagination<VolunteerOpportunityViewModel>>> Search([FromQuery] VolunteerOpportunitySearchParams searchParams)
     {
         var candidatePage = await _volunteerOpportunityService.GetPage(_aspNetUser.GetUserId(), searchParams);
         return Ok(candidatePage);
