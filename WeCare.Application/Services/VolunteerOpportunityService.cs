@@ -4,6 +4,7 @@ using WeCare.Application.SearchParams;
 using WeCare.Application.Validators;
 using WeCare.Application.ViewModels;
 using WeCare.Domain.Core;
+using WeCare.Domain.Models;
 using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
 
@@ -13,6 +14,7 @@ public class VolunteerOpportunityService
 {
     private readonly VolunteerOpportunityRepository _volunteerOpportunityRepository;
     private readonly InstitutionRepository _institutionRepository;
+    private readonly OpportunityRegistrationRepository _opportunityRegistrationRepository;
     private readonly VolunteerOpportunityFormValidator _volunteerOpportunityFormValidator;
     private readonly UnitOfWork _unitOfWork;
     private readonly VolunteerOpportunityMapper _mapper;
@@ -21,13 +23,15 @@ public class VolunteerOpportunityService
         InstitutionRepository institutionRepository,
         UnitOfWork unitOfWork,
         VolunteerOpportunityFormValidator volunteerOpportunityFormValidator,
-        VolunteerOpportunityMapper mapper)
+        VolunteerOpportunityMapper mapper, 
+        OpportunityRegistrationRepository opportunityRegistrationRepository)
     {
         _volunteerOpportunityRepository = volunteerOpportunityRepository;
         _institutionRepository = institutionRepository;
         _unitOfWork = unitOfWork;
         _volunteerOpportunityFormValidator = volunteerOpportunityFormValidator;
         _mapper = mapper;
+        _opportunityRegistrationRepository = opportunityRegistrationRepository;
     }
     
     public async Task<VolunteerOpportunityViewModel> GetById(long id)

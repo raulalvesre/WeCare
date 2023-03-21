@@ -1,12 +1,13 @@
 using System.Security.Claims;
+using WeCare.Application.Interfaces;
 
 namespace WeCare.API.Extensions;
 
-public class AspNetUser
+public class CurrentUser : ICurrentUser
 {
     private readonly IHttpContextAccessor _accessor;
 
-    public AspNetUser(IHttpContextAccessor accessor)
+    public CurrentUser(IHttpContextAccessor accessor)
     {
         _accessor = accessor;
     }
@@ -16,7 +17,7 @@ public class AspNetUser
         return _accessor.HttpContext.User.Identity.IsAuthenticated;
     }
 
-    public int GetUserId()
+    public long GetUserId()
     {
         return IsAuthenticated() ? _accessor.HttpContext.User.GetUserId() : 0;
     }
