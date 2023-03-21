@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { delay, distinctUntilChanged } from 'rxjs';
 import { UserDocumentType } from '../../../shared/models/document-type.model';
 import { AccessService } from '../../../shared/services/access.service';
@@ -47,7 +47,7 @@ export class FormsComponent implements OnInit, OnDestroy {
         state: new FormControl(null, [Validators.required]),
         postalCode: new FormControl(null, [Validators.required, Validators.pattern(/^\d{5}\-\d{3}$/)]),
       })
-    });
+    }, [passwordConfirmationValidator()]);
 
     this.form.get('address').get('postalCode')
       .valueChanges
@@ -104,8 +104,25 @@ export class FormsComponent implements OnInit, OnDestroy {
             this.toastService.show('Cadastro realizado com sucesso', { classname: 'bg-success text-light', delay: 5000 });
           }
         },
-        error: (error) => {
-          console.error(error);
+        error: (httpErrorResponse) => {
+          console.error(httpErrorResponse);
+          console.error(typeof (httpErrorResponse));
+          if (httpErrorResponse?.status == HttpStatusCode.BadRequest
+            && httpErrorResponse?.error.errors) {
+            for (const error of httpErrorResponse?.error.errors) {
+              if (error.errorMessage.toUpperCase().includes("EMAIL JÁ CADASTRADO")) {
+                this.toastService.show('E-mail já cadastrado', { classname: 'bg-danger text-light', delay: 5000 });
+              }
+
+              if (error.errorMessage.toUpperCase().includes("TELEFONE JÁ CADASTRADO")) {
+                this.toastService.show('Telefone já cadastrado', { classname: 'bg-danger text-light', delay: 5000 });
+              }
+
+              if (error.errorMessage.toUpperCase().includes("CPF JÁ CADASTRADO")) {
+                this.toastService.show('CPF já cadastrado', { classname: 'bg-danger text-light', delay: 5000 });
+              }
+            }
+          }
         }
       });
   }
@@ -131,5 +148,17 @@ export class FormsComponent implements OnInit, OnDestroy {
           console.error(error);
         }
       });
+  }
+}
+
+export function passwordConfirmationValidator(): ValidatorFn {
+  return (form: AbstractControl): ValidationErrors | null => {
+    console.log(form);
+    const password = form.value.password;
+    const passwordConfirmation = form.value.passwordConfirmation;
+
+    return password == passwordConfirmation
+      ? null
+      : { passwordDoesNotEqualPasswordConfirmation: true };
   }
 }
