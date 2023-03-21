@@ -27,7 +27,7 @@ public class VolunteerOpportunityAdminController : ControllerBase
     }
     
     [HttpGet("{institutionId:long}/search")]
-    public async ValueTask<ActionResult<Pagination<VolunteerOpportunityViewModel>>> Search(long institutionId, [FromQuery] VolunteerOpportunitySearchParam searchParams)
+    public async ValueTask<ActionResult<Pagination<VolunteerOpportunityViewModel>>> Search(long institutionId, [FromQuery] VolunteerOpportunitySearchParams searchParams)
     {
         var candidatePage = await _volunteerOpportunityService.GetPage(institutionId, searchParams);
         return Ok(candidatePage);
