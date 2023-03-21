@@ -32,7 +32,7 @@ public class OpportunityRegistrationService
             throw new NotFoundException($"Oportunidade com id={opportunityId} não encontrada");
 
         var candidateAlreadyRegistered = await _registrationRepository.Query
-            .AnyAsync(x => x.CandidateId == candidateId);
+            .AnyAsync(x => x.OpportunityId == opportunityId && x.CandidateId == candidateId);
 
         if (candidateAlreadyRegistered)
             throw new ConflictException("Candidato já registrado");
