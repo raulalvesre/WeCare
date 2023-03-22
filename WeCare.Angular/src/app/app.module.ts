@@ -16,6 +16,7 @@ import { AboutComponent } from './home/about/about.component';
 import { LoginComponent } from './home/login/login.component';
 import { UsermainComponent } from './users/usermain/usermain.component';
 import { InstitutionsFormsComponent } from './institutions/forms/forms.component';
+import { CausesComponent } from './home/causes/causes.component';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { InstitutionsFormsComponent } from './institutions/forms/forms.component
     LoginComponent,
     UsermainComponent,
     InstitutionsFormsComponent,
+    CausesComponent,
   ],
   imports: [
     BrowserModule,
