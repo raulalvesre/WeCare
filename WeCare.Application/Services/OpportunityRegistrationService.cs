@@ -21,6 +21,8 @@ public class OpportunityRegistrationService
         _registrationRepository = registrationRepository;
         _unitOfWork = unitOfWork;
     }
+
+    public async Task<Pagination<
     
     public async Task RegisterCandidate(long opportunityId, long candidateId)
     {

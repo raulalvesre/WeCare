@@ -67,4 +67,10 @@ public class VolunteerOpportunityController : ControllerBase
         await _opportunityRegistrationService.RegisterCandidate(opportunityId, _currentUser.GetUserId());
         return NoContent();
     }
+
+    [HttpPut("{opportunityId:long}/registrations")]
+    public async ValueTask<ActionResult<Pagination<AddressViewModel>>> GetRegistrationsPage([FromQuery] OpportunityRegistrationSearchParams searchParams) 
+    {
+        return Ok(await _opportunityRegistrationService.GetPage(searchParams));
+    }
 }
