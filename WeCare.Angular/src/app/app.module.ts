@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 import { AppComponent } from './app.component';
 import { FormsComponent } from './users/forms/forms.component';
@@ -16,9 +18,8 @@ import { AboutComponent } from './home/about/about.component';
 import { LoginComponent } from './home/login/login.component';
 import { UsermainComponent } from './users/usermain/usermain.component';
 import { InstitutionsFormsComponent } from './institutions/forms/forms.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastsContainerComponent } from '../shared/components/toasts-container/toasts-container.component';
-import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { CausesComponent } from './home/causes/causes.component';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
     LoginComponent,
     UsermainComponent,
     InstitutionsFormsComponent,
+    CausesComponent,
   ],
   providers: [provideNgxMask()],
   bootstrap: [AppComponent],
