@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WeCare.API.Extensions;
 using WeCare.Application.Interfaces;
 using WeCare.Application.SearchParams;
 using WeCare.Application.Services;
 using WeCare.Application.ViewModels;
 using WeCare.Domain.Core;
-using WeCare.Domain.Models;
 
 namespace WeCare.API.Controllers;
 
@@ -55,22 +53,7 @@ public class VolunteerOpportunityController : ControllerBase
     [HttpDelete("{opportunityId:long}")]
     public async ValueTask<ActionResult> Delete(long opportunityId)
     {
-        //TODO add ICurrentUser
         await _volunteerOpportunityService.Delete(_currentUser.GetUserId(), opportunityId);
         return NoContent();
-    }
-
-    //TODO only candidate role, maybe new controller?
-    [HttpPost("{opportunityId:long}/register")]
-    public async ValueTask<ActionResult> RegisterCurrentCandidate(long opportunityId)
-    {
-        await _opportunityRegistrationService.RegisterCandidate(opportunityId, _currentUser.GetUserId());
-        return NoContent();
-    }
-
-    [HttpPut("{opportunityId:long}/registrations")]
-    public async ValueTask<ActionResult<Pagination<AddressViewModel>>> GetRegistrationsPage([FromQuery] OpportunityRegistrationSearchParams searchParams) 
-    {
-        return Ok(await _opportunityRegistrationService.GetPage(searchParams));
     }
 }

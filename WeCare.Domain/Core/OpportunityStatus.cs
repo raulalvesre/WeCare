@@ -4,5 +4,6 @@ public enum OpportunityStatus
 {
     PENDING,
     ACCEPTED,
-    DENIED
+    DENIED,
+    CANCELED
 }

@@ -1,9 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using WeCare.Application.Exceptions;
 using WeCare.Application.Interfaces;
+using WeCare.Application.Mappers;
+using WeCare.Application.SearchParams;
+using WeCare.Application.ViewModels;
+using WeCare.Domain.Core;
 using WeCare.Domain.Models;
 using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
+using static WeCare.Domain.Core.OpportunityStatus;
 
 namespace WeCare.Application.Services;
 
@@ -11,22 +16,54 @@ public class OpportunityRegistrationService
 {
     private readonly VolunteerOpportunityRepository _volunteerOpportunityRepository;
     private readonly OpportunityRegistrationRepository _registrationRepository;
+    private readonly OpportunityRegistrationMapper _mapper;
+    private readonly ICurrentUser _currentUser;
     private readonly UnitOfWork _unitOfWork;
 
     public OpportunityRegistrationService(VolunteerOpportunityRepository volunteerOpportunityRepository,
         OpportunityRegistrationRepository registrationRepository,
-        UnitOfWork unitOfWork)
+        OpportunityRegistrationMapper mapper,
+        UnitOfWork unitOfWork, ICurrentUser currentUser)
     {
         _volunteerOpportunityRepository = volunteerOpportunityRepository;
         _registrationRepository = registrationRepository;
         _unitOfWork = unitOfWork;
+        _currentUser = currentUser;
+        _mapper = mapper;
     }
 
-    public async Task<Pagination<
+    public async Task<Pagination<OpportunityRegistrationWithOpportunityViewModel>> GetPageForCandidate(OpportunityRegistrationSearchParams searchParams)
+    {
+        var page = await _registrationRepository.Paginate(searchParams);
+        return new Pagination<OpportunityRegistrationWithOpportunityViewModel>(
+            page.PageNumber, 
+            page.PageSize,
+            page.TotalCount,
+            page.TotalPages,
+            page.Data.Select(x => _mapper.FromModelWithOpportunity(x)));
+    }
+    
+    public async Task<Pagination<OpportunityRegistrationWithCandidateViewModel>> GetPageForInstitution(OpportunityRegistrationSearchParams searchParams)
+    {
+        var institutionDoestNotOwnOpportunity = !await _volunteerOpportunityRepository.Query
+            .AnyAsync(x => x.Id == searchParams.OpportunityId && x.InstitutionId == _currentUser.GetUserId());
+
+        if (institutionDoestNotOwnOpportunity)
+            throw new UnauthorizedException("Você não é dona da oportunidade");
+        
+        var page = await _registrationRepository.Paginate(searchParams);
+        return new Pagination<OpportunityRegistrationWithCandidateViewModel>(
+            page.PageNumber, 
+            page.PageSize,
+            page.TotalCount,
+            page.TotalPages,
+            page.Data.Select(x => _mapper.FromModelWithCandidate(x)));
+    }
     
     public async Task RegisterCandidate(long opportunityId, long candidateId)
     {
         var opportunity = await _volunteerOpportunityRepository.Query
+            .AsNoTracking()
             .Where(x => x.Id == opportunityId)
             .FirstOrDefaultAsync();
         
@@ -37,7 +74,7 @@ public class OpportunityRegistrationService
             .AnyAsync(x => x.OpportunityId == opportunityId && x.CandidateId == candidateId);
 
         if (candidateAlreadyRegistered)
-            throw new ConflictException("Candidato já registrado");
+            throw new ConflictException("Candidato já inscrito");
         
         var opportunityRegistration = new OpportunityRegistration
         {
@@ -48,4 +85,63 @@ public class OpportunityRegistrationService
         await _registrationRepository.Add(opportunityRegistration);
         await _unitOfWork.SaveAsync();
     }
+    
+    public async Task CancelRegistration(long opportunityId, long candidateId)
+    {
+        var opportunity = await _volunteerOpportunityRepository.Query
+            .Where(x => x.Id == opportunityId)
+            .FirstOrDefaultAsync();
+        
+        if (opportunity is null)
+            throw new NotFoundException($"Oportunidade com id={opportunityId} não encontrada");
+
+        var registration = await _registrationRepository.Query
+            .FirstOrDefaultAsync(x => x.OpportunityId == opportunityId && x.CandidateId == candidateId);
+
+        if (registration is null)
+            throw new NotFoundException("Inscrição não encontrada");
+
+        registration.Status = CANCELED;
+        await _registrationRepository.Update(registration);
+        await _unitOfWork.SaveAsync();
+    }
+
+    public async Task AcceptRegistration(long registrationId)
+    {
+        var registration = await _registrationRepository.Query
+            .FirstOrDefaultAsync(x => x.Id == registrationId);
+
+        if (registration is null)
+            throw new NotFoundException("Inscrição não encontrada");
+        
+        if (registration.IsCanceled())
+            throw new BadRequestException("Inscrição cancelada");
+        
+        if (registration.AlreadyHasBeenDeniedOrAccepted())
+            throw new BadRequestException("Inscrição já foi aceita/recusada");
+
+        registration.Status = ACCEPTED;
+        await _registrationRepository.Update(registration);
+        await _unitOfWork.SaveAsync();
+    }
+    
+    public async Task DenyRegistration(long registrationId)
+    {
+        OpportunityRegistration? registration = await _registrationRepository.Query
+            .FirstOrDefaultAsync(x => x.Id == registrationId);
+
+        if (registration is null)
+            throw new NotFoundException("Inscrição não encontrada");
+
+        if (registration.IsCanceled())
+            throw new BadRequestException("Inscrição cancelada");
+        
+        if (registration.AlreadyHasBeenDeniedOrAccepted())
+            throw new BadRequestException("Inscrição já foi aceita/recusada");
+
+        registration.Status = DENIED;
+        await _registrationRepository.Update(registration);
+        await _unitOfWork.SaveAsync();
+    }
+
 }

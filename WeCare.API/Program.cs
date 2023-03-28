@@ -11,6 +11,7 @@ using WeCare.Application.Interfaces;
 using WeCare.Application.Mappers;
 using WeCare.Application.Services;
 using WeCare.Application.Validators;
+using WeCare.Domain.Models;
 using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
 
@@ -78,6 +79,7 @@ builder.Services.AddScoped<CandidateMapper>();
 builder.Services.AddScoped<InstitutionMapper>();
 builder.Services.AddScoped<VolunteerOpportunityMapper>();
 builder.Services.AddScoped<OpportunityCauseMapper>();
+builder.Services.AddScoped<OpportunityRegistrationMapper>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
