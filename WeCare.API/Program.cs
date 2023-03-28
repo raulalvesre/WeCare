@@ -15,6 +15,8 @@ using WeCare.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var allowSpecificOrigins = "_allowSpecificOrigins";
+
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
@@ -49,11 +51,55 @@ builder.Services.AddControllers(opts =>
     opts.Filters.Add(typeof(ExceptionFilter));
 });
 
+builder.Services.AddCors((corsOptions) =>
+{
+    corsOptions.AddPolicy(
+        name: allowSpecificOrigins,
+        policy =>
+        {
+            // To use ALLOWED_CORS_URLS is needed to pass it as an environment variable
+            // Example:
+            // env ALLOWED_CORS_URLS="https://www.google.com;http://www.google.com"
+
+            var allowedCorsUrls = System.Environment.GetEnvironmentVariable("ALLOWED_CORS_URLS");
+            if (!string.IsNullOrWhiteSpace(allowedCorsUrls))
+            {
+                if (allowedCorsUrls.Contains(';'))
+                {
+                    policy
+                        .WithOrigins(allowedCorsUrls.Split(';'))
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                }
+                else
+                {
+                    policy
+                        .WithOrigins(new string[] { allowedCorsUrls })
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                }
+            }
+            else
+            {
+                // Specific to localhost
+                policy
+                    .SetIsOriginAllowed(url =>
+                        url.StartsWith("http://localhost") || url.StartsWith("https://localhost")
+                    )
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            }
+        });
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton(builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>());
-    
+builder.Services.AddSingleton<EmailSettings>(builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>()!);
+
 builder.Services.AddDbContext<WeCareDatabaseContext>();
 
 builder.Services.AddScoped<UnitOfWork>();
@@ -100,6 +146,8 @@ app.UseAuthorization();
 app.MapControllers();
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseCors(allowSpecificOrigins);
 
 app.Run();
 

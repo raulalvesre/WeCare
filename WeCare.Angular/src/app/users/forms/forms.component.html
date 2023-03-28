@@ -1,42 +1,396 @@
-<form [formGroup]="formUser">
-    <div class="container text-white mt-5 pb-5">
-        <div>
-            <form name="form1" class="border corDeFundo mb-5">
-                <div class="row mt-5 pt-2 pb-5">
-                    <div class="col-12 text-center bg-warning">
-                        <h4><div class="font-weight-bold">Cadastro de Usúario</div></h4>
+<section>
+  <div class="row">
+    <div class="col-12 d-flex justify-content-center">
+      <div
+        class="form-box col-md-4 px-4 py-3 d-flex justify-content-center rounded-4"
+      >
+        <form [formGroup]="form" class="row">
+          <h2>Cadastro</h2>
+
+          <div class="d-flex flex-column align-items-start">
+            <p class="d-block">Tipo de documento</p>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                id="cpf"
+                [value]="cpf"
+                formControlName="documentType"
+              />
+              <label class="form-check-label" for="cpf"> CPF </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                id="cnpj"
+                [value]="cnpj"
+                formControlName="documentType"
+              />
+              <label class="form-check-label" for="cnpj">CNPJ</label>
+            </div>
+          </div>
+
+          <!-- CPF -->
+          <div *ngIf="form.get('documentType').value === cpf">
+            <div class="inputbox">
+              <input
+                id="document"
+                type="text"
+                name="document"
+                formControlName="document"
+                mask="000.000.000-00"
+                [showMaskType]="true"
+                [dropSpecialCharacters]="false"
+              />
+              <label for="document">CPF</label>
+            </div>
+            <p
+              *ngIf="
+                form.get('document').invalid &&
+                (form.get('document').dirty || form.get('document').touched)
+              "
+              class="text-start text-danger"
+            >
+              CPF inválido
+            </p>
+          </div>
+
+          <!-- CNPJ -->
+          <div *ngIf="form.get('documentType').value === cnpj">
+            <div class="inputbox">
+              <input
+                id="document"
+                type="text"
+                name="document"
+                formControlName="document"
+                mask="00.000.000/0000-00"
+                [showMaskType]="true"
+                [dropSpecialCharacters]="false"
+              />
+              <label for="document">CNPJ</label>
+            </div>
+            <p
+              *ngIf="
+                form.get('document').invalid &&
+                (form.get('document').dirty || form.get('document').touched)
+              "
+              class="text-start text-danger"
+            >
+              CNPJ inválido
+            </p>
+          </div>
+
+          <div>
+            <div class="inputbox">
+              <input id="name" type="text" name="name" formControlName="name" />
+              <label for="name" class="text-left">Nome</label>
+            </div>
+            <p
+              *ngIf="
+                form.get('name').errors?.minlength &&
+                (form.get('name').dirty || form.get('name').touched)
+              "
+              class="text-start text-danger"
+            >
+              Nome inválido
+            </p>
+          </div>
+
+          <div>
+            <div class="inputbox">
+              <input
+                id="birth-date"
+                type="date"
+                name="birthDate"
+                formControlName="birthDate"
+              />
+              <label for="birth-date">Data de nascimento</label>
+            </div>
+            <p
+              *ngIf="
+                form.get('birthDate').invalid &&
+                (form.get('birthDate').dirty || form.get('birthDate').touched)
+              "
+              class="text-start text-danger"
+            >
+              Data de nascimento inválida
+            </p>
+          </div>
+
+          <div>
+            <div class="inputbox">
+              <input
+                id="telephone"
+                type="text"
+                name="telephone"
+                formControlName="telephone"
+                mask="(00) 90000-0000"
+                [showMaskTyped]="true"
+                [dropSpecialCharacters]="false"
+              />
+              <label for="telephone">Celular</label>
+            </div>
+            <p
+              *ngIf="
+                form.get('telephone').invalid &&
+                (form.get('telephone').dirty || form.get('telephone').touched)
+              "
+              class="text-start text-danger"
+            >
+              Celular inválido
+            </p>
+          </div>
+
+          <div class="mb-3 d-flex align-items-start flex-column">
+            <label for="biography" class="form-label"
+              >Conte um pouco sobre você</label
+            >
+            <textarea
+              class="form-control"
+              rows="4"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('biography').invalid &&
+                  (form.get('biography').dirty || form.get('biography').touched)
+              }"
+              id="biography"
+              type="text"
+              name="biography"
+              formControlName="biography"
+            ></textarea>
+            <div
+              class="invalid-feedback text-start"
+              *ngIf="
+                (form.get('biography').invalid ||
+                  form.get('biography').errors?.minlength) &&
+                (form.get('biography').dirty || form.get('biography').touched)
+              "
+            >
+              Pelo menos 12 caracteres.
+            </div>
+          </div>
+
+          <ngb-accordion>
+            <ngb-panel title="Endereço">
+              <ng-template ngbPanelContent>
+                <div formGroupName="address">
+                  <div>
+                    <div class="inputbox">
+                      <input
+                        id="postal-code"
+                        type="text"
+                        formControlName="postalCode"
+                        mask="00000-000"
+                        [dropSpecialCharacters]="false"
+                      />
+                      <label for="postal-code">CEP</label>
                     </div>
+                    <p
+                      *ngIf="
+                        (form.get('address').get('postalCode').invalid ||
+                          postalCodeInvalid) &&
+                        (form.get('address').get('postalCode').dirty ||
+                          form.get('address').get('postalCode').touched)
+                      "
+                      class="text-start text-danger"
+                    >
+                      CEP inválido
+                    </p>
+                  </div>
+
+                  <div>
+                    <div class="inputbox">
+                      <input
+                        id="street"
+                        type="text"
+                        name="street"
+                        formControlName="street"
+                      />
+                      <label for="street">Logradouro</label>
+                    </div>
+                    <p
+                      *ngIf="
+                        form.get('address').get('street').invalid &&
+                        (form.get('address').get('street').dirty ||
+                          form.get('address').get('street').touched)
+                      "
+                      class="text-start text-danger"
+                    >
+                      Logradouro inválido
+                    </p>
+                  </div>
+
+                  <div>
+                    <div class="inputbox">
+                      <input
+                        id="street-number"
+                        type="text"
+                        name="street-number"
+                        formControlName="number"
+                      />
+                      <label for="street-number">Número</label>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="inputbox">
+                      <input
+                        id="complement"
+                        type="text"
+                        name="complement"
+                        formControlName="complement"
+                      />
+                      <label for="complement">Complemento</label>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="inputbox">
+                      <input
+                        id="neighborhood"
+                        type="text"
+                        name="neighborhood"
+                        formControlName="neighborhood"
+                      />
+                      <label for="neighborhood">Bairro</label>
+                    </div>
+                    <p
+                      *ngIf="
+                        form.get('address').get('neighborhood').invalid &&
+                        (form.get('address').get('neighborhood').dirty ||
+                          form.get('address').get('neighborhood').touched)
+                      "
+                      class="text-start text-danger"
+                    >
+                      É necessário informar o bairro
+                    </p>
+                  </div>
+
+                  <div>
+                    <div class="inputbox">
+                      <input
+                        id="city"
+                        type="text"
+                        name="city"
+                        formControlName="city"
+                      />
+                      <label for="city">Cidade</label>
+                    </div>
+                    <p
+                      *ngIf="
+                        form.get('address').get('city').invalid &&
+                        (form.get('address').get('city').dirty ||
+                          form.get('address').get('city').touched)
+                      "
+                      class="text-start text-danger"
+                    >
+                      Cidade não informada
+                    </p>
+                  </div>
+
+                  <div>
+                    <div class="inputbox">
+                      <input
+                        id="state"
+                        type="text"
+                        name="state"
+                        formControlName="state"
+                      />
+                      <label for="state">Estado</label>
+                    </div>
+                    <p
+                      *ngIf="
+                        form.get('address').get('state').invalid &&
+                        (form.get('address').get('state').dirty ||
+                          form.get('address').get('state').touched)
+                      "
+                      class="text-start text-danger"
+                    >
+                      Estado não informado
+                    </p>
+                  </div>
                 </div>
-                <div class="form-group row">
-                    <label for="usuario" class="text-left">Nome:</label>
-                    <input class="form-control col-6 required" type="text" name="nome" placeholder="" required="required" >
-                </div>
-                <div class="form-group row">
-                    <label for="usuario" class="col-4 text-right">CPF:</label>
-                    <input class="form-control col-6 required" type="text" name="cpf" placeholder="" required="required">
-                </div>
-                <div class="form-group row">
-                    <label for="usuario" class="col-4 text-right">Telefone:</label>
-                    <input class="form-control col-6" type="text" name="telefone" placeholder="" required="required">
-                </div>
-                <div class="form-group row">
-                    <label for="usuario" class="col-4 text-right">Email:</label>
-                    <input class="form-control col-6" type="text" name="email" placeholder="" required="required">
-                </div>
-                <div class="form-group row">
-                    <label for="usuario" class="col-4 text-right">Senha:</label>
-                    <input class="form-control col-6" type="password" name="senha" placeholder="" required="required">
-                </div>
-                <div class="form-group row pb-3">
-                    <label for="usuario" class="col-4 text-right">Confirmar Senha:</label>
-                    <input class="form-control col-6" type="password" name="confSenha" placeholder="" required="required">
-                </div>
-                <div class="row mb-4 pb-2">
-                    <button type="submit" class="btn btn-warning col-4 offset-4" onclick="return validar_form()">
-                        Cadastrar
-                    </button>
-                </div>
-            </form>
-        </div>
+              </ng-template>
+            </ngb-panel>
+          </ngb-accordion>
+
+          <div>
+            <div class="inputbox">
+              <input
+                id="email"
+                type="email"
+                name="email"
+                formControlName="email"
+              />
+              <label for="email">Email</label>
+            </div>
+            <p
+              *ngIf="
+                form.get('email').invalid &&
+                (form.get('email').dirty || form.get('email').touched)
+              "
+              class="text-start text-danger"
+            >
+              E-mail não informado
+            </p>
+          </div>
+
+          <div>
+            <div class="inputbox">
+              <input
+                id="password"
+                type="password"
+                name="password"
+                formControlName="password"
+              />
+              <label for="password">Senha</label>
+            </div>
+            <p
+              *ngIf="
+                form.get('password').errors?.minlength &&
+                (form.get('password').dirty || form.get('password').touched)
+              "
+              class="text-start text-danger"
+            >
+              Senha inválida. Mínimo de 4 caracteres.
+            </p>
+          </div>
+
+          <div>
+            <div class="inputbox">
+              <input
+                id="password-confirmation"
+                type="password"
+                name="password-confirmation"
+                placeholder=""
+                formControlName="passwordConfirmation"
+              />
+              <label for="password-confirmation">Confirmar Senha</label>
+            </div>
+            <p
+              *ngIf="
+                form.errors?.passwordDoesNotEqualPasswordConfirmation &&
+                (form.dirty || form.touched)
+              "
+              class="text-start text-danger"
+            >
+              A senha está diferente da confirmação da senha
+            </p>
+          </div>
+
+          <div>
+            <button
+              type="button"
+              [disabled]="form.invalid"
+              class="btn btn-primary text-white"
+              (click)="register()"
+            >
+              Cadastrar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-    
+  </div>
+</section>

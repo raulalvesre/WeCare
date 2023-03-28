@@ -1,17 +1,9 @@
-#Body {
-    background:  url("../assets/img/background4.png" ),
-                 url("../assets/img/ruido.png"),
-                 linear-gradient(50deg, #00f2fa, #7c26f8);
-    background-color: #000000, 0.5;
+/* #Body {
+    background:  url("../assets/img/1.png");
+                 /* url("../assets/img/ruido.png"),
+                 linear-gradient(50deg, #b9ecf5, #19688d); */
+    /*background: #fff;
     background-size: 30%;
 	background-attachment: fixed;
     background-repeat: repeat;
-   }
-/* 
-   .body {
-     background: url("../assets/img/ruido.png"),
-                 linear-gradient(50deg, #abf00b, #7c26f8);
-    background-color: #000000, 0.5;
-    background-size: 100%;
-	background-attachment: fixed;
    } */
