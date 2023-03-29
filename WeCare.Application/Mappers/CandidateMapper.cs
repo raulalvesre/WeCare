@@ -20,6 +20,19 @@ public class CandidateMapper
             BirthDate = candidate.BirthDate
         };
     }
+    
+    public CandidateForRegistrationViewModel FromModelToInstitutionRegistrationViewModel(Candidate candidate)
+    {
+        return new CandidateForRegistrationViewModel
+        {
+            Id = candidate.Id,
+            Photo = candidate.Photo,
+            Name = candidate.Name,
+            Bio = candidate.Bio,
+            Address = new SecretativeAddressViewModel(candidate),
+            BirthDate = candidate.BirthDate
+        };
+    }
 
     public Candidate ToModel(CandidateForm form)
     {

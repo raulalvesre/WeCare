@@ -27,7 +27,6 @@ public class AddressViewModel
         PostalCode = user.PostalCode;
     }
     
-    
     public AddressViewModel(VolunteerOpportunity opportunity)
     {
         Street = opportunity.Street;

@@ -8,10 +8,12 @@ public class VolunteerOpportunityMapper
 {
 
     private readonly OpportunityCauseRepository _opportunityCauseRepository;
+    private readonly InstitutionMapper _institutionMapper;
 
-    public VolunteerOpportunityMapper(OpportunityCauseRepository opportunityCauseRepository)
+    public VolunteerOpportunityMapper(OpportunityCauseRepository opportunityCauseRepository, InstitutionMapper institutionMapper)
     {
         _opportunityCauseRepository = opportunityCauseRepository;
+        _institutionMapper = institutionMapper;
     }
 
     public VolunteerOpportunityViewModel FromModel(VolunteerOpportunity opportunity)
@@ -30,6 +32,21 @@ public class VolunteerOpportunityMapper
         };
     }
     
+    public OpportunityForRegistrationViewModel FromModelToCandidateRegistrationViewModel(VolunteerOpportunity opportunity)
+    {
+        return new OpportunityForRegistrationViewModel()
+        {
+            Id = opportunity.Id,
+            Name = opportunity.Name,
+            Description = opportunity.Description,
+            OpportunityDate = opportunity.OpportunityDate,
+            Photo = opportunity.Photo,
+            Address = new SecretativeAddressViewModel(opportunity),
+            Causes = opportunity.Causes.Select(x => x.Name),
+            Institution = _institutionMapper.FromModelToCandidateRegistrationViewModel(opportunity.Institution)
+        };
+    }
+
     public VolunteerOpportunity ToModel(long institutionId, VolunteerOpportunityForm form)
     {
         var causes = _opportunityCauseRepository.FindByCodeIn(form.Causes);

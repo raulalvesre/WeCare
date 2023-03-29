@@ -32,10 +32,10 @@ public class OpportunityRegistrationService
         _mapper = mapper;
     }
 
-    public async Task<Pagination<OpportunityRegistrationWithOpportunityViewModel>> GetPageForCandidate(OpportunityRegistrationSearchParams searchParams)
+    public async Task<Pagination<RegistrationForCandidateViewModel>> GetPageForCandidate(OpportunityRegistrationSearchParams searchParams)
     {
         var page = await _registrationRepository.Paginate(searchParams);
-        return new Pagination<OpportunityRegistrationWithOpportunityViewModel>(
+        return new Pagination<RegistrationForCandidateViewModel>(
             page.PageNumber, 
             page.PageSize,
             page.TotalCount,
@@ -43,7 +43,7 @@ public class OpportunityRegistrationService
             page.Data.Select(x => _mapper.FromModelWithOpportunity(x)));
     }
     
-    public async Task<Pagination<OpportunityRegistrationWithCandidateViewModel>> GetPageForInstitution(OpportunityRegistrationSearchParams searchParams)
+    public async Task<Pagination<RegistrationForInstitutionViewModel>> GetPageForInstitution(OpportunityRegistrationSearchParams searchParams)
     {
         var institutionDoestNotOwnOpportunity = !await _volunteerOpportunityRepository.Query
             .AnyAsync(x => x.Id == searchParams.OpportunityId && x.InstitutionId == _currentUser.GetUserId());
@@ -52,7 +52,7 @@ public class OpportunityRegistrationService
             throw new UnauthorizedException("Você não é dona da oportunidade");
         
         var page = await _registrationRepository.Paginate(searchParams);
-        return new Pagination<OpportunityRegistrationWithCandidateViewModel>(
+        return new Pagination<RegistrationForInstitutionViewModel>(
             page.PageNumber, 
             page.PageSize,
             page.TotalCount,
@@ -106,7 +106,7 @@ public class OpportunityRegistrationService
         await _unitOfWork.SaveAsync();
     }
 
-    public async Task AcceptRegistration(long registrationId)
+    public async Task AcceptRegistration(long registrationId, string feedbackMessage)
     {
         var registration = await _registrationRepository.Query
             .FirstOrDefaultAsync(x => x.Id == registrationId);
@@ -121,11 +121,12 @@ public class OpportunityRegistrationService
             throw new BadRequestException("Inscrição já foi aceita/recusada");
 
         registration.Status = ACCEPTED;
+        registration.FeedbackMessage = feedbackMessage;
         await _registrationRepository.Update(registration);
         await _unitOfWork.SaveAsync();
     }
     
-    public async Task DenyRegistration(long registrationId)
+    public async Task DenyRegistration(long registrationId, string feedbackMessage)
     {
         OpportunityRegistration? registration = await _registrationRepository.Query
             .FirstOrDefaultAsync(x => x.Id == registrationId);
@@ -140,6 +141,7 @@ public class OpportunityRegistrationService
             throw new BadRequestException("Inscrição já foi aceita/recusada");
 
         registration.Status = DENIED;
+        registration.FeedbackMessage = feedbackMessage;
         await _registrationRepository.Update(registration);
         await _unitOfWork.SaveAsync();
     }

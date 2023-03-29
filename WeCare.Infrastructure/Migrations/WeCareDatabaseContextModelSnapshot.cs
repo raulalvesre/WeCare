@@ -283,6 +283,11 @@ namespace WeCare.Infrastructure.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("candidate_id");
 
+                    b.Property<string>("FeedbackMessage")
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)")
+                        .HasColumnName("feedback_message");
+
                     b.Property<long>("OpportunityId")
                         .HasColumnType("bigint")
                         .HasColumnName("opportunity_id");

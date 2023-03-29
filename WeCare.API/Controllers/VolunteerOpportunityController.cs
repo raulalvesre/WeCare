@@ -10,7 +10,6 @@ namespace WeCare.API.Controllers;
 
 [ApiController]
 [Route("api/volunteer-opportunity")]
-[Authorize(Roles = "INSTITUTION")]
 public class VolunteerOpportunityController : ControllerBase
 {
     private readonly VolunteerOpportunityService _volunteerOpportunityService;
@@ -23,7 +22,6 @@ public class VolunteerOpportunityController : ControllerBase
         _currentUser = currentUser;
         _opportunityRegistrationService = opportunityRegistrationService;
     }
-    
     
     [HttpGet("{opportunityId:long}")]
     public async ValueTask<ActionResult<VolunteerOpportunityViewModel>> GetById(long opportunityId)
@@ -38,22 +36,54 @@ public class VolunteerOpportunityController : ControllerBase
         return Ok(candidatePage);
     }
 
+    [Authorize(Roles = "INSTITUTION")]
     [HttpPost]
     public async ValueTask<ActionResult<VolunteerOpportunityViewModel>> Save([FromForm] VolunteerOpportunityForm form)
     {
         return Ok(await _volunteerOpportunityService.Save(_currentUser.GetUserId(), form));
     }
-
+    
+    [Authorize(Roles = "INSTITUTION")]
     [HttpPut("{opportunityId:long}")]
     public async ValueTask<ActionResult<VolunteerOpportunityViewModel>> Update(long opportunityId, [FromForm] VolunteerOpportunityForm form)
     {
         return Ok(await _volunteerOpportunityService.Update(_currentUser.GetUserId(), opportunityId, form));
     }
     
+    [Authorize(Roles = "INSTITUTION")]
     [HttpDelete("{opportunityId:long}")]
     public async ValueTask<ActionResult> Delete(long opportunityId)
     {
         await _volunteerOpportunityService.Delete(_currentUser.GetUserId(), opportunityId);
         return NoContent();
     }
+    
+    [Authorize(Roles = "INSTITUTION")]
+    [HttpGet("{opportunityId:long}/registrations")]
+    public async ValueTask<ActionResult<Pagination<RegistrationForInstitutionViewModel>>> GetOpportunityRegistrations(long opportunityId) 
+    {
+        var searchParams = new OpportunityRegistrationSearchParams()
+        {
+            OpportunityId = opportunityId
+        };
+        
+        return Ok(await _opportunityRegistrationService.GetPageForInstitution(searchParams));
+    }
+    
+    [Authorize(Roles = "CANDIDATE")]
+    [HttpPost("{opportunityId:long}/register")]
+    public async ValueTask<ActionResult> RegisterCurrentCandidate(long opportunityId)
+    {
+        await _opportunityRegistrationService.RegisterCandidate(opportunityId, _currentUser.GetUserId());
+        return NoContent();
+    }
+    
+    [Authorize(Roles = "CANDIDATE")]
+    [HttpPatch("{opportunityId:long}/cancel-registration")]
+    public async ValueTask<ActionResult> CancelCurrentCandidateRegistration(long opportunityId)
+    {
+        await _opportunityRegistrationService.CancelRegistration(opportunityId, _currentUser.GetUserId());
+        return NoContent();
+    }
+    
 }

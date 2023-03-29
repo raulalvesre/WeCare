@@ -18,6 +18,10 @@ public class OpportunityRegistrationMapping : IEntityTypeConfiguration<Opportuni
                 v => v.ToString(),
                 v => (OpportunityStatus)Enum.Parse(typeof(OpportunityStatus), v));
 
+        builder.Property(x => x.FeedbackMessage)
+            .HasMaxLength(1024)
+            .IsRequired(false);
+        
         builder.HasOne(x => x.Opportunity)
             .WithMany()
             .HasForeignKey(x => x.OpportunityId);

@@ -19,6 +19,7 @@ namespace WeCare.Infrastructure.Migrations
                     id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     status = table.Column<string>(type: "text", nullable: false),
+                    feedback_message = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
                     opportunity_id = table.Column<long>(type: "bigint", nullable: false),
                     candidate_id = table.Column<long>(type: "bigint", nullable: false)
                 },

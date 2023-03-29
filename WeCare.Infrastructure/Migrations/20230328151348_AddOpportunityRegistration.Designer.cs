@@ -12,7 +12,7 @@ using WeCare.Infrastructure;
 namespace WeCare.Infrastructure.Migrations
 {
     [DbContext(typeof(WeCareDatabaseContext))]
-    [Migration("20230321012409_AddOpportunityRegistration")]
+    [Migration("20230328151348_AddOpportunityRegistration")]
     partial class AddOpportunityRegistration
     {
         /// <inheritdoc />
@@ -285,6 +285,11 @@ namespace WeCare.Infrastructure.Migrations
                     b.Property<long>("CandidateId")
                         .HasColumnType("bigint")
                         .HasColumnName("candidate_id");
+
+                    b.Property<string>("FeedbackMessage")
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)")
+                        .HasColumnName("feedback_message");
 
                     b.Property<long>("OpportunityId")
                         .HasColumnType("bigint")
