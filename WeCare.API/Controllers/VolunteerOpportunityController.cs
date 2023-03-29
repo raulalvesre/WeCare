@@ -60,10 +60,11 @@ public class VolunteerOpportunityController : ControllerBase
     
     [Authorize(Roles = "INSTITUTION")]
     [HttpGet("{opportunityId:long}/registrations")]
-    public async ValueTask<ActionResult<Pagination<RegistrationForInstitutionViewModel>>> GetOpportunityRegistrations(long opportunityId) 
+    public async ValueTask<ActionResult<Pagination<RegistrationForInstitutionViewModel>>> GetOpportunityRegistrations(long opportunityId, [FromQuery] OpportunityStatus status) 
     {
         var searchParams = new OpportunityRegistrationSearchParams()
         {
+            Status = status,
             OpportunityId = opportunityId
         };
         

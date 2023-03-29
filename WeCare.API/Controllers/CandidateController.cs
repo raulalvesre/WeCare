@@ -63,10 +63,11 @@ public class CandidateController : ControllerBase
     
     [Authorize(Roles = "CANDIDATE")]
     [HttpGet("registrations")]
-    public async ValueTask<ActionResult<Pagination<RegistrationForCandidateViewModel>>> GetCurrentCandidateRegistrationsPage()
+    public async ValueTask<ActionResult<Pagination<RegistrationForCandidateViewModel>>> GetCurrentCandidateRegistrationsPage([FromQuery] OpportunityStatus status)
     {
         var searchParams = new OpportunityRegistrationSearchParams()
         {
+            Status = status,
             CandidateId = _currentUser.GetUserId()
         };
         
