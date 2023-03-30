@@ -42,7 +42,7 @@ public class UserMapping : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.Property(x => x.Number)
-            .IsRequired();
+            .IsRequired(false);
 
         builder.Property(x => x.Complement);
         

@@ -14,8 +14,6 @@ public class AddressViewModelValidator : AbstractValidator<AddressViewModel>
             .WithMessage("O endereço deve ter no máximo 500 caracteres");
         
         RuleFor(x => x.Number)
-            .NotEmpty()
-            .WithMessage("O número do endereço não pode ser vazio")
             .MaximumLength(30)
             .WithMessage("O número do endereço deve ter no máximo 30 caracteres");
         
