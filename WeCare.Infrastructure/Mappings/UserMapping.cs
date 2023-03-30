@@ -60,6 +60,9 @@ public class UserMapping : IEntityTypeConfiguration<User>
         builder.Property(x => x.PostalCode)
             .IsRequired();
 
+        builder.Property(x => x.LinkedIn)
+            .IsRequired(false);
+
         builder.Property(x => x.Enabled)
             .IsRequired();
 
