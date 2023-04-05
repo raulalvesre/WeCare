@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WeCare.Application.Interfaces;
 using WeCare.Application.SearchParams;
 using WeCare.Application.Services;
 using WeCare.Application.ViewModels;
@@ -14,15 +13,12 @@ public class CandidateController : ControllerBase
 {
     private readonly CandidateService _candidateService;
     private readonly OpportunityRegistrationService _opportunityRegistrationService;
-    private readonly ICurrentUser _currentUser;
 
     public CandidateController(CandidateService candidateService,
-        OpportunityRegistrationService opportunityRegistrationService,
-        ICurrentUser currentUser)
+        OpportunityRegistrationService opportunityRegistrationService)
     {
         _candidateService = candidateService;
         _opportunityRegistrationService = opportunityRegistrationService;
-        _currentUser = currentUser;
     }
 
     [HttpGet("{id:long:min(0)}")]
@@ -39,36 +35,36 @@ public class CandidateController : ControllerBase
     }
     
     [Authorize(Roles = "CANDIDATE")]
-    [HttpPut]
-    public async ValueTask<ActionResult<CandidateViewModel>> UpdateCurrentCandidate(CandidateForm form)
+    [HttpPut("{candidateId:long}")]
+    public async ValueTask<ActionResult<CandidateViewModel>> Update(long candidateId, CandidateForm form)
     {
-        return Ok(await _candidateService.Update(_currentUser.GetUserId(), form));
+        return Ok(await _candidateService.Update(candidateId, form));
     }
 
     [Authorize(Roles = "CANDIDATE")]
-    [HttpDelete]
-    public async ValueTask<ActionResult> DeleteCurrentCandidate()
+    [HttpDelete("{candidateId:long}")]
+    public async ValueTask<ActionResult> Delete(long candidateId)
     {
-        await _candidateService.Delete(_currentUser.GetUserId());
+        await _candidateService.Delete(candidateId);
         return NoContent();
     }
     
     [Authorize(Roles = "CANDIDATE")]
-    [HttpPatch("upload-photo")]
-    public async ValueTask<ActionResult> AddPhoto([FromForm] ImageUploadForm form)
+    [HttpPatch("{candidateId:long}/upload-photo")]
+    public async ValueTask<ActionResult> AddPhoto(long candidateId, [FromForm] ImageUploadForm form)
     {
-        await _candidateService.AddPhoto(_currentUser.GetUserId(), form);
+        await _candidateService.AddPhoto(candidateId, form);
         return NoContent();
     }
     
     [Authorize(Roles = "CANDIDATE")]
-    [HttpGet("registrations")]
-    public async ValueTask<ActionResult<Pagination<RegistrationForCandidateViewModel>>> GetCurrentCandidateRegistrationsPage([FromQuery] OpportunityStatus status)
+    [HttpGet("{candidateId:long}/registrations")]
+    public async ValueTask<ActionResult<Pagination<RegistrationForCandidateViewModel>>> GetCurrentCandidateRegistrationsPage(long candidateId, [FromQuery] OpportunityStatus status)
     {
         var searchParams = new OpportunityRegistrationSearchParams()
         {
             Status = status,
-            CandidateId = _currentUser.GetUserId()
+            CandidateId = candidateId
         };
         
         return Ok(await _opportunityRegistrationService.GetPageForCandidate(searchParams));

@@ -34,6 +34,9 @@ public class OpportunityRegistrationService
 
     public async Task<Pagination<RegistrationForCandidateViewModel>> GetPageForCandidate(OpportunityRegistrationSearchParams searchParams)
     {
+        if (searchParams.CandidateId != _currentUser.GetUserId())
+            throw new UnauthorizedException("Você não possui permissão");
+        
         var page = await _registrationRepository.Paginate(searchParams);
         return new Pagination<RegistrationForCandidateViewModel>(
             page.PageNumber, 
