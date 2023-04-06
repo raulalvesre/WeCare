@@ -76,7 +76,7 @@ public class CandidateService
     public async Task<CandidateViewModel> Update(long candidateId, CandidateForm form)
     {
         if (candidateId != _currentUser.GetUserId())
-            throw new UnauthorizedException("Vocẽ não ter permissão");
+            throw new ForbiddenException("Vocẽ não ter permissão");
         
         form.Id = candidateId;
         var validationResult = await _candidateFormValidator.ValidateAsync(form);;
@@ -129,7 +129,7 @@ public class CandidateService
     public async Task Delete(long candidateId)
     {
         if (!_currentUser.IsInRole("ADMIN") && candidateId != _currentUser.GetUserId())
-            throw new UnauthorizedException("Vocẽ não ter permissão");
+            throw new ForbiddenException("Vocẽ não ter permissão");
         
         var candidate = await _candidateRepository.GetById(candidateId);
         if (candidate is null)
@@ -147,7 +147,7 @@ public class CandidateService
     public async Task AddPhoto(long candidateId, ImageUploadForm form)
     {
         if (!_currentUser.IsInRole("ADMIN") && candidateId != _currentUser.GetUserId())
-            throw new UnauthorizedException("Vocẽ não ter permissão");
+            throw new ForbiddenException("Vocẽ não ter permissão");
         
         var candidate = await _candidateRepository.GetById(candidateId);
         if (candidate is null)

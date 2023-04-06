@@ -31,6 +31,20 @@ public class OpportunityRegistrationService
         _currentUser = currentUser;
         _mapper = mapper;
     }
+    
+    public async Task<Pagination<AcceptedRegistrationForCandidateViewModel>> GetAcceptedRegistrationsPageForCandidate(OpportunityRegistrationSearchParams searchParams)
+    {
+        if (searchParams.CandidateId != _currentUser.GetUserId())
+            throw new UnauthorizedException("Você não possui permissão");
+        
+        var page = await _registrationRepository.Paginate(searchParams);
+        return new Pagination<AcceptedRegistrationForCandidateViewModel>(
+            page.PageNumber, 
+            page.PageSize,
+            page.TotalCount,
+            page.TotalPages,
+            page.Data.Select(x => _mapper.FromModelToAcceptedRegistrationForCandidateViewModel(x)));
+    }
 
     public async Task<Pagination<RegistrationForCandidateViewModel>> GetPageForCandidate(OpportunityRegistrationSearchParams searchParams)
     {
@@ -43,7 +57,7 @@ public class OpportunityRegistrationService
             page.PageSize,
             page.TotalCount,
             page.TotalPages,
-            page.Data.Select(x => _mapper.FromModelWithOpportunity(x)));
+            page.Data.Select(x => _mapper.FromModelToRegistrationForCandidateViewModel(x)));
     }
     
     public async Task<Pagination<RegistrationForInstitutionViewModel>> GetPageForInstitution(OpportunityRegistrationSearchParams searchParams)
@@ -60,7 +74,7 @@ public class OpportunityRegistrationService
             page.PageSize,
             page.TotalCount,
             page.TotalPages,
-            page.Data.Select(x => _mapper.FromModelWithCandidate(x)));
+            page.Data.Select(x => _mapper.FromModelToRegistrationForInstutitionViewModel(x)));
     }
     
     public async Task RegisterCandidate(long opportunityId, long candidateId)

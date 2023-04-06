@@ -60,6 +60,16 @@ public class ExceptionFilter : IExceptionFilter
                 Message = exception.Message
             });
         }
+        
+        if (context.Exception is ForbiddenException)
+        {
+            var exception = context.Exception as GoneException;
+            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            context.Result = new JsonResult(new
+            {
+                Message = exception.Message
+            });
+        }
     }
     
 }

@@ -58,16 +58,47 @@ public class CandidateController : ControllerBase
     }
     
     [Authorize(Roles = "CANDIDATE")]
-    [HttpGet("{candidateId:long}/registrations")]
-    public async ValueTask<ActionResult<Pagination<RegistrationForCandidateViewModel>>> GetCurrentCandidateRegistrationsPage(long candidateId, [FromQuery] OpportunityStatus status)
+    [HttpGet("{candidateId:long}/pending-registrations")]
+    public async ValueTask<ActionResult<Pagination<RegistrationForCandidateViewModel>>> GetCurrentCandidatePendingRegistrationsPage(long candidateId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
         var searchParams = new OpportunityRegistrationSearchParams()
         {
-            Status = status,
-            CandidateId = candidateId
+            Status = OpportunityStatus.PENDING,
+            CandidateId = candidateId,
+            PageNumber = pageNumber,
+            PageSize = pageSize
         };
         
         return Ok(await _opportunityRegistrationService.GetPageForCandidate(searchParams));
     }  
     
+    [Authorize(Roles = "CANDIDATE")]
+    [HttpGet("{candidateId:long}/accepted-registrations")]
+    public async ValueTask<ActionResult<Pagination<AcceptedRegistrationForCandidateViewModel>>> GetCurrentCandidateAcceptedRegistrationsPage(long candidateId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        var searchParams = new OpportunityRegistrationSearchParams()
+        {
+            Status = OpportunityStatus.ACCEPTED,
+            CandidateId = candidateId,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
+        
+        return Ok(await _opportunityRegistrationService.GetAcceptedRegistrationsPageForCandidate(searchParams));
+    }  
+    
+    [Authorize(Roles = "CANDIDATE")]
+    [HttpGet("{candidateId:long}/denied-registrations")]
+    public async ValueTask<ActionResult<Pagination<RegistrationForCandidateViewModel>>> GetCurrentCandidateDeniedRegistrationsPage(long candidateId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        var searchParams = new OpportunityRegistrationSearchParams()
+        {
+            Status = OpportunityStatus.DENIED,
+            CandidateId = candidateId,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
+        
+        return Ok(await _opportunityRegistrationService.GetPageForCandidate(searchParams));
+    }  
 }

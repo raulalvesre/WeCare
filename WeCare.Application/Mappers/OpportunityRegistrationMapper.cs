@@ -14,7 +14,7 @@ public class OpportunityRegistrationMapper
         _opportunityMapper = opportunityMapper;
     }
 
-    public RegistrationForInstitutionViewModel FromModelWithCandidate(OpportunityRegistration model)
+    public RegistrationForInstitutionViewModel FromModelToRegistrationForInstutitionViewModel(OpportunityRegistration model)
     {
         return new RegistrationForInstitutionViewModel()
         {
@@ -24,13 +24,23 @@ public class OpportunityRegistrationMapper
         };
     }
     
-    public RegistrationForCandidateViewModel FromModelWithOpportunity(OpportunityRegistration model)
+    public RegistrationForCandidateViewModel FromModelToRegistrationForCandidateViewModel(OpportunityRegistration model)
     {
         return new RegistrationForCandidateViewModel()
         {
             Id = model.Id,
             Status = model.Status, 
             Opportunity = _opportunityMapper.FromModelToCandidateRegistrationViewModel(model.Opportunity)
+        };
+    }
+    
+    public AcceptedRegistrationForCandidateViewModel FromModelToAcceptedRegistrationForCandidateViewModel(OpportunityRegistration model)
+    {
+        return new AcceptedRegistrationForCandidateViewModel()
+        {
+            Id = model.Id,
+            Status = model.Status, 
+            Opportunity = _opportunityMapper.FromModelToOpportunityForAcceptedRegistrationViewModel(model.Opportunity)
         };
     }
 }

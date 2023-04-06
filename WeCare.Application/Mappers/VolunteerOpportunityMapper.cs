@@ -46,6 +46,21 @@ public class VolunteerOpportunityMapper
             Institution = _institutionMapper.FromModelToCandidateRegistrationViewModel(opportunity.Institution)
         };
     }
+    
+    public OpportunityForAcceptedRegistrationViewModel FromModelToOpportunityForAcceptedRegistrationViewModel(VolunteerOpportunity opportunity)
+    {
+        return new OpportunityForAcceptedRegistrationViewModel()
+        {
+            Id = opportunity.Id,
+            Name = opportunity.Name,
+            Description = opportunity.Description,
+            OpportunityDate = opportunity.OpportunityDate,
+            Photo = opportunity.Photo,
+            Address = new AddressViewModel(opportunity),
+            Causes = opportunity.Causes.Select(x => x.Name),
+            Institution = _institutionMapper.FromModelToCandidateRegistrationViewModel(opportunity.Institution)
+        };
+    }
 
     public VolunteerOpportunity ToModel(long institutionId, VolunteerOpportunityForm form)
     {
