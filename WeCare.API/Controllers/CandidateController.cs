@@ -101,4 +101,20 @@ public class CandidateController : ControllerBase
         
         return Ok(await _opportunityRegistrationService.GetPageForCandidate(searchParams));
     }  
+    
+    
+    [Authorize(Roles = "CANDIDATE")]
+    [HttpGet("{candidateId:long}/canceled-registrations")]
+    public async ValueTask<ActionResult<Pagination<RegistrationForCandidateViewModel>>> GetCurrentCandidateCanceledRegistrationsPage(long candidateId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        var searchParams = new OpportunityRegistrationSearchParams()
+        {
+            Status = OpportunityStatus.CANCELED,
+            CandidateId = candidateId,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
+        
+        return Ok(await _opportunityRegistrationService.GetPageForCandidate(searchParams));
+    }  
 }

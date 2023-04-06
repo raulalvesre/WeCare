@@ -15,7 +15,7 @@ public class ExceptionFilter : IExceptionFilter
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
             context.Result = new JsonResult(new
             {
-                Message = exception.Message
+                exception.Message
             });
         }
         
@@ -25,8 +25,8 @@ public class ExceptionFilter : IExceptionFilter
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             context.Result = new JsonResult(new
             {
-                Message = exception.Message,
-                Errors = exception.Errors
+                exception.Message,
+                exception.Errors
             });
         }
 
@@ -36,7 +36,7 @@ public class ExceptionFilter : IExceptionFilter
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
             context.Result = new JsonResult(new
             {
-                Message = exception.Message
+                exception.Message
             });
         }
         
@@ -46,8 +46,8 @@ public class ExceptionFilter : IExceptionFilter
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
             context.Result = new JsonResult(new
             {
-                Message = exception.Message,
-                Errors = exception.Errors
+                exception.Message,
+                exception.Errors
             });
         }
 
@@ -57,17 +57,27 @@ public class ExceptionFilter : IExceptionFilter
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Gone;
             context.Result = new JsonResult(new
             {
-                Message = exception.Message
+                exception.Message
+            });
+        }
+        
+        if (context.Exception is ConflictException)
+        {
+            var exception = context.Exception as ConflictException;
+            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Conflict;
+            context.Result = new JsonResult(new
+            {
+                exception.Message
             });
         }
         
         if (context.Exception is ForbiddenException)
         {
-            var exception = context.Exception as GoneException;
+            var exception = context.Exception as ForbiddenException;
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
             context.Result = new JsonResult(new
             {
-                Message = exception.Message
+                exception.Message
             });
         }
     }
