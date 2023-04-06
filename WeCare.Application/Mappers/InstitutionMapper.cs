@@ -19,6 +19,18 @@ public class InstitutionMapper
             Address = new AddressViewModel(institution),
         };
     }
+     
+     public InstitutionForRegistrationViewModel FromModelToCandidateRegistrationViewModel(Institution institution)
+     {
+         return new InstitutionForRegistrationViewModel
+         {
+             Id = institution.Id,
+             Photo = institution.Photo,
+             Name = institution.Name,
+             Cnpj = institution.Cnpj,
+             Address = new SecretativeAddressViewModel(institution),
+         };
+     }
 
     public Institution ToModel(InstitutionForm form)
     {

@@ -42,7 +42,7 @@ public class UserMapping : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.Property(x => x.Number)
-            .IsRequired();
+            .IsRequired(false);
 
         builder.Property(x => x.Complement);
         
@@ -59,6 +59,9 @@ public class UserMapping : IEntityTypeConfiguration<User>
 
         builder.Property(x => x.PostalCode)
             .IsRequired();
+
+        builder.Property(x => x.LinkedIn)
+            .IsRequired(false);
 
         builder.Property(x => x.Enabled)
             .IsRequired();

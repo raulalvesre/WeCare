@@ -1,4 +1,5 @@
 using WeCare.Application.Exceptions;
+using WeCare.Application.Interfaces;
 using WeCare.Application.Mappers;
 using WeCare.Application.SearchParams;
 using WeCare.Application.Validators;
@@ -18,13 +19,14 @@ public class CandidateService
     private readonly CandidateMapper _mapper;
     private readonly CandidateAdminFormValidator _candidateAdminFormValidator;
     private readonly CandidateFormValidator _candidateFormValidator;
+    private readonly ICurrentUser _currentUser;
 
     public CandidateService(CandidateRepository candidateRepository,
         CandidateMapper mapper,
         UserRepository userRepository,
         UnitOfWork unitOfWork, 
         CandidateAdminFormValidator candidateAdminFormValidator,
-        CandidateFormValidator candidateFormValidator)
+        CandidateFormValidator candidateFormValidator, ICurrentUser currentUser)
     {
         _candidateRepository = candidateRepository;
         _mapper = mapper;
@@ -32,6 +34,7 @@ public class CandidateService
         _unitOfWork = unitOfWork;
         _candidateAdminFormValidator = candidateAdminFormValidator;
         _candidateFormValidator = candidateFormValidator;
+        _currentUser = currentUser;
     }
 
     public async Task<CandidateViewModel> GetById(long id)
@@ -72,6 +75,9 @@ public class CandidateService
     
     public async Task<CandidateViewModel> Update(long candidateId, CandidateForm form)
     {
+        if (candidateId != _currentUser.GetUserId())
+            throw new ForbiddenException("Vocẽ não ter permissão");
+        
         form.Id = candidateId;
         var validationResult = await _candidateFormValidator.ValidateAsync(form);;
         if (!validationResult.IsValid)
@@ -122,6 +128,9 @@ public class CandidateService
 
     public async Task Delete(long candidateId)
     {
+        if (!_currentUser.IsInRole("ADMIN") && candidateId != _currentUser.GetUserId())
+            throw new ForbiddenException("Vocẽ não ter permissão");
+        
         var candidate = await _candidateRepository.GetById(candidateId);
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");
@@ -137,6 +146,9 @@ public class CandidateService
 
     public async Task AddPhoto(long candidateId, ImageUploadForm form)
     {
+        if (!_currentUser.IsInRole("ADMIN") && candidateId != _currentUser.GetUserId())
+            throw new ForbiddenException("Vocẽ não ter permissão");
+        
         var candidate = await _candidateRepository.GetById(candidateId);
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");

@@ -19,6 +19,7 @@ public abstract class User
     public string Neighborhood { get; set; } = string.Empty;
     public State State { get; set; }
     public string PostalCode { get; set; } = string.Empty;
+    public string LinkedIn { get; set; } = string.Empty;
     public bool Enabled { get; set; }
     public DateTime CreationDate { get; set; }
     public DateTime? LastUpdateDate { get; set; }

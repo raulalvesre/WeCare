@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WeCare.Infrastructure;
@@ -11,9 +12,11 @@ using WeCare.Infrastructure;
 namespace WeCare.Infrastructure.Migrations
 {
     [DbContext(typeof(WeCareDatabaseContext))]
-    partial class WeCareDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230330012035_MakeUserAddressNumberNotRequired")]
+    partial class MakeUserAddressNumberNotRequired
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -350,10 +353,6 @@ namespace WeCare.Infrastructure.Migrations
                     b.Property<DateTime?>("LastUpdateDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("last_update_date");
-
-                    b.Property<string>("LinkedIn")
-                        .HasColumnType("text")
-                        .HasColumnName("linked_in");
 
                     b.Property<string>("Name")
                         .IsRequired()

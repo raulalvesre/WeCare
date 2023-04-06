@@ -46,7 +46,7 @@ public abstract class BaseRepository<T> where T : class
         int pageNumber = filterParams.PageNumber ?? 1;
         int pageSize = filterParams.PageSize ?? 10;
         int totalCount = await query.CountAsync();
-        int totalPages = (int) Math.Ceiling(totalCount * 1.0 / pageSize);
+        int totalPages = totalCount != 0 ? (int) Math.Ceiling(totalCount * 1.0 / pageSize) : 0;
 
         if (pageSize < 1)
             return new Pagination<T>(pageNumber, pageSize, totalCount, totalPages, recordList);
