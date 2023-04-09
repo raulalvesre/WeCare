@@ -52,10 +52,9 @@ public class VolunteerOpportunityService
 
         return _mapper.FromModel(opportunity);
     }
-
-    public async Task<Pagination<VolunteerOpportunityViewModel>> GetPage(long instititutionId, VolunteerOpportunitySearchParams searchParams)
+    
+    public async Task<Pagination<VolunteerOpportunityViewModel>> GetPage(VolunteerOpportunitySearchParams searchParams)
     {
-        searchParams.InstitutionId = instititutionId;
         var opportunitiesPage = await _volunteerOpportunityRepository.Paginate(searchParams);
         return new Pagination<VolunteerOpportunityViewModel>(
             opportunitiesPage.PageNumber, 
@@ -64,7 +63,7 @@ public class VolunteerOpportunityService
             opportunitiesPage.TotalPages,
             opportunitiesPage.Data.Select(_mapper.FromModel));
     }
-    
+
     public async Task<VolunteerOpportunityViewModel> Save(long institutionId, VolunteerOpportunityForm form)
     {
         var institution = await _institutionRepository.GetByIdNoTracking(institutionId);

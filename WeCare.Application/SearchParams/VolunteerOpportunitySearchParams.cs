@@ -8,7 +8,6 @@ namespace WeCare.Application.SearchParams;
 
 public class VolunteerOpportunitySearchParams : PaginationFilterParamsBase<VolunteerOpportunity>
 {
-    [JsonIgnore]
     public long? InstitutionId { get; set; }
     public DateTime? PeriodStart { get; set; }
     public DateTime? PeriodEnd { get; set; }

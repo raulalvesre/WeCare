@@ -26,10 +26,10 @@ public class VolunteerOpportunityAdminController : ControllerBase
         return Ok(await _volunteerOpportunityService.GetById(opportunityId));
     }
     
-    [HttpGet("{institutionId:long}/search")]
-    public async ValueTask<ActionResult<Pagination<VolunteerOpportunityViewModel>>> Search(long institutionId, [FromQuery] VolunteerOpportunitySearchParams searchParams)
+    [HttpGet("search")]
+    public async ValueTask<ActionResult<Pagination<VolunteerOpportunityViewModel>>> Search([FromQuery] VolunteerOpportunitySearchParams searchParams)
     {
-        var candidatePage = await _volunteerOpportunityService.GetPage(institutionId, searchParams);
+        var candidatePage = await _volunteerOpportunityService.GetPage(searchParams);
         return Ok(candidatePage);
     }
 
