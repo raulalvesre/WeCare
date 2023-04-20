@@ -56,6 +56,9 @@ public class OpportunityInvitationService
         if (opportunity is null)
             throw new NotFoundException("Oportunidade não encontrada");
 
+        if (opportunity.InstitutionId != _currentUser.GetUserId())
+            throw new UnauthorizedException("Você não tem permissão para convidar candidatos para essa oportunidade");
+
         var candidateIsAlreadyInvited = await _invitationRepository.Query
             .AnyAsync(x => x.CandidateId == candidate.Id && x.OpportunityId == opportunity.Id);
 
