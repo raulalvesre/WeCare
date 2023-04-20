@@ -99,7 +99,7 @@ public class OpportunityRegistrationService
             CandidateId = candidateId
         };
 
-        await _registrationRepository.Add(opportunityRegistration);
+        await _registrationRepository.Save(opportunityRegistration);
         await _unitOfWork.SaveAsync();
     }
     

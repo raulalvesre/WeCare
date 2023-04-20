@@ -35,7 +35,7 @@ public class ConfirmationTokenService
             UserId = form.UserId
         };
 
-        await _confirmationTokenRepository.Add(confirmationToken);
+        await _confirmationTokenRepository.Save(confirmationToken);
         await _unitOfWork.SaveAsync();
 
         return new ConfirmationTokenViewModel(confirmationToken);

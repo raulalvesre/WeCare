@@ -76,7 +76,7 @@ public class VolunteerOpportunityService
             throw new BadRequestException(validationResult.Errors);
         
         var opportunity = _mapper.ToModel(institutionId, form);
-        await _volunteerOpportunityRepository.Add(opportunity);
+        await _volunteerOpportunityRepository.Save(opportunity);
         await _unitOfWork.SaveAsync();
 
         return _mapper.FromModel(opportunity);

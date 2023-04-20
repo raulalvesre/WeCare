@@ -11,6 +11,7 @@ using WeCare.Application.Interfaces;
 using WeCare.Application.Mappers;
 using WeCare.Application.Services;
 using WeCare.Application.Validators;
+using WeCare.Application.ViewModels;
 using WeCare.Domain.Models;
 using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
@@ -67,19 +68,21 @@ builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<VolunteerOpportunityRepository>();
 builder.Services.AddScoped<OpportunityCauseRepository>();
 builder.Services.AddScoped<OpportunityRegistrationRepository>();
+builder.Services.AddScoped<OpportunityInvitationRepository>();
 
 builder.Services.AddScoped<VolunteerOpportunityFormValidator>();
-
 builder.Services.AddScoped<CandidateAdminFormValidator>();
 builder.Services.AddScoped<CandidateFormValidator>();
 builder.Services.AddScoped<InstitutionAdminFormValidator>();
 builder.Services.AddScoped<InstitutionFormValidator>();
+builder.Services.AddScoped<OpportunityInvitationFormValidator>();
 
 builder.Services.AddScoped<CandidateMapper>();
 builder.Services.AddScoped<InstitutionMapper>();
 builder.Services.AddScoped<VolunteerOpportunityMapper>();
 builder.Services.AddScoped<OpportunityCauseMapper>();
 builder.Services.AddScoped<OpportunityRegistrationMapper>();
+builder.Services.AddScoped<OpportunityInvitationMapper>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
@@ -93,6 +96,7 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<VolunteerOpportunityService>();
 builder.Services.AddScoped<OpportunityCauseService>();
 builder.Services.AddScoped<OpportunityRegistrationService>();
+builder.Services.AddScoped < OpportunityRegistrationService>();
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 

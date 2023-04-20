@@ -18,4 +18,12 @@
       <PackageReference Include="MimeKit" Version="3.5.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="EmailTemplates\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="EmailTemplates\OpportunityInvitationTemplate.cshtml" />
+    </ItemGroup>
+
 </Project>

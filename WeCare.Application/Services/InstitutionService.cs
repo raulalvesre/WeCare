@@ -64,7 +64,7 @@ public class InstitutionService
 
         var institution = _mapper.ToModel(form);
 
-        await _institutionRepository.Add(institution);
+        await _institutionRepository.Save(institution);
         await _unitOfWork.SaveAsync();
 
         return _mapper.FromModel(institution);
@@ -96,7 +96,7 @@ public class InstitutionService
         
         var institution = _mapper.ToModel(form);
 
-        await _institutionRepository.Add(institution);
+        await _institutionRepository.Save(institution);
         await _unitOfWork.SaveAsync();
 
         return _mapper.FromModel(institution);
