@@ -1,36 +1,41 @@
 @page
-@model WeCare.Application.ViewModels.OpportunityInvitationEmailViewModel
+@model WeCare.ViewModels.OpportunityInvitationEmailViewModel
 
 @{
     Layout = null;
 }
 
 <!DOCTYPE html>
-
 <html>
 <head>
-   <style>
-        .header {
-            margin: 0;
-            line-height: 48px;
-            mso-line-height-rule: exactly;
-            font-family: arial, 'helvetica neue', helvetica, sans-serif;
-            font-size: 40px;
-            font-style: normal;
-            font-weight: bold;
-            color: #56bfef;
-            text-align: center;
-        }
-   </style>
+	<meta charset="utf-8">
+	<title>Volunteer Opportunity Invitation</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+			line-height: 1.5;
+			background-color: #f6f6f6;
+		}
+		h1 {
+			font-size: 24px;
+			color: #333333;
+			margin-top: 0;
+			margin-bottom: 16px;
+		}
+		p {
+			margin-top: 0;
+			margin-bottom: 16px;
+		}
+	</style>
 </head>
 <body>
-    <h1 class="header">WeCare</h1>
-    <div>
-        Parabéns! Você foi convidado para a seguinte oportunidade:
-        
-        
-        
-        <a href="http://localhost:8080/invites/@Model.Id">@Model.Opportunity.Name</a>
-    </div>
+	<h1>WeCare</h1>
+	<p>Parabéns, @Model.CandidateName!</p>
+	<p>Você foi convidado para a seguinte oportunidade: <a href="http://localhost:8085/opportunity-invitations/@Model.OpportunityId" class="button">@Model.OpportunityName</a></p>
+	@if (Model.InvitationMessage.IsNullOrEmpty()) 
+	{
+		<p>Mensagem de convite: @Model.InvitationMessage
+	}
 </body>
 </html>

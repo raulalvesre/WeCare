@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using RazorEngine.Templating;
 using WeCare.Application.Exceptions;
 using WeCare.Application.Interfaces;
 using WeCare.Application.Mappers;
@@ -21,6 +22,7 @@ public class OpportunityInvitationService
     private readonly UnitOfWork _unitOfWork;
     private readonly EmailService _emailService;
     private readonly ICurrentUser _currentUser;
+    private readonly RazorEngineService _razorEngineService;
 
     public OpportunityInvitationService(OpportunityInvitationRepository invitationRepository,
         ICurrentUser currentUser,
@@ -30,7 +32,7 @@ public class OpportunityInvitationService
         EmailService emailService, 
         CandidateRepository candidateRepository, 
         InstitutionRepository institutionRepository,
-        VolunteerOpportunityRepository opportunityRepository)
+        VolunteerOpportunityRepository opportunityRepository, RazorEngineService razorEngineService)
     {
         _invitationRepository = invitationRepository;
         _currentUser = currentUser;
@@ -41,6 +43,7 @@ public class OpportunityInvitationService
         _candidateRepository = candidateRepository;
         _institutionRepository = institutionRepository;
         _opportunityRepository = opportunityRepository;
+        _razorEngineService = razorEngineService;
     }
 
     public async Task<OpportunityInvitationViewModel> Save(OpportunityInvitationForm form)
@@ -72,20 +75,30 @@ public class OpportunityInvitationService
         var invitation = _invitationMapper.ToModel(form);
         
         await _invitationRepository.Save(invitation);
-        await _emailService.SendEmailAsync(CreateInvitationEmail(candidate, opportunity));
+        await _emailService.SendEmailAsync(CreateInvitationEmail(candidate, opportunity, invitation.InvitationMessage));
 
         await _unitOfWork.SaveAsync();
 
         return _invitationMapper.FromModel(invitation);
     }
 
-    private EmailRequest CreateInvitationEmail(Candidate candidate, VolunteerOpportunity opportunity)
+    private EmailRequest CreateInvitationEmail(Candidate candidate, VolunteerOpportunity opportunity, string invitationMessage)
     {
+        var invitationEmailViewModel = new OpportunityInvitationEmailViewModel
+        {
+            CandidateName = candidate.Name,
+            OpportunityId = opportunity.Id,
+            OpportunityName = opportunity.Name,
+            InvitationMessage = invitationMessage
+        };
+
+        var emailBody = _razorEngineService.RunCompile("../EmailTemplates/OpportunityInvitation.cshtml", typeof(OpportunityInvitationEmailViewModel), invitationEmailViewModel);
+
         return new EmailRequest
         {
             ToEmail = candidate.Email,
             Subject = $"WeCare - A empresa {opportunity.Institution.Name} te convidou para uma oportunidade",
-            Body = $"Parabéns! Você foi convidade para a seguinte oportunidade: link/opportunity/{opportunity.Id} <botao act> <botao negar>"
+            Body = emailBody
         };
     }
     

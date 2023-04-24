@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json.Serialization;
+using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -16,12 +17,17 @@ using WeCare.Domain.Models;
 using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
 
+Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
 var allowSpecificOrigins = "_allowSpecificOrigins";
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
+
+builder.Configuration.AddEnvironmentVariables(x => x.Prefix = "WECARE__");
+
 
 var key =  Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("jwt-secret"));
 

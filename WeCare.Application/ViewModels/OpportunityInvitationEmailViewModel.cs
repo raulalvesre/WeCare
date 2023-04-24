@@ -2,8 +2,8 @@ namespace WeCare.Application.ViewModels;
 
 public class OpportunityInvitationEmailViewModel
 {
-    public long Id { get; set; }
+    public string CandidateName { get; set; }
+    public long OpportunityId { get; set; }
+    public string OpportunityName { get; set; }
     public string InvitationMessage { get; set; }
-    public VolunteerOpportunityViewModel Opportunity { get; set; }
-    public InstitutionViewModel InstitutionViewModel { get; set; }
 }
