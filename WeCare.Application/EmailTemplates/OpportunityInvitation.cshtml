@@ -1,0 +1,36 @@
+@page
+@model WeCare.Application.ViewModels.OpportunityInvitationEmailViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+   <style>
+        .header {
+            margin: 0;
+            line-height: 48px;
+            mso-line-height-rule: exactly;
+            font-family: arial, 'helvetica neue', helvetica, sans-serif;
+            font-size: 40px;
+            font-style: normal;
+            font-weight: bold;
+            color: #56bfef;
+            text-align: center;
+        }
+   </style>
+</head>
+<body>
+    <h1 class="header">WeCare</h1>
+    <div>
+        Parabéns! Você foi convidado para a seguinte oportunidade:
+        
+        
+        
+        <a href="http://localhost:8080/invites/@Model.Id">@Model.Opportunity.Name</a>
+    </div>
+</body>
+</html>
