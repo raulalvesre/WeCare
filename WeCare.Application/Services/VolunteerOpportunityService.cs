@@ -52,7 +52,7 @@ public class VolunteerOpportunityService
 
         return _mapper.FromModel(opportunity);
     }
-
+    
     public async Task<Pagination<VolunteerOpportunityViewModel>> GetPage(VolunteerOpportunitySearchParams searchParams)
     {
         var opportunitiesPage = await _volunteerOpportunityRepository.Paginate(searchParams);

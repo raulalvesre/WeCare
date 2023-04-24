@@ -1,46 +1,53 @@
-<div class="container text-white">
-    <div class="row">
-        <div class="col-12 col-md-10 col-lg-5">
-            <form name="form2" class="border corDeFundo mb-5">
-                <div class="row mt-5 pt-2 pb-5 ">
-                    <div class="col-12 text-center bg-warning ">
-                        LogIn
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="usuario" class="col-4 text-right">Usuario:</label>
-                    <input class="form-control col-6" type="text" name="nome" placeholder="" required="required">
-                </div>
-                <div class="form-group row">
-                    <label for="usuario" class="col-4 text-right">Senha:</label>
-                    <input class="form-control col-6" type="password" name="senha" placeholder="" required="required">
-                    <small class="form-text col-10 text-right"><a href="recSenha.html">Esqueci Minha Senha</a></small>
-                </div>
-
-                <div class="row mb-4 pb-2">
-                    <button type="submit" class="btn btn-warning col-4 offset-4" onclick="return validar_login()">
-                        Entrar
-                    </button>
-                </div>
-            </form>
+<section>
+  <div class="row">
+    <div class="col-12 d-flex justify-content-center">
+      <div class="form-box col-md-3 d-flex justify-content-center rounded-4">
+        <div class="form-value">
+          <form [formGroup]="form">
+            <h2>Acesso</h2>
+            <div>
+              <div class="inputbox">
+                <input id="email" type="email" formControlName="email" />
+                <label for="email">E-mail</label>
+              </div>
+              <p *ngIf="form.get('email').invalid" class="text-start text-danger">
+                E-mail não preenchido
+              </p>
+            </div>
+            <div>
+              <div class="inputbox">
+                <input id="password" type="password" formControlName="password" />
+                <label for="password">Senha</label>
+              </div>
+              <p
+                *ngIf="form.get('password').invalid"
+                class="text-start text-danger"
+              >
+                Senha não preenchida
+              </p>
+            </div>
+            <button
+              type="button"
+              class="btn btn-primary text-white"
+              [disabled]="form.invalid"
+              (click)="login()"
+            >
+              Entrar
+            </button>
+            <div class="register">
+              <p>
+                Não tem uma conta?<a
+                  routerLink="/user/create"
+                  class="nav-link"
+                  routerLinkActive="active"
+                >
+                  Cadastre-se agora!</a
+                >
+              </p>
+            </div>
+          </form>
         </div>
-        <div class="col-1"></div><div class="col-1"></div>
-        <div class="col-12 col-md-10 col-lg-5">
-        <form class="border corDeFundo mb-5">
-            <div class="row mt-5 pt-2 pb-5">
-                <div class="col-12 text-center bg-warning">
-                    Criar Conta
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="usuario" class="col-10 offset-1 text-center pb-2">Ainda não tem uma conta? Ta esperando o que? Clique no botão abaixo e faça seu cadastro!</label>
-            </div>
-            <div class="row mb-4 pb-2">
-                <button type="button" class="btn btn-warning col-4 offset-4">
-                    <a href="cadastro.html">Fazer Cadastro!</a>
-                </button>
-            </div>
-        </form>
-        </div>
-    </div>	
-</div>
+      </div>
+    </div>
+  </div>
+</section>

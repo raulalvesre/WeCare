@@ -1,48 +1,14 @@
 
-nav.navbar-transparent{
-	background: rgba(0,0,0,0.8);
-	 
-}
-
-.corDeFundo{
-	background: rgba(0,0,0,0.6);
-}
-
-.bordaDegrade{
-	border-style: solid;
- 	border-width: 5px;
-	border-image: linear-gradient(to left, rgba(0, 251, 217, 0.8), rgba(255, 0, 217, 0.8), rgba(0, 251, 217, 0.8))90% 0%/5px 0px;
-}
-
-
-#corpo .topo{
-	
-	width: 99%;
-	height: 30vh; 
-}
-
-.cor{
-	background-image: linear-gradient(to left, rgba(255, 0, 217), rgba(0, 251, 217), rgba(255, 0, 217, 0.5));	
-}
-
-.item{
-	background-color: rgba(0,0,0,0.8);
-	border: 1px solid red;
-	float: left;
-	height: 350px;
-	opacity: 0.9;
-}
-
 #corpo .menu{
 	background-color: blue;
-	width: 30%;
+	width: 29%;
 	height: 60Vh;
 	display: inline-table;
 }
 
 footer .logo{
 	width: 270px;
-	height: 90px;
+	height: 150px;
 }
 
 /*<!--classes-->*/
@@ -54,6 +20,8 @@ footer .logo{
 .logo{
 	margin-top: 1%;
 	margin-left: 1%;
+	height: 300px;
+	width: 300px;
 }
 
 .slogan{
@@ -72,9 +40,9 @@ footer .logo{
 .fotterespc{
 	
 	clear: both;
-	background-color: black;
+	background-color: rgb(14, 164, 233, 0.7);
 	text-align: center;
-	color: white;
+	color: rgb(255, 255, 255);
 }
 
 .content {
