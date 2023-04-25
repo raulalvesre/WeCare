@@ -1,6 +1,6 @@
 namespace WeCare.Domain.Core;
 
-public enum OpportunityStatus
+public enum RegistrationStatus
 {
     PENDING,
     ACCEPTED,

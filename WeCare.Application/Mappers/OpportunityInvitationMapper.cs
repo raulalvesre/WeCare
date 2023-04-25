@@ -12,7 +12,6 @@ public class OpportunityInvitationMapper
         return new OpportunityInvitation
         {
             InvitationMessage = form.InvitationMessage,
-            ResponseMessage = form.InvitationMessage,
             Status = PENDING,
             OpportunityId = form.OpportunityId,
             CandidateId = form.CandidateId

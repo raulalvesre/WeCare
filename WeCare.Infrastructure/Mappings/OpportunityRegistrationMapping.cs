@@ -16,7 +16,7 @@ public class OpportunityRegistrationMapping : IEntityTypeConfiguration<Opportuni
         builder.Property(x => x.Status)
             .HasConversion(
                 v => v.ToString(),
-                v => (OpportunityStatus)Enum.Parse(typeof(OpportunityStatus), v));
+                v => (RegistrationStatus)Enum.Parse(typeof(RegistrationStatus), v));
 
         builder.Property(x => x.FeedbackMessage)
             .HasMaxLength(1024)

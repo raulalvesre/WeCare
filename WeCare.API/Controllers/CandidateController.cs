@@ -63,7 +63,7 @@ public class CandidateController : ControllerBase
     {
         var searchParams = new OpportunityRegistrationSearchParams()
         {
-            Status = OpportunityStatus.PENDING,
+            Status = RegistrationStatus.PENDING,
             CandidateId = candidateId,
             PageNumber = pageNumber,
             PageSize = pageSize
@@ -78,7 +78,7 @@ public class CandidateController : ControllerBase
     {
         var searchParams = new OpportunityRegistrationSearchParams()
         {
-            Status = OpportunityStatus.ACCEPTED,
+            Status = RegistrationStatus.ACCEPTED,
             CandidateId = candidateId,
             PageNumber = pageNumber,
             PageSize = pageSize
@@ -93,7 +93,7 @@ public class CandidateController : ControllerBase
     {
         var searchParams = new OpportunityRegistrationSearchParams()
         {
-            Status = OpportunityStatus.DENIED,
+            Status = RegistrationStatus.DENIED,
             CandidateId = candidateId,
             PageNumber = pageNumber,
             PageSize = pageSize
@@ -109,7 +109,7 @@ public class CandidateController : ControllerBase
     {
         var searchParams = new OpportunityRegistrationSearchParams()
         {
-            Status = OpportunityStatus.CANCELED,
+            Status = RegistrationStatus.CANCELED,
             CandidateId = candidateId,
             PageNumber = pageNumber,
             PageSize = pageSize

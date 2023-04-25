@@ -1,12 +1,12 @@
 using WeCare.Domain.Core;
-using static WeCare.Domain.Core.OpportunityStatus;
+using static WeCare.Domain.Core.RegistrationStatus;
 
 namespace WeCare.Domain.Models;
 
 public class OpportunityRegistration
 {
     public long Id { get; set; }
-    public OpportunityStatus Status { get; set; } = PENDING;
+    public RegistrationStatus Status { get; set; } = PENDING;
     public string FeedbackMessage { get; set; }
     
     public long OpportunityId { get; set; }

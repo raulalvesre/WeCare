@@ -1,5 +1,4 @@
-@page
-@model WeCare.ViewModels.OpportunityInvitationEmailViewModel
+@model WeCare.Application.ViewModels.OpportunityInvitationEmailViewModel
 
 @{
     Layout = null;
@@ -33,9 +32,9 @@
 	<h1>WeCare</h1>
 	<p>Parabéns, @Model.CandidateName!</p>
 	<p>Você foi convidado para a seguinte oportunidade: <a href="http://localhost:8085/opportunity-invitations/@Model.OpportunityId" class="button">@Model.OpportunityName</a></p>
-	@if (Model.InvitationMessage.IsNullOrEmpty()) 
+	@if (!string.IsNullOrEmpty(Model.InvitationMessage)) 
 	{
-		<p>Mensagem de convite: @Model.InvitationMessage
+		<p>Mensagem de convite: @Model.InvitationMessage</p>
 	}
 </body>
 </html>

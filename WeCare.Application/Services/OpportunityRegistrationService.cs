@@ -8,7 +8,7 @@ using WeCare.Domain.Core;
 using WeCare.Domain.Models;
 using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
-using static WeCare.Domain.Core.OpportunityStatus;
+using static WeCare.Domain.Core.RegistrationStatus;
 
 namespace WeCare.Application.Services;
 

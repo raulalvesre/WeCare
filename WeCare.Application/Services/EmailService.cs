@@ -1,6 +1,6 @@
-using MailKit.Net.Smtp;
-using MailKit.Security;
-using MimeKit;
+
+using FluentEmail.Core;
+using FluentEmail.Core.Models;
 using WeCare.Application.ViewModels;
 
 namespace WeCare.Application.Services;
@@ -9,44 +9,37 @@ public class EmailService
 {
 
     private readonly EmailSettings _emailSettings;
+    private readonly IFluentEmail _fluentEmail;
 
-    public EmailService(EmailSettings emailSettings)
+    public EmailService(EmailSettings emailSettings, IFluentEmail fluentEmail)
     {
         _emailSettings = emailSettings;
+        _fluentEmail = fluentEmail;
     }
     
     public async Task SendEmailAsync(EmailRequest emailRequest)
     {
-        var email = new MimeMessage();
-        email.Sender = MailboxAddress.Parse(_emailSettings.Mail);
-        email.To.Add(MailboxAddress.Parse(emailRequest.ToEmail));
-        email.Subject = emailRequest.Subject;
-        var builder = new BodyBuilder();
-        if (!emailRequest.Attachments.Any())
-        {
-            byte[] fileBytes;
-            foreach (var file in emailRequest.Attachments)
-            {
-                if (file.Length > 0)
-                {
-                    using (var ms = new MemoryStream())
-                    {
-                        file.CopyTo(ms);
-                        fileBytes = ms.ToArray();
-                    }
-                    builder.Attachments.Add(file.Name, fileBytes, new ContentType(file.ContentType, ""));
-                }
-            }
-        }
-        
-        builder.HtmlBody = emailRequest.Body;
-        email.Body = builder.ToMessageBody();
-        using var smtp = new SmtpClient();
-        smtp.Connect(_emailSettings.Host, _emailSettings.Port, SecureSocketOptions.StartTls);
-        smtp.Authenticate(_emailSettings.Mail, _emailSettings.Password);
-        smtp.Timeout = 200000;
-        await smtp.SendAsync(email);
-        smtp.Disconnect(true);
+        await _fluentEmail
+            .To(emailRequest.ToEmail)
+            .Subject(emailRequest.Subject)
+            .Body(emailRequest.Body)
+            .SendAsync();
+    }
+    
+    public async Task SendEmailAsync<T>(EmailRequest emailRequest, string templateName, T model)
+    {
+        string basePath = Directory.GetCurrentDirectory();
+        string templatesPath = Path.Combine(Directory.GetParent(basePath).FullName, "WeCare.Application", "EmailTemplates");
+        string templateFilePath = Path.Combine(templatesPath, $"{templateName}.cshtml");
+        string template = File.ReadAllText(templateFilePath);
+
+
+        await _fluentEmail
+            .To(emailRequest.ToEmail)
+            .Subject(emailRequest.Subject)
+            .Body(emailRequest.Body)
+            .UsingTemplate(template, model)
+            .SendAsync();
     }
     
 }
