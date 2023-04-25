@@ -67,7 +67,7 @@ public class CandidateService
 
         var candidate = _mapper.ToModel(form);
 
-        await _candidateRepository.Add(candidate);
+        await _candidateRepository.Save(candidate);
         await _unitOfWork.SaveAsync();
 
         return _mapper.FromModel(candidate);
@@ -102,7 +102,7 @@ public class CandidateService
         
         var candidate = _mapper.ToModel(form);
 
-        await _candidateRepository.Add(candidate);
+        await _candidateRepository.Save(candidate);
         await _unitOfWork.SaveAsync();
 
         return _mapper.FromModel(candidate);

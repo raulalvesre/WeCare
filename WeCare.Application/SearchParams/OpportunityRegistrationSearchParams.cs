@@ -8,7 +8,7 @@ namespace WeCare.Application.SearchParams;
 
 public class OpportunityRegistrationSearchParams : PaginationFilterParamsBase<OpportunityRegistration>
 {
-    public OpportunityStatus? Status { get; set; }
+    public RegistrationStatus? Status { get; set; }
     public long? OpportunityId { get; set; }
     public long? CandidateId { get; set; }
     

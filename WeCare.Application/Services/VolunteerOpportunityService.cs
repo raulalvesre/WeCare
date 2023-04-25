@@ -63,7 +63,7 @@ public class VolunteerOpportunityService
             opportunitiesPage.TotalPages,
             opportunitiesPage.Data.Select(_mapper.FromModel));
     }
-
+    
     public async Task<VolunteerOpportunityViewModel> Save(long institutionId, VolunteerOpportunityForm form)
     {
         var institution = await _institutionRepository.GetByIdNoTracking(institutionId);
@@ -75,7 +75,7 @@ public class VolunteerOpportunityService
             throw new BadRequestException(validationResult.Errors);
         
         var opportunity = _mapper.ToModel(institutionId, form);
-        await _volunteerOpportunityRepository.Add(opportunity);
+        await _volunteerOpportunityRepository.Save(opportunity);
         await _unitOfWork.SaveAsync();
 
         return _mapper.FromModel(opportunity);

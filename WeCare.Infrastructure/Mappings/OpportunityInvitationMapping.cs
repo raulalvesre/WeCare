@@ -5,20 +5,22 @@ using WeCare.Domain.Models;
 
 namespace WeCare.Infrastructure.Mappings;
 
-public class OpportunityRegistrationMapping : IEntityTypeConfiguration<OpportunityRegistration>
+public class OpportunityInvitationMapping : IEntityTypeConfiguration<OpportunityInvitation>
 {
-    public void Configure(EntityTypeBuilder<OpportunityRegistration> builder)
+    public void Configure(EntityTypeBuilder<OpportunityInvitation> builder)
     {
-        builder.ToTable("opportunity_registrations");
-
-        builder.HasKey(x => x.Id);
+        builder.ToTable("opportunity_invitation");
 
         builder.Property(x => x.Status)
             .HasConversion(
                 v => v.ToString(),
-                v => (RegistrationStatus)Enum.Parse(typeof(RegistrationStatus), v));
+                v => (InvitationStatus)Enum.Parse(typeof(InvitationStatus), v));
 
-        builder.Property(x => x.FeedbackMessage)
+        builder.Property(x => x.InvitationMessage)
+            .HasMaxLength(1024)
+            .IsRequired(false);
+        
+        builder.Property(x => x.ResponseMessage)
             .HasMaxLength(1024)
             .IsRequired(false);
         

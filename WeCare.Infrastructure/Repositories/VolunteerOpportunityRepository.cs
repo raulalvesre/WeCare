@@ -10,11 +10,6 @@ public class VolunteerOpportunityRepository : BaseRepository<VolunteerOpportunit
     {
     }
 
-    public override Task Add(VolunteerOpportunity record)
-    {
-        return base.Add(record);
-    }
-
     public Task<VolunteerOpportunity?> GetByIdIncludingCauses(long id)
     {
         return Query

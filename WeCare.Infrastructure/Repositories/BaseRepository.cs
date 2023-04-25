@@ -21,7 +21,7 @@ public abstract class BaseRepository<T> where T : class
 
     public virtual IQueryable<T> Query => _set.AsQueryable();
 
-    public virtual async Task Add(T record)
+    public async Task Save(T record)
     {
         await _set.AddAsync(record);
     }

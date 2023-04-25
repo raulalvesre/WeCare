@@ -1,8 +1,11 @@
 using System.Text;
 using System.Text.Json.Serialization;
+using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using RazorLight.Compilation;
+using RazorLight.Extensions;
 using WeCare.API.Auth;
 using WeCare.API.Extensions;
 using WeCare.API.Filters;
@@ -11,9 +14,10 @@ using WeCare.Application.Interfaces;
 using WeCare.Application.Mappers;
 using WeCare.Application.Services;
 using WeCare.Application.Validators;
-using WeCare.Domain.Models;
 using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
+
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +26,10 @@ var allowSpecificOrigins = "_allowSpecificOrigins";
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
-var key =  Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("jwt-secret"));
+builder.Configuration.AddEnvironmentVariables(x => x.Prefix = "WECARE__");
+
+
+var key = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("jwt-secret"));
 
 builder.Services.AddAuthentication(x =>
 {
@@ -48,10 +55,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("INSTITUTION", policy => policy.RequireRole("INSTITUTION"));
 });
 
-builder.Services.AddControllers(opts =>
-{
-    opts.Filters.Add(typeof(ExceptionFilter));
-});
+builder.Services.AddControllers(opts => { opts.Filters.Add(typeof(ExceptionFilter)); });
 
 builder.Services.AddCors((corsOptions) =>
 {
@@ -63,7 +67,7 @@ builder.Services.AddCors((corsOptions) =>
             // Example:
             // env ALLOWED_CORS_URLS="https://www.google.com;http://www.google.com"
 
-            var allowedCorsUrls = System.Environment.GetEnvironmentVariable("ALLOWED_CORS_URLS");
+            var allowedCorsUrls = Environment.GetEnvironmentVariable("ALLOWED_CORS_URLS");
             if (!string.IsNullOrWhiteSpace(allowedCorsUrls))
             {
                 if (allowedCorsUrls.Contains(';'))
@@ -100,7 +104,8 @@ builder.Services.AddCors((corsOptions) =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<EmailSettings>(builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>()!);
+var emailSettings = builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>()!;
+builder.Services.AddSingleton(emailSettings);
 
 builder.Services.AddDbContext<WeCareDatabaseContext>();
 
@@ -113,22 +118,28 @@ builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<VolunteerOpportunityRepository>();
 builder.Services.AddScoped<OpportunityCauseRepository>();
 builder.Services.AddScoped<OpportunityRegistrationRepository>();
+builder.Services.AddScoped<OpportunityInvitationRepository>();
 
 builder.Services.AddScoped<VolunteerOpportunityFormValidator>();
-
 builder.Services.AddScoped<CandidateAdminFormValidator>();
 builder.Services.AddScoped<CandidateFormValidator>();
 builder.Services.AddScoped<InstitutionAdminFormValidator>();
 builder.Services.AddScoped<InstitutionFormValidator>();
+builder.Services.AddScoped<OpportunityInvitationFormValidator>();
 
 builder.Services.AddScoped<CandidateMapper>();
 builder.Services.AddScoped<InstitutionMapper>();
 builder.Services.AddScoped<VolunteerOpportunityMapper>();
 builder.Services.AddScoped<OpportunityCauseMapper>();
 builder.Services.AddScoped<OpportunityRegistrationMapper>();
+builder.Services.AddScoped<OpportunityInvitationMapper>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
+
+builder.Services.AddFluentEmail(emailSettings.FromEmail, emailSettings.DisplayName)
+    .AddRazorRenderer()
+    .AddSmtpSender(emailSettings.Host, emailSettings.Port, emailSettings.Mail, emailSettings.Password);
 
 builder.Services.AddScoped<CandidateService>();
 builder.Services.AddScoped<InstitutionService>();
@@ -139,6 +150,7 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<VolunteerOpportunityService>();
 builder.Services.AddScoped<OpportunityCauseService>();
 builder.Services.AddScoped<OpportunityRegistrationService>();
+builder.Services.AddScoped<OpportunityInvitationService>();
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
@@ -156,4 +168,6 @@ app.UseCors(allowSpecificOrigins);
 
 app.Run();
 
-public partial class Program { }
+public partial class Program
+{
+}
