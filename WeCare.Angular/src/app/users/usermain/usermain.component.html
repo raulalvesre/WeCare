@@ -1,11 +1,11 @@
 <section>
-  <div class="header-wrapper">
+  <div class="header-wrapper border-bottom">
     <header></header>
   </div>
   <div class="cols_container">
     <div class="left_col">
       <div class="img_profile">
-        <img src="../../../assets/img/1.png" alt="" />
+        <img src="../../../assets/img/i-devs.png" alt="" />
         <span></span>
       </div>
       <h2 class="user_name">User Name</h2>
@@ -34,34 +34,486 @@
       </p>
       <div class="content"></div>
     </div>
-    <div class="right-col">
-      <nav>
-        <ul>
-          <li><a>Next Events</a></li>
-          <li><a>Done</a></li>
-          <li><a>Search Events</a></li>
-        </ul>
-      </nav>
 
-      <div class="vagas">
-        <img src="../../../assets/img/background2.png" alt="" />
-        <img src="../../../assets/img/background2.png" alt="" />
-        <img src="../../../assets/img/background2.png" alt="" />
-        <img src="../../../assets/img/background2.png" alt="" />
+    <div >
+      <div class="right_col mt-3">
+        <nav >
+          <ul *ngIf="userMenuType == 'institution'">
+            <li (click)="onMenuClick('news')">Novidades</li>
+            <li (click)="onMenuClick('search')">Pesquisar Candidatos</li>
+            <li (click)="onMenuClick('schedule')">Agendados</li>
+            <li (click)="onMenuClick('done')">Realizados</li>
+            <li (click)="onMenuClick('editProfile')">Perfil</li>
+          </ul>
+          <ul *ngIf="userMenuType == 'volunteer'">
+            <li (click)="onMenuClick('news')">Novidades</li>
+            <li (click)="onMenuClick('search')">Pesquisar Vagas</li>
+            <li (click)="onMenuClick('schedule')">Agendados</li>
+            <li (click)="onMenuClick('done')">Realizados</li>
+            <li (click)="onMenuClick('editProfile')">Perfil</li>
+          </ul>
+        </nav>
+        <hr>
+    </div>
+    
+    <div *ngIf="userMenuType == 'institution'">
+      <div *ngIf="userMenu == 'news'">
+        <p>Ultimos Voluntarios Cadastrados</p>
+        <div  class="vagas">
+          <div *ngFor="let vaga of vagas" class="">
+            <div class="cardVaga">            
+              <img class="mx-auto text-center" src="../../../assets/img/background2.png" alt="" />
+              <div class="row">
+                <div class="col">
+                  {{vaga.type}} - {{vaga.name}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  {{vaga.location}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  {{vaga.date}}
+                </div>
+              </div>
+                <button type="button" class="btn btnCollor btn-sm mb-2 text-white" (click)="openFormModal('exampleModal')" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  Mais informações
+                </button>
+            </div>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                  <div class="modal-header text-center">
+                    <h5 class="modal-title " id="exampleModalLabel">Informações sobre a Vaga</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body ">
+                    <div class="vagasDetails">
+                      <img class="mx-auto rounded mx-auto d-block" src="../../../assets/img/background2.png" alt="" />
+                    </div>
+                    <div class="row">                    
+                      <div class="col sm-2">Nome: {{vagas[0].name}}</div>
+                      <div class="col sm-2">Tipo: {{vagas[0].type}}</div>
+                    </div>
+                    <div class="row">
+                      <div class="col sm-2">Bairro: {{vagas[0].name}}</div>
+                      <div class="col sm-2">Cidade: {{vagas[0].name}}</div>
+                      <div class="col sm-2">Estado: {{vagas[0].name}}</div>
+                    </div>
+                    <div class="row">
+                      <div class="col sm-2">Data: {{vagas[0].date}}</div>
+                      <div class="col sm-2">Inicio: {{'10:00'}}</div> 
+                    </div>
+                    <div>Voluntarios necessarios: {{12}}</div>
+                    <div>Voluntarios cadastrados: {{5}}</div>                 
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btnCollor text-white" (click)="saveSomeThing()">Quero Participar!</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        </div>
+      </div>
+
+      <!-- UserMenu Schedule -->
+      <div *ngIf="userMenu == 'schedule'" class="">
+        
+        <div *ngIf="realizados.length == 0">
+          <p class="bold">Você ainda não realizou nenhum evento!</p>
+        </div>
+
+        <div *ngIf="realizados.length > 0">
+          <p class="bold">Você agendou dos seguintes eventos:</p>
+          
+          <div class="row">
+            <div class="col col-sm-2">Tipo do evento</div>
+            <div class="col col-sm-4">Nome</div>
+            <div class="col col-sm-4">Data</div>
+            <div class="col col-sm-2">Certificado</div>
+          </div>
+          <div style="min-height: 300px;">
+            <div *ngFor="let realizado of realizados" class="border">
+              <div class="row">
+                <div class="col col-sm-2">{{realizado.type}}</div>
+                <div class="col col-sm-4">{{realizado.name}}</div>
+                <div class="col col-sm-4">{{realizado.date}}</div>
+                <div class="col col-sm-2">{{realizado.certificado}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="justify-content-md-end">
+          <button class="btn btnCollor text-white" (click)="openFormModal('newVaga')" data-bs-toggle="modal" data-bs-target="#newVaga">Agendar um novo evento</button>
+        </div>
+
+        <div class="modal fade" id="newVaga" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+              <div class="modal-header text-center">
+                <h5 class="modal-title " id="exampleModalLabel">Cadastrar Nova Vaga</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col col-md-4 mb-3">
+                    <label for="validationTooltip01">Titulo</label>
+                    <input type="text" class="form-control" id="validationTooltip01" placeholder="Titulo" value="" required>
+                    <div class="valid-tooltip">
+                      Tudo certo!
+                    </div>
+                  </div>
+                  <div class="col col-md-4 mb-3">
+                    <label for="validationTooltip02">Categoria</label>
+                    <input type="text" class="form-control" id="validationTooltip02" placeholder="Categoria" value="" required>
+                    <div class="valid-tooltip">
+                      Tudo certo!
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col col-md-4 mb-3">
+                    <label for="validationTooltip02">Data</label>
+                    <input type="text" class="form-control" id="validationTooltip02" placeholder="Data" value="" required>
+                    <div class="valid-tooltip">
+                      Tudo certo!
+                    </div>
+                  </div>
+                  <div class="col col-md-4 mb-3">
+                    <label for="validationTooltip02">Duração (em minutos)</label>
+                    <input type="text" class="form-control" id="validationTooltip02" placeholder="Duração" value="" required>
+                    <div class="valid-tooltip">
+                      Tudo certo!
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col col-md-8 mb-5">
+                    <label for="validationTooltip02">Descrição</label>
+                    <textarea class="form-control" id="textAreaExample" rows="3"></textarea>
+                    <div class="valid-tooltip">
+                      Tudo certo!
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btnCollor text-white" (click)="saveSomeThing()">Cadastrar Vaga</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+            <!-- UserMenu Done -->
+            <div *ngIf="userMenu == 'done'" class="">
+        
+              <div *ngIf="realizados.length == 0">
+                <p class="bold">Você ainda não realizou nenhum evento!</p>
+              </div>
+      
+              <div *ngIf="realizados.length > 0">
+                <i class="bi bi-patch-plus-fill"></i>
+                <p class="bold">Você realizou os seguintes eventos:</p>
+                
+                <div class="row">
+                  <div class="col col-sm-2">Tipo do evento</div>
+                  <div class="col col-sm-4">Nome</div>
+                  <div class="col col-sm-4">Data</div>
+                  <div class="col col-sm-2">Certificado</div>
+                </div>
+                <div *ngFor="let realizado of realizados" class="border">
+                  <div class="row">
+                    <div class="col col-sm-2">{{realizado.type}}</div>
+                    <div class="col col-sm-4">{{realizado.name}}</div>
+                    <div class="col col-sm-4">{{realizado.date}}</div>
+                    <div class="col col-sm-2">{{realizado.certificado}}</div>
+                  </div>
+                </div>
+              </div>      
+            </div>
+
+      <!-- UserMenu Search -->
+      <div *ngIf="userMenu == 'search'">
+        <div class="col-sm-12 my-1">
+          <label class="sr-only" for="inlineFormInputGroupSearch">Pesquisar</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">Pesquisar</div>
+            </div>
+            <input type="text" class="form-control" id="inlineFormInputGroupSearch" placeholder="EX: Bairro de Moradia Do Voluntario">
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="userMenu == 'editProfile'">
+        <p>Editar Perfil</p>
+        <form class="needs-validation" novalidate>
+          <div style="max-height: 600px;" class="overFlowY">
+            <div class="form-row">
+              <div class="col-md-4 mb-3">
+                <label for="validationTooltip01">Nome do Projeto</label>
+                <input type="text" class="form-control" id="validationTooltip01" placeholder="Nome" value="" required>
+                <div class="valid-tooltip">
+                  Tudo certo!
+                </div>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="validationTooltip05">CNPJ</label>
+                <input type="text" class="form-control" id="validationTooltip05" placeholder="999.999.0001/05-20" required disabled>
+                <div class="invalid-tooltip">
+                  Por favor, informe um CNPJ válido.
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="validationTooltipUsername">Email</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="validationTooltipUsername" placeholder="Email" aria-describedby="validationTooltipUsernamePrepend" required>
+                  <div class="invalid-tooltip">
+                    Por favor, escolha um usuário válido e único.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="validationTooltipUsername">Telefone</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="validationTooltipUsername" placeholder="Telefone" aria-describedby="validationTooltipUsernamePrepend" required>
+                  <div class="invalid-tooltip">
+                    Por favor, escolha um usuário válido e único.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="row">
+                <div class="col col-md-4 mb-3">
+                  <label for="validationTooltip03">Cidade</label>
+                  <input type="text" class="form-control" id="validationTooltip03" placeholder="Cidade" required>
+                  <div class="invalid-tooltip">
+                    Por favor, informe uma cidade válida.
+                  </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label for="validationTooltip04">Estado</label>
+                  <input type="text" class="form-control" id="validationTooltip04" placeholder="Estado" required>
+                  <div class="invalid-tooltip">
+                    Por favor, informe um estado válido.
+                  </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label for="validationTooltip05">CEP</label>
+                  <input type="text" class="form-control" id="validationTooltip05" placeholder="CEP" required>
+                  <div class="invalid-tooltip">
+                    Por favor, informe um CEP válido.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <button class="btn btnCollor text-white" type="submit">Salvar</button>
+        </form>
       </div>
     </div>
-  </div>
-
-  <!-- <div class="flex-item ">
-            <h2>Perfil do Usuario</h2>
-            <hr>
-            <div class="flex-item">
-                <div class="flex-item item-next-events">
-                    photo
+    
+    <!-- Volunteer Menus -->
+    <div *ngIf="userMenuType == 'volunteer'">
+      <div *ngIf="userMenu == 'news'">
+        <p>Ultimas Vagas Adicionadas</p>
+        <div  class="vagas">
+          <div *ngFor="let vaga of vagas" class="">
+            <div class="cardVaga">            
+              <img class="mx-auto text-center" src="../../../assets/img/background2.png" alt="" />
+              <div class="row">
+                <div class="col">
+                  {{vaga.type}} - {{vaga.name}}
                 </div>
-                <div class="flex-item item-profile">
-                    infos
+              </div>
+              <div class="row">
+                <div class="col">
+                  {{vaga.location}}
                 </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  {{vaga.date}}
+                </div>
+              </div>
+                <button type="button" class="btn btnCollor btn-sm mb-2 text-white" (click)="openFormModal()" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  Mais informações
+                </button>
             </div>
-        </div> -->
+            
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                  <div class="modal-header text-center">
+                    <h5 class="modal-title " id="exampleModalLabel">Informações sobre a Vaga</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body ">
+                    <div class="vagasDetails">
+                      <img class="mx-auto rounded mx-auto d-block" src="../../../assets/img/background2.png" alt="" />
+                    </div>
+                    <div class="row">                    
+                      <div class="col sm-2">Nome: {{vagas[0].name}}</div>
+                      <div class="col sm-2">Tipo: {{vagas[0].type}}</div>
+                    </div>
+                    <div class="row">
+                      <div class="col sm-2">Bairro: {{vagas[0].name}}</div>
+                      <div class="col sm-2">Cidade: {{vagas[0].name}}</div>
+                      <div class="col sm-2">Estado: {{vagas[0].name}}</div>
+                    </div>
+                    <div class="row">
+                      <div class="col sm-2">Data: {{vagas[0].date}}</div>
+                      <div class="col sm-2">Inicio: {{'10:00'}}</div> 
+                    </div>
+                    <div>Voluntarios necessarios: {{12}}</div>
+                    <div>Voluntarios cadastrados: {{5}}</div>                 
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btnCollor text-white" (click)="saveSomeThing()">Quero Participar!</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        </div>
+      </div>
+
+      <!-- UserMenu Done -->
+      <div *ngIf="userMenu == 'done'" class="">
+        
+        <div *ngIf="realizados.length == 0">
+          <p class="bold">Você ainda não realizou nenhum evento!</p>
+        </div>
+
+        <div *ngIf="realizados.length > 0">
+          <p class="bold">Você participou dos seguintes eventos:</p>
+          
+          <div class="row">
+            <div class="col col-sm-2">Tipo do evento</div>
+            <div class="col col-sm-4">Nome</div>
+            <div class="col col-sm-4">Data</div>
+            <div class="col col-sm-2">Certificado</div>
+          </div>
+          <div style="min-height: 500px;">
+            <div *ngFor="let realizado of realizados" class="border">
+              <div class="row">
+                <div class="col col-sm-2">{{realizado.type}}</div>
+                <div class="col col-sm-4">{{realizado.name}}</div>
+                <div class="col col-sm-4">{{realizado.date}}</div>
+                <div class="col col-sm-2">{{realizado.certificado}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+
+      </div>
+
+      <!-- UserMenu Search -->
+      <div *ngIf="userMenu == 'search'">
+        <div class="col-sm-3 my-1">
+          <label class="sr-only" for="inlineFormInputGroupSearch">Pesquisar</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">Pesquisar</div>
+            </div>
+            <input type="text" class="form-control" id="inlineFormInputGroupSearch" placeholder="EX: Local da realização do evento">
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="userMenu == 'editProfile'">
+        <p>Editar Perfil</p>
+        <form class="needs-validation" novalidate>
+          <div class="form-row">
+            <div class="col-md-4 mb-3">
+              <label for="validationTooltip01">Primeiro nome</label>
+              <input type="text" class="form-control" id="validationTooltip01" placeholder="Nome" value="Nome" required>
+              <div class="valid-tooltip">
+                Tudo certo!
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="validationTooltip02">Sobrenome</label>
+              <input type="text" class="form-control" id="validationTooltip02" placeholder="Sobrenome" value="Sobrenome" required>
+              <div class="valid-tooltip">
+                Tudo certo!
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label for="validationTooltip05">CPF</label>
+              <input type="text" class="form-control" id="validationTooltip05" placeholder="999.999.999.99" required disabled>
+              <div class="invalid-tooltip">
+                Por favor, informe um CPF válido.
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="validationTooltipUsername">Email</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="validationTooltipUsernamePrepend">@</span>
+                </div>
+                <input type="text" class="form-control" id="validationTooltipUsername" placeholder="Usuário" aria-describedby="validationTooltipUsernamePrepend" required>
+                <div class="invalid-tooltip">
+                  Por favor, escolha um usuário válido e único.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="validationTooltipUsername">Telefone</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="validationTooltipUsername" placeholder="Usuário" aria-describedby="validationTooltipUsernamePrepend" required>
+                <div class="invalid-tooltip">
+                  Por favor, escolha um usuário válido e único.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-6 mb-3">
+              <label for="validationTooltip03">Cidade</label>
+              <input type="text" class="form-control" id="validationTooltip03" placeholder="Cidade" required>
+              <div class="invalid-tooltip">
+                Por favor, informe uma cidade válida.
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label for="validationTooltip04">Estado</label>
+              <input type="text" class="form-control" id="validationTooltip04" placeholder="Estado" required>
+              <div class="invalid-tooltip">
+                Por favor, informe um estado válido.
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label for="validationTooltip05">CEP</label>
+              <input type="text" class="form-control" id="validationTooltip05" placeholder="CEP" required>
+              <div class="invalid-tooltip">
+                Por favor, informe um CEP válido.
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary" type="submit">Salvar</button>
+        </form>
+      </div>
+    </div>
+
+
+
+    </div>
+  </div>
 </section>
+

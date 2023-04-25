@@ -2,6 +2,20 @@
     <div class="form-box">
         <div class="form-value">
             <form action="">
+                <div class="">        
+                    <ul class="nav">
+                        <li class="nav-item text-aling-center m-2" (click)="onTabClick('volunteer')">
+                            <a class="nav-link active">
+                                Voluntario
+                            </a>
+                        </li>
+                        <li class="nav-item m-2"  (click)="onTabClick('instituition')">
+                            <a class="nav-link text-center">
+                                Instituição
+                            </a>
+                        </li>
+                    </ul>
+                </div>
                 <h2>Login</h2>
                 <div class="inputbox">
                     <input type="email" required>
@@ -16,8 +30,11 @@
                   
                 </div> -->
                 <button class="text-white">Log in</button>
-                <div class="register">
+                <div *ngIf="activeTab == 'volunteer'" class="register">
                     <p>Não tem uma conta?<a routerLink="/user/create" class="nav-link" routerLinkActive="active"> Cadastre-se agora!</a></p>
+                </div>
+                <div *ngIf="activeTab == 'instituition'" class="register">
+                    <p>Não tem uma conta?<a routerLink="/institution/create" class="nav-link" routerLinkActive="active"> Cadastre-se agora!</a></p>
                 </div>
             </form>
         </div>

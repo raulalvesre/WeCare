@@ -17,6 +17,7 @@ import { LoginComponent } from './home/login/login.component';
 import { UsermainComponent } from './users/usermain/usermain.component';
 import { InstitutionsFormsComponent } from './institutions/forms/forms.component';
 import { CausesComponent } from './home/causes/causes.component';
+import { ProfileTypeComponent } from './users/forms/profile-type/profile-type.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { CausesComponent } from './home/causes/causes.component';
     UsermainComponent,
     InstitutionsFormsComponent,
     CausesComponent,
+    ProfileTypeComponent,
   ],
   imports: [
     BrowserModule,

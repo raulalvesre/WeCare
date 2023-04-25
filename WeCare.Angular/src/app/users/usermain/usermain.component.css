@@ -27,7 +27,7 @@
     min-height: 100%;
   }
 
-  .right-col ul {
+  .right_col ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -40,9 +40,9 @@
   }
 
   .header-wrapper header{
-    width: 100%;
-    background: url(../../../assets/img/2.png);
-    min-height: calc(100px + 15vw);
+    background: url(../../../assets/img/background3.png);
+    min-height: 250px;
+    background-size: 150px;
   }
 
   .left_col{
@@ -89,7 +89,7 @@
     position: relative;
   }
 
-  .right-col{
+  .rightcol{
     display: flex;
     align-items: center;
     padding: 30px 0;
@@ -105,6 +105,7 @@
 
   nav ul li{
     text-transform: uppercase;
+    text-decoration: none;
   }
 
   .vagas{
@@ -113,16 +114,50 @@
     gap: 20px;
   }
 
-  .vagas img{
-    max-width: 100%;
-    display: block;
-    height: 100%;
-    object-fit: cover;
+  .cardVaga{
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 25px;
+    font-size: 0.8rem;
+    border-color:  #000000;
+    transition: box-shadow .3s;
+  }
+  .cardVaga:hover{
+    border-style: solid;
+    border-width: 4px;
+    border-radius: 25px;
+    font-size: 0.8rem;
+    border-color:  #5fc9fa;
+    cursor: pointer; 
+    box-shadow: 10px 10px 10px rgba(63, 121, 197, 0.87); 
   }
 
-  @media (min-width: 800px) {
+  .vagas img{
+    max-width: 90%;
+    display: block;
+    height: 90%;
+    object-fit: cover;
+    border-radius: 25px;
+  }
+
+  .vagasDetails img{
+    max-width: 30%;
+    height: 30%;
+  }
+
+  .overFlowY{
+    overflow-x: hidden;
+    overflow-y: auto;
+
+  }
+
+  .btnCollor{
+    background-color: #5fc9fa;
+  }
+
+  @media (min-width: 868px) {
     .cols_container {
-      max-width: 1200px;
+      max-width: 1500px;
       margin: 0 auto;
       width: 90%;
       justify-content: space-between;
@@ -147,12 +182,12 @@
   }
 
   @media (min-width: 1017px) {
-    .left_col{
-      margin: 0 auto;
+    .left_col {
+      margin: 0;
       margin-right: auto;
     }
-
     .right_col nav {
       flex-direction: row;
     }
   }
+
