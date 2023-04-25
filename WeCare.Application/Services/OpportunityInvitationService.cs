@@ -82,6 +82,16 @@ public class OpportunityInvitationService
             throw new BadRequestException(validationResult.Errors);
 
         var invitation = _invitationMapper.ToModel(form);
+
+        var alreadyCreatedRegistration = await _registrationRepository.Query
+            .FirstOrDefaultAsync(x => x.CandidateId == form.CandidateId && x.OpportunityId == form.OpportunityId);
+
+        if (alreadyCreatedRegistration is not null)
+        {
+            invitation.Status = InvitationStatus.ACCEPTED;
+            alreadyCreatedRegistration.Status = RegistrationStatus.ACCEPTED;
+            await _registrationRepository.Update(alreadyCreatedRegistration);
+        }
         
         await _invitationRepository.Save(invitation);
         await SendInvitationEmail(candidate, opportunity, invitation.InvitationMessage);
