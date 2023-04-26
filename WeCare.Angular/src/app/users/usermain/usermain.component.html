@@ -279,7 +279,7 @@
                 <div class="input-group">
                   <input type="text" class="form-control" id="validationTooltipUsername" placeholder="Email" aria-describedby="validationTooltipUsernamePrepend" required>
                   <div class="invalid-tooltip">
-                    Por favor, escolha um usuário válido e único.
+                    Por favor, escolha um usuário válido e único. Test                    
                   </div>
                 </div>
               </div>
@@ -357,29 +357,55 @@
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered modal-xl">
                 <div class="modal-content">
-                  <div class="modal-header text-center">
-                    <h5 class="modal-title " id="exampleModalLabel">Informações sobre a Vaga</h5>
+                  <div class="modal-header text-center btnCollor">
+                    <h5 class="modal-title text-white " id="exampleModalLabel">Informações Sobre a Vaga</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
-                  <div class="modal-body ">
-                    <div class="vagasDetails">
-                      <img class="mx-auto rounded mx-auto d-block" src="../../../assets/img/background2.png" alt="" />
+                  <div class="modal-body">
+
+                    <div class="row"> 
+                      <div class="col md-4" style="max-width: 50%;">
+                        <img class="mx-auto rounded mx-auto d-block img-thumbnail" src="../../../assets/img/background2.png" alt="" />
+                      </div>                   
+                      <div class="col md-8 text-start">
+                        <div class="row">
+                          <div class="font-weight-bold col sm-4 ">
+                            <strong>{{vagas[0].name}}</strong>
+                          </div>
+                          <div class="col sm-1">
+                            {{vagas[0].type}}
+                          </div> 
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col sm-2"><strong>Bairro: </strong>{{vagas[0].location}}</div>
+                        </div>
+                        <div class="row">
+                          <div class="col sm-2"><strong>Cidade: </strong>{{vagas[0].location}}</div>
+                        </div>
+                        <div class="row">
+                          <div class="col sm-2"><strong>Estado: </strong>{{vagas[0].location}}</div>
+                        </div>
+                        <div class="row">
+                          <div class="col sm-2"><strong>Data: </strong>{{vagas[0].date}}</div>
+                        </div>
+                        <div class="row">
+                          <div class="col sm-2"><strong>Duração: </strong>{{'10:00'}}</div> 
+                        </div>
+                        <div class="row">
+                          <div class="col"><strong>Voluntarios cadastrados: </strong>{{5}}</div>
+                        </div>
+                        <div class="row">
+                          <div class="col"><strong>Voluntarios necessarios: </strong>{{12}}</div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="row">                    
-                      <div class="col sm-2">Nome: {{vagas[0].name}}</div>
-                      <div class="col sm-2">Tipo: {{vagas[0].type}}</div>
+                    <div class="row text-start ">
+                      <div class="col pr-4 pl-4"><p class="border-bottom font-weight-bold">Descrição</p>'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt temporeillum possimus, ipsum non nesciunt nostrum eius laudantium doloribus
+                        recusandae culpa rerum unde, ullam et quasi, iure facere quos saepe.Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt temporeillum possimus, ipsum non nesciunt nostrum eius laudantium doloribus
+                        recusandae culpa rerum unde, ullam et quasi, iure facere quos saepe.Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt temporeillum possimus, ipsum non nesciunt nostrum eius laudantium doloribus
+                        recusandae culpa rerum unde, ullam et quasi, iure facere quos saepe.'</div>
                     </div>
-                    <div class="row">
-                      <div class="col sm-2">Bairro: {{vagas[0].name}}</div>
-                      <div class="col sm-2">Cidade: {{vagas[0].name}}</div>
-                      <div class="col sm-2">Estado: {{vagas[0].name}}</div>
-                    </div>
-                    <div class="row">
-                      <div class="col sm-2">Data: {{vagas[0].date}}</div>
-                      <div class="col sm-2">Inicio: {{'10:00'}}</div> 
-                    </div>
-                    <div>Voluntarios necessarios: {{12}}</div>
-                    <div>Voluntarios cadastrados: {{5}}</div>                 
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>

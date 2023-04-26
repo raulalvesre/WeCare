@@ -12,7 +12,7 @@ declare var window: any;
 export class UsermainComponent implements OnInit {
   formModal: any;
   userMenu: string = "news"
-  userMenuType: string = "institution"
+  userMenuType: string = "volunteer"
 
   ngOnInit(): void {
     this.formModal = new window.bootstrap.Modal(
@@ -21,7 +21,7 @@ export class UsermainComponent implements OnInit {
   }
 
   openFormModal(modalName) {
-    this.formModal =  document.getElementById(modalName)
+    this.formModal = document.getElementById(modalName)
     this.formModal.show();
   }
 
@@ -35,7 +35,7 @@ export class UsermainComponent implements OnInit {
   }
 
   vagas: Array<Vaga> = [
-    { name: 'Teste 1', type: 2, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 1' },
+    { name: 'Distribuição de Alimentos', type: 2, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 1' },
     { name: 'Teste 2', type: 1, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 2' },
     { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3' },
     // { name: 'Teste 4', type: 5, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 4' },
