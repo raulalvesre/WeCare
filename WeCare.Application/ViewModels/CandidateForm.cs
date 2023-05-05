@@ -19,4 +19,6 @@ public class CandidateForm
     public DateOnly BirthDate { get; set; }
 
     public IEnumerable<long> QualificationsIds { get; set; }
+    public IEnumerable<long> InterestedInCausesIds { get; set; }
+
 }

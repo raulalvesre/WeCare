@@ -16,4 +16,11 @@ public class OpportunityCauseRepository : BaseRepository<OpportunityCause>
             .Where(x => codes.Contains(x.Code))
             .ToList();
     }
+    
+    public async Task<List<OpportunityCause>> FindByIdIn(IEnumerable<long> ids)
+    {
+        return await Query
+            .Where(x => ids.Contains(x.Id))
+            .ToListAsync();
+    }
 }

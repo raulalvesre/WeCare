@@ -20,7 +20,7 @@ public class CandidateMapper
             BirthDate = candidate.BirthDate
         };
     }
-    
+
     public CandidateForRegistrationViewModel FromModelToInstitutionRegistrationViewModel(Candidate candidate)
     {
         return new CandidateForRegistrationViewModel
@@ -34,28 +34,35 @@ public class CandidateMapper
         };
     }
 
-    public Candidate ToModel(CandidateForm form, IEnumerable<CandidateQualification> qualifications)
+    public Candidate ToModel(CandidateForm form,
+        IEnumerable<CandidateQualification> qualifications,
+        IEnumerable<OpportunityCause> interestedInCauses)
     {
-        return new Candidate {
+        return new Candidate
+        {
             Email = form.Email,
             Name = form.Name,
             Password = StringCipher.Encrypt(form.Password),
             Telephone = form.Telephone,
             Bio = form.Bio,
             Street = form.Address.Street,
-            Number =  form.Address.Number,
-            Complement =  form.Address.Complement,
-            City =  form.Address.City,
-            Neighborhood =  form.Address.Neighborhood,
-            State =  form.Address.State,
-            PostalCode =  form.Address.PostalCode,
+            Number = form.Address.Number,
+            Complement = form.Address.Complement,
+            City = form.Address.City,
+            Neighborhood = form.Address.Neighborhood,
+            State = form.Address.State,
+            PostalCode = form.Address.PostalCode,
             Cpf = form.Cpf,
             BirthDate = form.BirthDate,
-            Qualifications = qualifications
+            Qualifications = qualifications,
+            CausesCandidateIsInterestedIn = interestedInCauses
         };
     }
 
-    public void Merge(Candidate candidate, CandidateForm form, IEnumerable<CandidateQualification> qualifications)
+    public void Merge(Candidate candidate,
+        CandidateForm form,
+        IEnumerable<CandidateQualification> qualifications,
+        IEnumerable<OpportunityCause> interestedInCauses)
     {
         candidate.Email = form.Email;
         candidate.Password = StringCipher.Encrypt(form.Password);
@@ -72,23 +79,25 @@ public class CandidateMapper
         candidate.Cpf = form.Cpf;
         candidate.BirthDate = form.BirthDate;
         candidate.Qualifications = qualifications;
+        candidate.CausesCandidateIsInterestedIn = interestedInCauses;
     }
 
     public Candidate ToModel(CandidateAdminForm form)
     {
-        return new Candidate {
+        return new Candidate
+        {
             Email = form.Email,
             Name = form.Name,
             Password = StringCipher.Encrypt(form.Password),
             Telephone = form.Telephone,
             Bio = form.Bio,
             Street = form.Address.Street,
-            Number =  form.Address.Number,
-            Complement =  form.Address.Complement,
-            City =  form.Address.City,
-            Neighborhood =  form.Address.Neighborhood,
-            State =  form.Address.State,
-            PostalCode =  form.Address.PostalCode,
+            Number = form.Address.Number,
+            Complement = form.Address.Complement,
+            City = form.Address.City,
+            Neighborhood = form.Address.Neighborhood,
+            State = form.Address.State,
+            PostalCode = form.Address.PostalCode,
             Cpf = form.Cpf,
             BirthDate = form.BirthDate
         };

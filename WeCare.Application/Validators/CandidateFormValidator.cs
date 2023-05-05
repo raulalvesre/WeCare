@@ -9,12 +9,15 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
 {
     private readonly CandidateRepository _candidateRepository;
     private readonly CandidateQualificationRepository _candidateQualificationRepository;
+    private readonly OpportunityCauseRepository _opportunityCauseRepository;
 
     public CandidateFormValidator(CandidateRepository candidateRepository,
-        CandidateQualificationRepository candidateQualificationRepository)
+        CandidateQualificationRepository candidateQualificationRepository, 
+        OpportunityCauseRepository opportunityCauseRepository)
     {
         _candidateRepository = candidateRepository;
         _candidateQualificationRepository = candidateQualificationRepository;
+        _opportunityCauseRepository = opportunityCauseRepository;
 
         RuleFor(x => x.Name)
             .NotEmpty()
@@ -72,7 +75,10 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
             .WithMessage("Menor de idade");
 
         RuleFor(x => x.QualificationsIds)
-            .Custom(AllQualificationsIdsExists);
+            .CustomAsync(AllQualificationsIdsExists);
+        
+        RuleFor(x => x.InterestedInCausesIds)
+            .CustomAsync(AllCausesIdsExists);
     }
 
     private async Task<bool> UniqueEmail(CandidateForm form, string email)
@@ -90,17 +96,34 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
         return !await _candidateRepository.ExistsByIdNotAndCpf(form.Id, cpf);
     }
 
-    private void AllQualificationsIdsExists(IEnumerable<long> qualificationIds, ValidationContext<CandidateForm> context)
+    private async Task AllQualificationsIdsExists(IEnumerable<long> qualificationIds,
+        ValidationContext<CandidateForm> context,
+        CancellationToken arg3)
     {
-        var dbQualificationIds = _candidateQualificationRepository.Query
-            .Select(x => x.Id)
-            .ToHashSet();
-
-        foreach (var qualificationId in dbQualificationIds)
+        var qualifications = await _candidateQualificationRepository.FindByIdIn(qualificationIds);
+        var dbQualificationsIds = qualifications.Select(x => x.Id).ToHashSet();
+        
+        foreach (var qualificationId in dbQualificationsIds)
         {
-            if (!dbQualificationIds.Contains(qualificationId))
+            if (!dbQualificationsIds.Contains(qualificationId))
             {
                 context.AddFailure($"Qualificação com o ID {qualificationId} não existe");
+            }
+        }
+    }
+    
+    private async Task AllCausesIdsExists(IEnumerable<long> causesIds,
+        ValidationContext<CandidateForm> context,
+        CancellationToken arg3)
+    {
+        var causes = await _opportunityCauseRepository.FindByIdIn(causesIds);
+        var dbCausesIds = causes.Select(x => x.Id).ToHashSet();
+
+        foreach (var causeId in dbCausesIds)
+        {
+            if (!dbCausesIds.Contains(causeId))
+            {
+                context.AddFailure($"Causa com o ID {causeId} não existe");
             }
         }
     }

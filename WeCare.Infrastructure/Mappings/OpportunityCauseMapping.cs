@@ -54,5 +54,8 @@ public class OpportunityCauseMapping : IEntityTypeConfiguration<OpportunityCause
         
         builder.HasMany(x => x.VolunteerOpportunities)
             .WithMany(x => x.Causes);
+
+        builder.HasMany(x => x.CandidatesInterestedIn)
+            .WithMany(x => x.CausesCandidateIsInterestedIn);
     }
 }

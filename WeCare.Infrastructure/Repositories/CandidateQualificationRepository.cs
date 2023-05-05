@@ -10,7 +10,7 @@ public class CandidateQualificationRepository : BaseRepository<CandidateQualific
     {
     }
 
-    public async Task<IEnumerable<CandidateQualification>> GetByIdIn(IEnumerable<long> ids)
+    public async Task<IEnumerable<CandidateQualification>> FindByIdIn(IEnumerable<long> ids)
     {
         return await Query
             .Where(x => ids.Contains(x.Id))

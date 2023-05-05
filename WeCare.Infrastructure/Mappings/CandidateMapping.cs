@@ -15,5 +15,8 @@ public class CandidateMapping : IEntityTypeConfiguration<Candidate>
 
         builder.HasMany(x => x.Qualifications)
             .WithMany(x => x.Candidates);
+        
+        builder.HasMany(x => x.CausesCandidateIsInterestedIn)
+            .WithMany(x => x.CandidatesInterestedIn);
     }
 }
