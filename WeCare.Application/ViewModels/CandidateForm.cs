@@ -17,4 +17,6 @@ public class CandidateForm
     public AddressViewModel Address { get; set; }   
     public string Cpf { get; set; }
     public DateOnly BirthDate { get; set; }
+
+    public IEnumerable<long> QualificationsIds { get; set; }
 }

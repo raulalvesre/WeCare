@@ -1,5 +1,6 @@
 using FluentValidation;
 using WeCare.Application.ViewModels;
+using WeCare.Domain.Models;
 using WeCare.Infrastructure.Repositories;
 
 namespace WeCare.Application.Validators;
@@ -7,11 +8,14 @@ namespace WeCare.Application.Validators;
 public class CandidateFormValidator : AbstractValidator<CandidateForm>
 {
     private readonly CandidateRepository _candidateRepository;
-    
-    public CandidateFormValidator(CandidateRepository candidateRepository)
+    private readonly CandidateQualificationRepository _candidateQualificationRepository;
+
+    public CandidateFormValidator(CandidateRepository candidateRepository,
+        CandidateQualificationRepository candidateQualificationRepository)
     {
         _candidateRepository = candidateRepository;
-        
+        _candidateQualificationRepository = candidateQualificationRepository;
+
         RuleFor(x => x.Name)
             .NotEmpty()
             .WithMessage("É necessário um nome")
@@ -19,7 +23,7 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
             .WithMessage("O nome precisa ter no minímo 3 caracteres")
             .MaximumLength(500)
             .WithMessage("O nome pode ter no máximo 500 caracteres");
-        
+
         RuleFor(x => x.Email)
             .NotEmpty()
             .WithMessage("É necessário um email")
@@ -66,21 +70,38 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
             .WithMessage("Data de nascimento inválida")
             .Must(ValidatorsUtils.IsAdult)
             .WithMessage("Menor de idade");
+
+        RuleFor(x => x.QualificationsIds)
+            .Custom(AllQualificationsIdsExists);
     }
-    
+
     private async Task<bool> UniqueEmail(CandidateForm form, string email)
     {
         return !await _candidateRepository.ExistsByIdNotAndEmail(form.Id, email);
     }
-    
+
     private async Task<bool> UniqueTelephone(CandidateForm form, string telephone)
     {
         return !await _candidateRepository.ExistsByIdNotAndTelephone(form.Id, telephone);
     }
-    
+
     private async Task<bool> UniqueCpf(CandidateForm form, string cpf)
     {
         return !await _candidateRepository.ExistsByIdNotAndCpf(form.Id, cpf);
     }
 
+    private void AllQualificationsIdsExists(IEnumerable<long> qualificationIds, ValidationContext<CandidateForm> context)
+    {
+        var dbQualificationIds = _candidateQualificationRepository.Query
+            .Select(x => x.Id)
+            .ToHashSet();
+
+        foreach (var qualificationId in dbQualificationIds)
+        {
+            if (!dbQualificationIds.Contains(qualificationId))
+            {
+                context.AddFailure($"Qualificação com o ID {qualificationId} não existe");
+            }
+        }
+    }
 }

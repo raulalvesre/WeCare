@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using WeCare.Application.Exceptions;
 using WeCare.Application.Mappers;
 using WeCare.Application.SearchParams;
@@ -150,5 +151,16 @@ public class InstitutionService
         
         institution.Photo = memoryStream.ToArray();
         await _unitOfWork.SaveAsync();
+    }
+    
+    public async Task<UserCompleteViewModel> GetByEmail(string email)
+    {
+        var institution = await _institutionRepository.Query
+            .FirstOrDefaultAsync(x => x.Email.Equals(email));
+
+        if (institution is null)
+            throw new NotFoundException("Instituição não encontrada");
+
+        return new UserCompleteViewModel(institution);
     }
 }

@@ -33,16 +33,28 @@ public class AuthService
         _institutionService = institutionService;
     }
 
-    public async Task<TokenViewModel> AuthenticateUser(LoginRequest loginRequest)
+    public async Task<TokenViewModel> AuthenticateCandidate(LoginRequest loginRequest)
     {
-        var user = await _userService.GetByEmail(loginRequest.Email);
-        if (user is null)
+        var candidate = await _candidateService.GetByEmail(loginRequest.Email);
+        if (candidate is null)
             throw new UnauthorizedException("Usuário ou senha inválidos");
 
-        if (!LoginRequestPasswordAndUserModelPasswordAreTheSame(loginRequest, user))
+        if (!LoginRequestPasswordAndUserModelPasswordAreTheSame(loginRequest, candidate))
             throw new UnauthorizedException("Usuário ou senha inválidos");
 
-        return GenerateJwt(user);
+        return GenerateJwt(candidate);
+    }
+    
+    public async Task<TokenViewModel> AuthenticateInstitution(LoginRequest loginRequest)
+    {
+        var institution = await _institutionService.GetByEmail(loginRequest.Email);
+        if (institution is null)
+            throw new UnauthorizedException("Usuário ou senha inválidos");
+
+        if (!LoginRequestPasswordAndUserModelPasswordAreTheSame(loginRequest, institution))
+            throw new UnauthorizedException("Usuário ou senha inválidos");
+
+        return GenerateJwt(institution);
     }
     
     private bool LoginRequestPasswordAndUserModelPasswordAreTheSame(LoginRequest req, UserCompleteViewModel userCompleteViewModel)
