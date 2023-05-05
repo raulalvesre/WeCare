@@ -6,5 +6,6 @@ public class Candidate : User
     public DateOnly BirthDate { get; set; }
     
     public IEnumerable<CandidateQualification> Qualifications { get; set; } = new List<CandidateQualification>();
+    public IEnumerable<OpportunityCause> CausesCandidateIsInterestedIn { get; set; } = new List<OpportunityCause>();
     
 }

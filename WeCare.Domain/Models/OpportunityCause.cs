@@ -11,4 +11,5 @@ public class OpportunityCause
     public string SecondaryColorCode { get; set; }
 
     public IEnumerable<VolunteerOpportunity> VolunteerOpportunities { get; set; } = new List<VolunteerOpportunity>();
+    public IEnumerable<Candidate> CandidatesInterestedIn { get; set; } = new List<Candidate>();
 }
