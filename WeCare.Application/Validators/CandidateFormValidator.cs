@@ -98,12 +98,12 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
 
     private async Task AllQualificationsIdsExists(IEnumerable<long> qualificationIds,
         ValidationContext<CandidateForm> context,
-        CancellationToken arg3)
+        CancellationToken cancellationToken)
     {
         var qualifications = await _candidateQualificationRepository.FindByIdIn(qualificationIds);
         var dbQualificationsIds = qualifications.Select(x => x.Id).ToHashSet();
         
-        foreach (var qualificationId in dbQualificationsIds)
+        foreach (var qualificationId in qualificationIds)
         {
             if (!dbQualificationsIds.Contains(qualificationId))
             {
@@ -114,12 +114,12 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
     
     private async Task AllCausesIdsExists(IEnumerable<long> causesIds,
         ValidationContext<CandidateForm> context,
-        CancellationToken arg3)
+        CancellationToken cancellationToken)
     {
         var causes = await _opportunityCauseRepository.FindByIdIn(causesIds);
         var dbCausesIds = causes.Select(x => x.Id).ToHashSet();
 
-        foreach (var causeId in dbCausesIds)
+        foreach (var causeId in causesIds)
         {
             if (!dbCausesIds.Contains(causeId))
             {
