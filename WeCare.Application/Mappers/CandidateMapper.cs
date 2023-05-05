@@ -34,7 +34,7 @@ public class CandidateMapper
         };
     }
 
-    public Candidate ToModel(CandidateForm form)
+    public Candidate ToModel(CandidateForm form, IEnumerable<CandidateQualification> qualifications)
     {
         return new Candidate {
             Email = form.Email,
@@ -50,11 +50,12 @@ public class CandidateMapper
             State =  form.Address.State,
             PostalCode =  form.Address.PostalCode,
             Cpf = form.Cpf,
-            BirthDate = form.BirthDate
+            BirthDate = form.BirthDate,
+            Qualifications = qualifications
         };
     }
 
-    public void Merge(Candidate candidate, CandidateForm form)
+    public void Merge(Candidate candidate, CandidateForm form, IEnumerable<CandidateQualification> qualifications)
     {
         candidate.Email = form.Email;
         candidate.Password = StringCipher.Encrypt(form.Password);
@@ -70,6 +71,7 @@ public class CandidateMapper
         candidate.PostalCode = form.Address.PostalCode;
         candidate.Cpf = form.Cpf;
         candidate.BirthDate = form.BirthDate;
+        candidate.Qualifications = qualifications;
     }
 
     public Candidate ToModel(CandidateAdminForm form)

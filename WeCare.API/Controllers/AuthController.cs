@@ -17,10 +17,16 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
     
-    [HttpPost("login")]
-    public async ValueTask<ActionResult<TokenViewModel>> Login(LoginRequest loginRequest)
+    [HttpPost("login-candidate")]
+    public async ValueTask<ActionResult<TokenViewModel>> LoginCandidate(LoginRequest loginRequest)
     {
-        return Ok(await _authService.AuthenticateUser(loginRequest));
+        return Ok(await _authService.AuthenticateCandidate(loginRequest));
+    }
+    
+    [HttpPost("login-institution")]
+    public async ValueTask<ActionResult<TokenViewModel>> LoginInstitution(LoginRequest loginRequest)
+    {
+        return Ok(await _authService.AuthenticateInstitution(loginRequest));
     }
 
     [HttpPost("register-candidate")]
@@ -49,7 +55,7 @@ public class AuthController : ControllerBase
     {
         return NoContent();
     }
-
+    
     [HttpGet("is-email-registered")]
     public async ValueTask<ActionResult<bool>> IsEmailAlreadyRegistered([FromQuery(Name = "email")] string email)
     {

@@ -119,6 +119,7 @@ builder.Services.AddScoped<VolunteerOpportunityRepository>();
 builder.Services.AddScoped<OpportunityCauseRepository>();
 builder.Services.AddScoped<OpportunityRegistrationRepository>();
 builder.Services.AddScoped<OpportunityInvitationRepository>();
+builder.Services.AddScoped<CandidateQualificationRepository>();
 
 builder.Services.AddScoped<VolunteerOpportunityFormValidator>();
 builder.Services.AddScoped<CandidateAdminFormValidator>();

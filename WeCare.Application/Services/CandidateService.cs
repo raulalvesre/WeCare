@@ -1,10 +1,10 @@
+using Microsoft.EntityFrameworkCore;
 using WeCare.Application.Exceptions;
 using WeCare.Application.Interfaces;
 using WeCare.Application.Mappers;
 using WeCare.Application.SearchParams;
 using WeCare.Application.Validators;
 using WeCare.Application.ViewModels;
-using WeCare.Domain;
 using WeCare.Domain.Core;
 using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
@@ -14,6 +14,7 @@ namespace WeCare.Application.Services;
 public class CandidateService
 {
     private readonly CandidateRepository _candidateRepository;
+    private readonly CandidateQualificationRepository _candidateQualificationRepository;
     private readonly UserRepository _userRepository;
     private readonly UnitOfWork _unitOfWork;
     private readonly CandidateMapper _mapper;
@@ -26,7 +27,8 @@ public class CandidateService
         UserRepository userRepository,
         UnitOfWork unitOfWork, 
         CandidateAdminFormValidator candidateAdminFormValidator,
-        CandidateFormValidator candidateFormValidator, ICurrentUser currentUser)
+        CandidateFormValidator candidateFormValidator, ICurrentUser currentUser, 
+        CandidateQualificationRepository candidateQualificationRepository)
     {
         _candidateRepository = candidateRepository;
         _mapper = mapper;
@@ -35,6 +37,7 @@ public class CandidateService
         _candidateAdminFormValidator = candidateAdminFormValidator;
         _candidateFormValidator = candidateFormValidator;
         _currentUser = currentUser;
+        _candidateQualificationRepository = candidateQualificationRepository;
     }
 
     public async Task<CandidateViewModel> GetById(long id)
@@ -65,7 +68,9 @@ public class CandidateService
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
-        var candidate = _mapper.ToModel(form);
+        var qualifications = await _candidateQualificationRepository.GetByIdIn(form.QualificationsIds);
+
+        var candidate = _mapper.ToModel(form, qualifications);
 
         await _candidateRepository.Save(candidate);
         await _unitOfWork.SaveAsync();
@@ -82,12 +87,14 @@ public class CandidateService
         var validationResult = await _candidateFormValidator.ValidateAsync(form);;
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
-
+        
         var candidate = await _candidateRepository.GetById(candidateId);
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");
         
-        _mapper.Merge(candidate, form);
+        var qualifications = await _candidateQualificationRepository.GetByIdIn(form.QualificationsIds);
+        
+        _mapper.Merge(candidate, form, qualifications);
         await _candidateRepository.Update(candidate);
         await _unitOfWork.SaveAsync();
 
@@ -162,6 +169,17 @@ public class CandidateService
         
         candidate.Photo = memoryStream.ToArray();
         await _unitOfWork.SaveAsync();
+    }
+
+    public async Task<UserCompleteViewModel> GetByEmail(string email)
+    {
+        var candidate = await _candidateRepository.Query
+            .FirstOrDefaultAsync(x => x.Email.Equals(email));
+
+        if (candidate is null)
+            throw new NotFoundException("Candidato não encontrado");
+
+        return new UserCompleteViewModel(candidate);
     }
     
 }
