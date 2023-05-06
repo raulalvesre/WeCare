@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WeCare.Application.Interfaces;
+using WeCare.Application.SearchParams;
 using WeCare.Application.Services;
 using WeCare.Application.ViewModels;
 
@@ -20,7 +21,18 @@ public class OpportunityInvitationController : ControllerBase
         _currentUser = currentUser;
     }
 
+    [HttpGet("{id:long}")]
+    public async ValueTask<ActionResult<OpportunityInvitationViewModel>> GetById(long id)
+    {
+        return Ok(await _invitationService.GetById(id));
+    }
     
+    [HttpGet("search")]
+    public async ValueTask<ActionResult<OpportunityInvitationViewModel>> Search([FromQuery] OpportunityInvitationSearchParams searchParams)
+    {
+        return Ok(await _invitationService.GetPage(searchParams));
+    }
+
     [Authorize(Roles = "INSTITUTION")]
     [HttpPost]
     public async ValueTask<ActionResult<OpportunityInvitationViewModel>> Create(OpportunityInvitationForm form)
