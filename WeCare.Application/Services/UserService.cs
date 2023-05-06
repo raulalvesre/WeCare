@@ -1,5 +1,6 @@
 using WeCare.Application.Exceptions;
 using WeCare.Application.ViewModels;
+using WeCare.Domain.Models;
 using WeCare.Infrastructure;
 using WeCare.Infrastructure.Repositories;
 
@@ -35,6 +36,13 @@ public class UserService
             throw new NotFoundException("Usuário não encontrado");
 
         return new UserCompleteViewModel(user);
+    }
+
+    public async Task ChangePassword(User user, string password)
+    {
+        user.Password = password;
+        await _userRepository.Update(user);
+        await _unitOfWork.SaveAsync();
     }
 
     public async Task SetUserEnabled(long id, bool enabled)

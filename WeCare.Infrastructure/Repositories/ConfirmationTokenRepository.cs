@@ -16,6 +16,7 @@ public class ConfirmationTokenRepository : BaseRepository<ConfirmationToken>
     {
         return Query
             .AsNoTracking()
+            .Include(x => x.User)
             .FirstOrDefaultAsync(x => x.Token.Equals(token));
     }
     

@@ -153,10 +153,10 @@ public class InstitutionService
         await _unitOfWork.SaveAsync();
     }
     
-    public async Task<UserCompleteViewModel> GetByEmail(string email)
+    public async Task<UserCompleteViewModel> GetByEmailAndEnabled(string email)
     {
         var institution = await _institutionRepository.Query
-            .FirstOrDefaultAsync(x => x.Email.Equals(email));
+            .FirstOrDefaultAsync(x => x.Email.Equals(email) && x.Enabled);
 
         if (institution is null)
             throw new NotFoundException("Instituição não encontrada");

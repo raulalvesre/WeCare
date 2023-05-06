@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using WeCare.API.Auth;
-using WeCare.Application.Services;
 using WeCare.Application.ViewModels;
 
 namespace WeCare.API.Controllers;
@@ -44,15 +43,23 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("activate-account")]
-    public async ValueTask<ActionResult> ConfirmEmail([FromQuery(Name = "token")] string confirmationToken)
+    public async ValueTask<ActionResult> ActivateAccount([FromQuery(Name = "token")] string confirmationToken)
     {
-        await _authService.ConfirmEmail(confirmationToken);
+        await _authService.ActivateAccount(confirmationToken);
+        return NoContent();
+    }
+    
+    [HttpPost("password-recovery/email/{userId}")]
+    public async ValueTask<ActionResult> SendPasswordRecoveryEmail(long userId)
+    {
+        await _authService.SendPasswordRecoveryEmail(userId);
         return NoContent();
     }
 
-    [HttpPost("restore-password")]
-    public async ValueTask<ActionResult> RestoreUserPassword()
+    [HttpPost("password-recovery")]
+    public async ValueTask<ActionResult> RecoverPassword(PasswordRecoveryForm form)
     {
+        await _authService.RecoverUserPassword(form);
         return NoContent();
     }
     

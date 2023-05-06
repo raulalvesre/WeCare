@@ -133,20 +133,9 @@ public class OpportunityInvitationService
             OpportunityName = opportunity.Name,
             InvitationMessage = invitationMessage
         };
-        
-        string basePath = Directory.GetCurrentDirectory();
-        string templatesPath = Path.Combine(Directory.GetParent(basePath).FullName, "WeCare.Application", "EmailTemplates");
-        string templateFilePath = Path.Combine(templatesPath, "OpportunityInvitation.cshtml");
-        string template = File.ReadAllText(templateFilePath);
 
-        var onlyString = await _templateRenderer.ParseAsync(template, invitationEmailViewModel);
-        Console.WriteLine(onlyString);
-
-        await _fluentEmail
-            .To("raul.alves.re@gmail.com")
-            .Subject($"WeCare - A empresa {opportunity.Institution.Name} te convidou para uma oportunidade")
-            .UsingTemplateFromFile(templateFilePath, invitationEmailViewModel)
-            .SendAsync();
+        var subject = $"WeCare - A empresa {opportunity.Institution.Name} te convidou para uma oportunidade";
+        await _emailService.SendEmailAsync(candidate.Email, subject, nameof(OpportunityInvitation), invitationEmailViewModel);
     }
 
     public async Task Cancel(long invitationId)
