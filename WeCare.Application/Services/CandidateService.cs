@@ -176,10 +176,10 @@ public class CandidateService
         await _unitOfWork.SaveAsync();
     }
 
-    public async Task<UserCompleteViewModel> GetByEmail(string email)
+    public async Task<UserCompleteViewModel> GetByEmailAndEnabled(string email)
     {
         var candidate = await _candidateRepository.Query
-            .FirstOrDefaultAsync(x => x.Email.Equals(email));
+            .FirstOrDefaultAsync(x => x.Email.Equals(email) && x.Enabled);
 
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using WeCare.Application.Exceptions;
 using WeCare.Application.Interfaces;
 using WeCare.Application.Mappers;
+using WeCare.Application.SearchParams;
 using WeCare.Application.Validators;
 using WeCare.Application.ViewModels;
 using WeCare.Domain.Core;
@@ -53,6 +54,28 @@ public class OpportunityInvitationService
         _fluentEmail = fluentEmail;
         _templateRenderer = templateRenderer;
         _registrationRepository = registrationRepository;
+    }
+
+    public async Task<OpportunityInvitationViewModel> GetById(long id)
+    {
+        var invitation = await _invitationRepository.Query
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (invitation is null)
+            throw new NotFoundException("Convite não encontrado");
+
+        return _invitationMapper.FromModel(invitation);
+    }
+    
+    public async Task<Pagination<OpportunityInvitationViewModel>> GetPage(OpportunityInvitationSearchParams searchParams)
+    {
+        var invitationPage = await _invitationRepository.Paginate(searchParams);
+        return new Pagination<OpportunityInvitationViewModel>(
+            invitationPage.PageNumber, 
+            invitationPage.PageSize,
+            invitationPage.TotalCount,
+            invitationPage.TotalPages,
+            invitationPage.Data.Select(x => _invitationMapper.FromModel(x)));
     }
 
     public async Task<OpportunityInvitationViewModel> Save(OpportunityInvitationForm form)
@@ -110,20 +133,9 @@ public class OpportunityInvitationService
             OpportunityName = opportunity.Name,
             InvitationMessage = invitationMessage
         };
-        
-        string basePath = Directory.GetCurrentDirectory();
-        string templatesPath = Path.Combine(Directory.GetParent(basePath).FullName, "WeCare.Application", "EmailTemplates");
-        string templateFilePath = Path.Combine(templatesPath, "OpportunityInvitation.cshtml");
-        string template = File.ReadAllText(templateFilePath);
 
-        var onlyString = await _templateRenderer.ParseAsync(template, invitationEmailViewModel);
-        Console.WriteLine(onlyString);
-
-        await _fluentEmail
-            .To("raul.alves.re@gmail.com")
-            .Subject($"WeCare - A empresa {opportunity.Institution.Name} te convidou para uma oportunidade")
-            .UsingTemplateFromFile(templateFilePath, invitationEmailViewModel)
-            .SendAsync();
+        var subject = $"WeCare - A empresa {opportunity.Institution.Name} te convidou para uma oportunidade";
+        await _emailService.SendEmailAsync(candidate.Email, subject, nameof(OpportunityInvitation), invitationEmailViewModel);
     }
 
     public async Task Cancel(long invitationId)

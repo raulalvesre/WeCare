@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using WeCare.Application.EmailTemplates;
 using WeCare.Application.Exceptions;
 using WeCare.Application.Services;
 using WeCare.Application.ViewModels;
@@ -35,7 +36,7 @@ public class AuthService
 
     public async Task<TokenViewModel> AuthenticateCandidate(LoginRequest loginRequest)
     {
-        var candidate = await _candidateService.GetByEmail(loginRequest.Email);
+        var candidate = await _candidateService.GetByEmailAndEnabled(loginRequest.Email);
         if (candidate is null)
             throw new UnauthorizedException("Usuário ou senha inválidos");
 
@@ -47,7 +48,7 @@ public class AuthService
     
     public async Task<TokenViewModel> AuthenticateInstitution(LoginRequest loginRequest)
     {
-        var institution = await _institutionService.GetByEmail(loginRequest.Email);
+        var institution = await _institutionService.GetByEmailAndEnabled(loginRequest.Email);
         if (institution is null)
             throw new UnauthorizedException("Usuário ou senha inválidos");
 
@@ -92,63 +93,70 @@ public class AuthService
 
         var token = Guid.NewGuid().ToString();
         await _confirmationTokenService.Save(new ConfirmationTokenForm(token, candidateViewModel.Id));
-        await SendAccountConfirmationEmail(form.Email, token);
+        await SendAccountActivationEmail(candidateViewModel.Name, form.Email, token);
     }
     
-    private async Task SendAccountConfirmationEmail(string email, string confirmationToken)
+    private async Task SendAccountActivationEmail(string name, string email, string confirmationToken)
     {
-        var emailRequest = new EmailRequest
+        var subject = "WeCare - Ativação de conta";
+
+        var emailConfirmationViewModel = new EmailConfirmationViewModel
         {
-            ToEmail = email,
-            Subject = "WeCare - Ativação de conta",
-            Body = $"<a href='http://localhost:5098/api/auth/activateAccount?token={confirmationToken}'>Clique aqui para ativar sua conta.</a>"
+            UserName = name,
+            ConfirmationToken = confirmationToken
         };
-        
-        // await _emailService.SendEmailAsync(emailRequest);
+
+        await _emailService.SendEmailAsync(email, subject, nameof(AccountActivation), emailConfirmationViewModel);
     }
     
     public async Task RegisterInstitution(InstitutionForm form)
     {
-        var candidateViewModel = await _institutionService.Save(form);
+        var institutionViewModel = await _institutionService.Save(form);
 
         var token = Guid.NewGuid().ToString();
-        await _confirmationTokenService.Save(new ConfirmationTokenForm(token, candidateViewModel.Id));
-        // await SendAccountConfirmationEmail(form.Email, token);
+        await _confirmationTokenService.Save(new ConfirmationTokenForm(token, institutionViewModel.Id));
+        await SendAccountActivationEmail(institutionViewModel.Email, form.Email, token);
     }
     
-    public async Task ConfirmEmail(string token)
+    public async Task ActivateAccount(string token)
     {
         var confirmationToken = await _confirmationTokenService.GetByToken(token);
         if (DateTime.Now.Subtract(confirmationToken.CreationDate).TotalHours > 2)
             throw new GoneException("Token de confirmação expirado");
 
-        // await _userService.SetUserEnabled(confirmationToken.UserId, true);
+        await _userService.SetUserEnabled(confirmationToken.UserId, true);
     }
     
-    public async Task RestoreUserPassword(long userId)
+    public async Task SendPasswordRecoveryEmail(long userId)
     {
         var user = await _userService.GetById(userId);
         if (user is null)
-            throw new NotFoundException("Candidato não encontrado");
+            throw new NotFoundException("Usuário não encontrado");
         
-        var emailRequest = new EmailRequest
+        var token = Guid.NewGuid().ToString();
+        await _confirmationTokenService.Save(new(token, userId));
+        
+        const string subject = "WeCare - Recuperação de senha";
+        var passwordRecoveryViewModel = new PasswordRecoveryViewModel
         {
-            ToEmail = user.Email,
-            Subject = "WeCare - Recuperação de senha",
-            Body = "<a href='http://localhost:5098/api/auth/login'>Clique aqui para recuperar sua senha.</a>"
+            CandidateName = user.Name,
+            ConfirmationToken = token
         };
+        
+        await _emailService.SendEmailAsync(user.Email, subject, nameof(PasswordRecovery), passwordRecoveryViewModel);
     }
-    
-    private async Task SendPasswordRecoveryEmail(string email, string confirmationToken)
+
+    public async Task RecoverUserPassword(PasswordRecoveryForm form)
     {
-        var emailRequest = new EmailRequest
-        {
-            ToEmail = email,
-            Subject = "WeCare - Recuperação de senha",
-            Body = $"<a href='http://localhost:5098/api/auth/login'>Clique aqui para recuperar sua senha.</a>"
-        };
+        var validationResult = await form.ValidateAsync();
+        if (!validationResult.IsValid)
+            throw new BadRequestException(validationResult.Errors);
         
-        // await _emailService.SendEmailAsync(emailRequest);
+        var token = await _confirmationTokenService.GetByToken(form.Token);
+        if (token is null)
+            throw new NotFoundException("Token não encontrado");
+
+        await _userService.ChangePassword(token.User, form.Password);
     }
 
     public async Task<bool> IsEmailAlreadyRegistered(string email)

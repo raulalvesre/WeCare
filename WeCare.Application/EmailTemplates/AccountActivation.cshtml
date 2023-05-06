@@ -1,0 +1,36 @@
+@model WeCare.Application.ViewModels.EmailConfirmationViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+			line-height: 1.5;
+			background-color: #f6f6f6;
+		}
+		h1 {
+			font-size: 24px;
+			color: #333333;
+			margin-top: 0;
+			margin-bottom: 16px;
+		}
+		p {
+			margin-top: 0;
+			margin-bottom: 16px;
+		}
+	</style>
+</head>
+<body>
+	<h1>WeCare</h1>
+	<p>Olá, @Model.UserName!</p>
+	<p>Seja bem-vindo(a) à nossa plataforma! Estamos muito felizes em tê-lo(a) como novo(a) membro e gostaríamos de confirmar a ativação da sua conta. Estamos ansiosos para proporcionar a você uma experiência incrível e satisfatória.</p>
+	<p>Para ativar sua conta, <a href="http://localhost:8085/activate-account?token=@Model.ConfirmationToken" class="button">clique aqui</a></p>
+</body>
+</html>
