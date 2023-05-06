@@ -152,6 +152,7 @@ builder.Services.AddScoped<VolunteerOpportunityService>();
 builder.Services.AddScoped<OpportunityCauseService>();
 builder.Services.AddScoped<OpportunityRegistrationService>();
 builder.Services.AddScoped<OpportunityInvitationService>();
+builder.Services.AddScoped<CandidateQualificationService>();
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
