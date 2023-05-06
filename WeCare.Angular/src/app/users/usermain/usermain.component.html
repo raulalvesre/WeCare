@@ -5,39 +5,24 @@
   <div class="cols_container">
     <div class="left_col">
       <div class="img_profile">
-        <img src="../../../assets/img/i-devs.png" alt="" />
+        <img src="../../../assets/img/profile.png" alt="" />
         <span></span>
       </div>
       <h2 class="user_name">User Name</h2>
-      <hr />
       <span class="account-type">Voluntario</span>
-      <hr />
-      <p class="bio">
-        <!-- lorem30 -->
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt tempore
-        illum possimus, ipsum non nesciunt nostrum eius laudantium doloribus
-        recusandae culpa rerum unde, ullam et quasi, iure facere quos saepe.
-      </p>
-      <hr />
-      <span class="account-type">Principais habilidades</span>
-      <hr />
-      <ul>
-        <li>Lorem ipsum dolor sit amet consectetur</li>
-        <li>unt tempore illum possimus</li>
-        <li>Sullam et quasi, iure facere quos saepe.</li>
-      </ul>
-      <hr />
-      <span class="account-type">Contatos</span>
-      <hr />
-      <p class="bio">
-        Fone/Whats: xxxxxxxxxxxxxxxxxxxx, Email: wecare@gmail.com
-      </p>
-      <div class="content"></div>
+      <div class="border border-warning nextEv my-5 p-4">
+        <p>
+          Fique ligado! Seu proximo evento acontecera no dia <strong>{{vagas[0].date}}</strong>
+        </p>
+      </div>
+      <div (click)="onMenuClick('done')" class="border border-success  rounded-pill invtation p-4">
+        <p>Você foi convidado para um evento!<br><strong>Clique aqui e confira!</strong></p>
+      </div>
     </div>
 
     <div >
       <div class="right_col mt-3">
-        <nav >
+        <nav>
           <ul *ngIf="userMenuType == 'institution'">
             <li (click)="onMenuClick('news')">Novidades</li>
             <li (click)="onMenuClick('search')">Pesquisar Candidatos</li>
@@ -50,15 +35,23 @@
             <li (click)="onMenuClick('search')">Pesquisar Vagas</li>
             <li (click)="onMenuClick('schedule')">Agendados</li>
             <li (click)="onMenuClick('done')">Realizados</li>
-            <li (click)="onMenuClick('editProfile')">Perfil</li>
+            <li (click)="onMenuClick('profile')">Perfil</li>
           </ul>
         </nav>
         <hr>
     </div>
     
+    <!-- 
+      
+      institution   
+    
+    -->
     <div *ngIf="userMenuType == 'institution'">
       <div *ngIf="userMenu == 'news'">
-        <p>Ultimos Voluntarios Cadastrados</p>
+        <div style="max-height: 500px; overflow: hidden;" class="px-2">
+          <p>Ultimos Voluntarios Cadastrados</p>
+        </div>
+        
         <div  class="vagas">
           <div *ngFor="let vaga of vagas" class="">
             <div class="cardVaga">            
@@ -325,220 +318,321 @@
       </div>
     </div>
     
+     <!-- 
+      
+      Volunteer   
+    
+    -->
     <!-- Volunteer Menus -->
     <div *ngIf="userMenuType == 'volunteer'">
       <div *ngIf="userMenu == 'news'">
-        <p>Ultimas Vagas Adicionadas</p>
-        <div  class="vagas">
-          <div *ngFor="let vaga of vagas" class="">
-            <div class="cardVaga">            
-              <img class="mx-auto text-center" src="../../../assets/img/background2.png" alt="" />
-              <div class="row">
-                <div class="col">
-                  {{vaga.type}} - {{vaga.name}}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  {{vaga.location}}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  {{vaga.date}}
-                </div>
-              </div>
-                <button type="button" class="btn btnCollor btn-sm mb-2 text-white" (click)="openFormModal()" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  Mais informações
-                </button>
-            </div>
-            
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered modal-xl">
-                <div class="modal-content">
-                  <div class="modal-header text-center btnCollor">
-                    <h5 class="modal-title text-white " id="exampleModalLabel">Informações Sobre a Vaga</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div style="max-height: 500px; min-height: 500px; overflow: hidden;" class="px-2">
+          <p>Ultimas Vagas Adicionadas</p>
+          <div  class="vagas">
+            <div *ngFor="let vaga of vagas" class="">
+              <div class="cardVaga">            
+                <img class="mx-auto text-center" src="../../../assets/img/background2.png" alt="" />
+                <div class="row">
+                  <div class="col">
+                    {{vaga.type}} - {{vaga.name}}
                   </div>
-                  <div class="modal-body">
-
-                    <div class="row"> 
-                      <div class="col md-4" style="max-width: 50%;">
-                        <img class="mx-auto rounded mx-auto d-block img-thumbnail" src="../../../assets/img/background2.png" alt="" />
-                      </div>                   
-                      <div class="col md-8 text-start">
-                        <div class="row">
-                          <div class="font-weight-bold col sm-4 ">
-                            <strong>{{vagas[0].name}}</strong>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    {{vaga.location}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    {{vaga.date}}
+                  </div>
+                </div>
+                  <button type="button" class="btn btnCollor btn-sm mb-2 text-white" (click)="openFormModal()" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Mais informações
+                  </button>
+              </div>
+              
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                  <div class="modal-content">
+                    <div class="modal-header text-center btnCollor">
+                      <h5 class="modal-title text-white " id="exampleModalLabel">Informações Sobre a Vaga</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+  
+                      <div class="row"> 
+                        <div class="col md-4" style="max-width: 50%;">
+                          <img class="mx-auto rounded mx-auto d-block img-thumbnail" src="../../../assets/img/background2.png" alt="" />
+                        </div>                   
+                        <div class="col md-8 text-start">
+                          <div class="row">
+                            <div class="font-weight-bold col sm-4 ">
+                              <strong>{{vagas[0].name}}</strong>
+                            </div>
+                            <div class="col sm-1">
+                              {{vagas[0].type}}
+                            </div> 
                           </div>
-                          <div class="col sm-1">
-                            {{vagas[0].type}}
-                          </div> 
-                        </div>
-                        <hr>
-                        <div class="row">
-                          <div class="col sm-2"><strong>Bairro: </strong>{{vagas[0].location}}</div>
-                        </div>
-                        <div class="row">
-                          <div class="col sm-2"><strong>Cidade: </strong>{{vagas[0].location}}</div>
-                        </div>
-                        <div class="row">
-                          <div class="col sm-2"><strong>Estado: </strong>{{vagas[0].location}}</div>
-                        </div>
-                        <div class="row">
-                          <div class="col sm-2"><strong>Data: </strong>{{vagas[0].date}}</div>
-                        </div>
-                        <div class="row">
-                          <div class="col sm-2"><strong>Duração: </strong>{{'10:00'}}</div> 
-                        </div>
-                        <div class="row">
-                          <div class="col"><strong>Voluntarios cadastrados: </strong>{{5}}</div>
-                        </div>
-                        <div class="row">
-                          <div class="col"><strong>Voluntarios necessarios: </strong>{{12}}</div>
+                          <hr>
+                          <div class="row">
+                            <div class="col sm-2"><strong>Bairro: </strong>{{vagas[0].location}}</div>
+                          </div>
+                          <div class="row">
+                            <div class="col sm-2"><strong>Cidade: </strong>{{vagas[0].location}}</div>
+                          </div>
+                          <div class="row">
+                            <div class="col sm-2"><strong>Estado: </strong>{{vagas[0].location}}</div>
+                          </div>
+                          <div class="row">
+                            <div class="col sm-2"><strong>Data: </strong>{{vagas[0].date}}</div>
+                          </div>
+                          <div class="row">
+                            <div class="col sm-2"><strong>Duração: </strong>{{'10:00'}}</div> 
+                          </div>
+                          <div class="row">
+                            <div class="col"><strong>Voluntarios cadastrados: </strong>{{5}}</div>
+                          </div>
+                          <div class="row">
+                            <div class="col"><strong>Voluntarios necessarios: </strong>{{12}}</div>
+                          </div>
                         </div>
                       </div>
+                      <div class="row text-start ">
+                        <div class="col pr-4 pl-4"><p class="border-bottom font-weight-bold">Descrição</p>'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt temporeillum possimus, ipsum non nesciunt nostrum eius laudantium doloribus
+                          recusandae culpa rerum unde, ullam et quasi, iure facere quos saepe.Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt temporeillum possimus, ipsum non nesciunt nostrum eius laudantium doloribus
+                          recusandae culpa rerum unde, ullam et quasi, iure facere quos saepe.Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt temporeillum possimus, ipsum non nesciunt nostrum eius laudantium doloribus
+                          recusandae culpa rerum unde, ullam et quasi, iure facere quos saepe.'</div>
+                      </div>
                     </div>
-                    <div class="row text-start ">
-                      <div class="col pr-4 pl-4"><p class="border-bottom font-weight-bold">Descrição</p>'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt temporeillum possimus, ipsum non nesciunt nostrum eius laudantium doloribus
-                        recusandae culpa rerum unde, ullam et quasi, iure facere quos saepe.Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt temporeillum possimus, ipsum non nesciunt nostrum eius laudantium doloribus
-                        recusandae culpa rerum unde, ullam et quasi, iure facere quos saepe.Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt temporeillum possimus, ipsum non nesciunt nostrum eius laudantium doloribus
-                        recusandae culpa rerum unde, ullam et quasi, iure facere quos saepe.'</div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                      <button type="button" class="btn btnCollor text-white" (click)="saveSomeThing()">Quero Participar!</button>
                     </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btnCollor text-white" (click)="saveSomeThing()">Quero Participar!</button>
                   </div>
                 </div>
-              </div>
-            </div>
-        </div>
-        </div>
-      </div>
-
-      <!-- UserMenu Done -->
-      <div *ngIf="userMenu == 'done'" class="">
-        
-        <div *ngIf="realizados.length == 0">
-          <p class="bold">Você ainda não realizou nenhum evento!</p>
-        </div>
-
-        <div *ngIf="realizados.length > 0">
-          <p class="bold">Você participou dos seguintes eventos:</p>
-          
-          <div class="row">
-            <div class="col col-sm-2">Tipo do evento</div>
-            <div class="col col-sm-4">Nome</div>
-            <div class="col col-sm-4">Data</div>
-            <div class="col col-sm-2">Certificado</div>
-          </div>
-          <div style="min-height: 500px;">
-            <div *ngFor="let realizado of realizados" class="border">
-              <div class="row">
-                <div class="col col-sm-2">{{realizado.type}}</div>
-                <div class="col col-sm-4">{{realizado.name}}</div>
-                <div class="col col-sm-4">{{realizado.date}}</div>
-                <div class="col col-sm-2">{{realizado.certificado}}</div>
               </div>
             </div>
           </div>
         </div>
         <hr>
-
       </div>
 
-      <!-- UserMenu Search -->
-      <div *ngIf="userMenu == 'search'">
-        <div class="col-sm-3 my-1">
-          <label class="sr-only" for="inlineFormInputGroupSearch">Pesquisar</label>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <div class="input-group-text">Pesquisar</div>
+      <!-- UserMenu Done -->
+      <div *ngIf="userMenu == 'schedule'" class="">
+        <div style="max-height: 500px; overflow: hidden;" class="px-2">
+          <div *ngIf="realizados.length == 0">
+            <p class="bold">Você ainda não realizou nenhum evento!</p>
+          </div>
+  
+          <div *ngIf="realizados.length > 0">
+            <p class="bold">Você agendou dos seguintes eventos:</p>
+            
+            <div class="row text-white bg-info">
+              <div class="col col-sm-2">Tipo do evento</div>
+              <div class="col col-sm-4">Nome</div>
+              <div class="col col-sm-4">Data</div>
+              <div class="col col-sm-2">Status</div>
             </div>
-            <input type="text" class="form-control" id="inlineFormInputGroupSearch" placeholder="EX: Local da realização do evento">
+            <div style="min-height: 500px;">
+              <div *ngFor="let realizado of realizados" class="border-top border-bottom">
+                <div class="row">
+                  <div class="col col-sm-2" title="{{realizado.type}}">{{realizado.type}}</div>
+                  <div class="col col-sm-4" title="{{realizado.name}}">{{realizado.name}}</div>
+                  <div class="col col-sm-4" title="{{realizado.date}}">{{realizado.date}}</div>
+                  <div class="col col-sm-2" title="{{realizado.certificado}}">{{realizado.certificado}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div>
+          <div class="row">
+            <div class="col" style="text-align: left;">
+              <button class="btn btn-sm btnCollor text-white">Anterior</button>
+            </div>
+            <div class="col" style="text-align: right;">
+              <button class="btn btn-sm btnCollor text-white">Próximo</button>
+            </div>
           </div>
         </div>
       </div>
 
-      <div *ngIf="userMenu == 'editProfile'">
-        <p>Editar Perfil</p>
-        <form class="needs-validation" novalidate>
-          <div class="form-row">
-            <div class="col-md-4 mb-3">
-              <label for="validationTooltip01">Primeiro nome</label>
-              <input type="text" class="form-control" id="validationTooltip01" placeholder="Nome" value="Nome" required>
-              <div class="valid-tooltip">
-                Tudo certo!
-              </div>
+      <!-- UserMenu Done -->
+      <div *ngIf="userMenu == 'done'" class="">
+        <div style="max-height: 500px; overflow: hidden;" class="px-2">
+          
+          <div *ngIf="realizados.length == 0">
+            <p class="bold">Você ainda não realizou nenhum evento!</p>
+          </div>
+
+          <div *ngIf="realizados.length > 0">
+            <p class="bold">Você participou dos seguintes eventos:</p>  
+            
+            <div class="row">
+              <div class="col col-sm-2">Tipo do evento</div>
+              <div class="col col-sm-4">Nome</div>
+              <div class="col col-sm-4">Data</div>
+              <div class="col col-sm-2">Certificado</div>
             </div>
-            <div class="col-md-4 mb-3">
-              <label for="validationTooltip02">Sobrenome</label>
-              <input type="text" class="form-control" id="validationTooltip02" placeholder="Sobrenome" value="Sobrenome" required>
-              <div class="valid-tooltip">
-                Tudo certo!
-              </div>
-            </div>
-            <div class="col-md-3 mb-3">
-              <label for="validationTooltip05">CPF</label>
-              <input type="text" class="form-control" id="validationTooltip05" placeholder="999.999.999.99" required disabled>
-              <div class="invalid-tooltip">
-                Por favor, informe um CPF válido.
-              </div>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="validationTooltipUsername">Email</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="validationTooltipUsernamePrepend">@</span>
-                </div>
-                <input type="text" class="form-control" id="validationTooltipUsername" placeholder="Usuário" aria-describedby="validationTooltipUsernamePrepend" required>
-                <div class="invalid-tooltip">
-                  Por favor, escolha um usuário válido e único.
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="validationTooltipUsername">Telefone</label>
-              <div class="input-group">
-                <input type="text" class="form-control" id="validationTooltipUsername" placeholder="Usuário" aria-describedby="validationTooltipUsernamePrepend" required>
-                <div class="invalid-tooltip">
-                  Por favor, escolha um usuário válido e único.
+
+            <div style="min-height: 500px;">
+              <div *ngFor="let realizado of realizados" class="border">
+                <div class="row">
+                  <div class="col col-sm-2">{{realizado.type}}</div>
+                  <div class="col col-sm-4">{{realizado.name}}</div>
+                  <div class="col col-sm-4">{{realizado.date}}</div>
+                  <div class="col col-sm-2">{{realizado.certificado}}</div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="form-row">
-            <div class="col-md-6 mb-3">
-              <label for="validationTooltip03">Cidade</label>
-              <input type="text" class="form-control" id="validationTooltip03" placeholder="Cidade" required>
-              <div class="invalid-tooltip">
-                Por favor, informe uma cidade válida.
-              </div>
+        </div>
+        <hr>
+        <div>
+          <div class="row">
+            <div class="col" style="text-align: left;">
+              <button class="btn btn-sm btnCollor text-white">Anterior</button>
             </div>
-            <div class="col-md-3 mb-3">
-              <label for="validationTooltip04">Estado</label>
-              <input type="text" class="form-control" id="validationTooltip04" placeholder="Estado" required>
-              <div class="invalid-tooltip">
-                Por favor, informe um estado válido.
-              </div>
-            </div>
-            <div class="col-md-3 mb-3">
-              <label for="validationTooltip05">CEP</label>
-              <input type="text" class="form-control" id="validationTooltip05" placeholder="CEP" required>
-              <div class="invalid-tooltip">
-                Por favor, informe um CEP válido.
-              </div>
+            <div class="col" style="text-align: right;">
+              <button class="btn btn-sm btnCollor text-white">Próximo</button>
             </div>
           </div>
-          <button class="btn btn-primary" type="submit">Salvar</button>
-        </form>
+        </div>
+      </div>
+
+      <!-- UserMenu Search -->
+      <div *ngIf="userMenu == 'search'">
+        <div style="max-height: 500px; min-height: 500px; overflow: auto;" class="px-2">
+          <div class="col-sm-12 my-1">
+            <label class="sr-only" for="inlineFormInputGroupSearch">Pesquisar</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text">Pesquisar</div>
+              </div>
+              <input type="text" class="form-control" id="inlineFormInputGroupSearch" placeholder="">
+            </div>
+          </div>
+        </div>
+        <hr>
+      </div>
+
+      <!-- UserMenu Profile -->
+      <div *ngIf="userMenu == 'profile'" style="margin-bottom: -47px;">
+        <div style="max-height: 500px; overflow: auto;" class="px-2">
+          <h2>User Name</h2>
+          <span class="">Voluntario</span>
+          <p class="bio">
+            <!-- lorem30 -->
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt tempore
+            illum possimus, ipsum non nesciunt nostrum eius laudantium doloribus
+            recusandae culpa rerum unde, ullam et quasi, iure facere quos saepe.
+          </p>
+          <hr />
+          <span class="account-type">Principais habilidades</span>
+          <hr />
+          <ul>
+            <li>Lorem ipsum dolor sit amet consectetur</li>
+            <li>unt tempore illum possimus</li>
+            <li>Sullam et quasi, iure facere quos saepe.</li>
+          </ul>
+          <hr />
+          <span class="account-type">Contatos</span>
+          <hr />
+          <p class="bio">
+            Fone/Whats: xxxxxxxxxxxxxxxxxxxx, Email: wecare@gmail.com
+          </p>
+          <div class="content"></div>
+        </div>
+
+          <hr style="background-color: rgb(78, 126, 230); height: 1px; border: 0;">
+          <div style="text-align: right;" class="mr-3">
+            <button class="btn btnCollor text-white mx-3" style="gap: 50px;" type="submit" (click)="onMenuClick('editProfile')">Editar Perfil</button>  
+          </div>
+      </div>
+
+      <div *ngIf="userMenu == 'editProfile'"  style="margin-bottom: -47px;">
+        <div style="max-height: 500px; overflow: auto;" class="px-2">
+          <p>Editar Perfil</p>
+          <form class="needs-validation" novalidate>
+            <div class="form-row">
+              <div class="col-md-4 mb-3">
+                <label for="validationTooltip01">Primeiro nome</label>
+                <input type="text" class="form-control" id="validationTooltip01" placeholder="Nome" value="Nome" required>
+                <div class="valid-tooltip">
+                  Tudo certo!
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="validationTooltip02">Sobrenome</label>
+                <input type="text" class="form-control" id="validationTooltip02" placeholder="Sobrenome" value="Sobrenome" required>
+                <div class="valid-tooltip">
+                  Tudo certo!
+                </div>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="validationTooltip05">CPF</label>
+                <input type="text" class="form-control" id="validationTooltip05" placeholder="999.999.999.99" required disabled>
+                <div class="invalid-tooltip">
+                  Por favor, informe um CPF válido.
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="validationTooltipUsername">Email</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="validationTooltipUsernamePrepend">@</span>
+                  </div>
+                  <input type="text" class="form-control" id="validationTooltipUsername" placeholder="Usuário" aria-describedby="validationTooltipUsernamePrepend" required>
+                  <div class="invalid-tooltip">
+                    Por favor, escolha um usuário válido e único.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="validationTooltipUsername">Telefone</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="validationTooltipUsername" placeholder="Usuário" aria-describedby="validationTooltipUsernamePrepend" required>
+                  <div class="invalid-tooltip">
+                    Por favor, escolha um usuário válido e único.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-6 mb-3">
+                <label for="validationTooltip03">Cidade</label>
+                <input type="text" class="form-control" id="validationTooltip03" placeholder="Cidade" required>
+                <div class="invalid-tooltip">
+                  Por favor, informe uma cidade válida.
+                </div>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="validationTooltip04">Estado</label>
+                <input type="text" class="form-control" id="validationTooltip04" placeholder="Estado" required>
+                <div class="invalid-tooltip">
+                  Por favor, informe um estado válido.
+                </div>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="validationTooltip05">CEP</label>
+                <input type="text" class="form-control" id="validationTooltip05" placeholder="CEP" required>
+                <div class="invalid-tooltip">
+                  Por favor, informe um CEP válido.
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>  
+        <hr>
+        <div style="text-align: right;" class="mr-3">
+          <button class="btn btn btn-outline-warning" type="submit" (click)="onMenuClick('profile')">Cancelar</button>    
+          <button class="btn btnCollor text-white mx-3" type="submit">Salvar</button>    
+        </div>
       </div>
     </div>
-
-
-
     </div>
   </div>
 </section>
