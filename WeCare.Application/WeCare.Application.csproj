@@ -43,8 +43,4 @@
       </Content>
     </ItemGroup>
 
-    <ItemGroup>
-      <AdditionalFiles Include="EmailTemplates\PasswordRecovery.cshtml" />
-    </ItemGroup>
-
 </Project>
