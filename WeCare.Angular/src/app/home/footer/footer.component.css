@@ -41,7 +41,7 @@ footer .logo{
 	
 	clear: both;
 	background-color: rgb(14, 164, 233, 0.7);
-	text-align: center;
+	
 	color: rgb(255, 255, 255);
 }
 
@@ -50,7 +50,7 @@ footer .logo{
     top: 50%;
     left: 25%;
     width: 50%;
-    text-align: center;
+    
     -webkit-transform: translateY( -50% );
     -moz-transform: translateY( -50% );
     transform: translateY( -50% );
@@ -67,4 +67,8 @@ footer .logo{
 .imagem{
 	width: 80%;
 	height: 200px;
+}
+
+.row{
+	--bs-gutter-x: 0em;
 }
