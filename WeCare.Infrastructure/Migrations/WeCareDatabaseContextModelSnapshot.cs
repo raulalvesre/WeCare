@@ -42,25 +42,6 @@ namespace WeCare.Infrastructure.Migrations
                     b.ToTable("candidate_candidate_qualification", "public");
                 });
 
-            modelBuilder.Entity("CandidateOpportunityCause", b =>
-                {
-                    b.Property<long>("CandidatesInterestedInId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("candidates_interested_in_id");
-
-                    b.Property<long>("CausesCandidateIsInterestedInId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("causes_candidate_is_interested_in_id");
-
-                    b.HasKey("CandidatesInterestedInId", "CausesCandidateIsInterestedInId")
-                        .HasName("pk_candidate_opportunity_cause");
-
-                    b.HasIndex("CausesCandidateIsInterestedInId")
-                        .HasDatabaseName("ix_candidate_opportunity_cause_causes_candidate_is_interested_");
-
-                    b.ToTable("candidate_opportunity_cause", "public");
-                });
-
             modelBuilder.Entity("OpportunityCauseVolunteerOpportunity", b =>
                 {
                     b.Property<long>("CausesId")
@@ -716,23 +697,6 @@ namespace WeCare.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_candidate_candidate_qualification_candidate_qualification_q");
-                });
-
-            modelBuilder.Entity("CandidateOpportunityCause", b =>
-                {
-                    b.HasOne("WeCare.Domain.Models.Candidate", null)
-                        .WithMany()
-                        .HasForeignKey("CandidatesInterestedInId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_candidate_opportunity_cause_users_candidates_interested_in_");
-
-                    b.HasOne("WeCare.Domain.Models.OpportunityCause", null)
-                        .WithMany()
-                        .HasForeignKey("CausesCandidateIsInterestedInId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_candidate_opportunity_cause_opportunity_cause_causes_candid");
                 });
 
             modelBuilder.Entity("OpportunityCauseVolunteerOpportunity", b =>
