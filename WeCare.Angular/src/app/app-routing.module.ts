@@ -10,6 +10,12 @@ import { LoginComponent } from './home/login/login.component';
 import { UsermainComponent } from './users/usermain/usermain.component';
 import { CausesComponent } from './home/causes/causes.component';
 import { ProfileTypeComponent } from './users/forms/profile-type/profile-type.component';
+import { ProfileComponent } from './users/profile/profile.component';
+import { SearchOportunityComponent } from './users/search-oportunity/search-oportunity.component';
+import { InstitutionsIssuesComponent } from './adm/institutions-issues/institutions-issues.component';
+import { UsersIssuesComponent } from './adm/users-issues/users-issues.component';
+
+
 
 const routes: Routes = [
   {
@@ -43,6 +49,22 @@ const routes: Routes = [
   {
     path: 'profile-type',
     component: ProfileTypeComponent
+  },
+  {
+    path: 'user-profile',
+    component: ProfileComponent
+  },
+  {
+    path: 'user-search-oportunity',
+    component: SearchOportunityComponent
+  },
+  {
+    path: 'issues-users',
+    component: UsersIssuesComponent
+  },
+  {
+    path: 'issues-institutions',
+    component: InstitutionsIssuesComponent
   }
 ];
 

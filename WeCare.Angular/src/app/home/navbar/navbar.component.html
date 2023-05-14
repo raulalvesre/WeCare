@@ -1,46 +1,139 @@
-<!-- <div>
-    <ul>
-        <li class="list">
-            <a>
-                <span class="icon"></span>
-                <span class="text"></span>
-            </a>
-        </li>
-    </ul>
-</div> -->
-
-<nav class="navbar navbar-expand-lg navbar-dark navbar-transparent sticky-top border-bottom-1 border-white">
+<nav
+  class="navbar navbar-expand-lg navbar-dark navbar-transparent sticky-top border-bottom-1 border-white py-3"
+>
+  <div class="container">
+    <a routerLink="/home" class="nav-link" routerLinkActive="active">
+      <img
+        src="../../../assets/img/logo-footer-no-slogan.png"
+        width="112"
+      /><span class="d-inline-block text-white" style="padding-left: 25px"
+        >Mudando vidas, juntos!</span
+      >
+    </a>
     <!-- Menu Hamburguer -->
-    <button class="navbar-toggler ml-5" data-toggle="collapse" data-target="#meusmenus2">
-        <span class="navbar-toggler-icon text-white"></span>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainMenu"
+      aria-controls="mainMenu"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="meusmenus2">
-        <!-- <form class="form-inline ml-auto">
-            <input type="text" class="form-control text-aling-center nav-item" placeholder="Pesquisar">
-            <button class="btn btn-outline-info">
-                Ok
-            </button>
-        </form> -->
+    <div class="collapse navbar-collapse" id="mainMenu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a routerLink="/home" class="nav-link" routerLinkActive="active"
+            >Início
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            href="/about"
+            class="nav-link font-weight-bold"
+            routerLinkActive="active"
+            >Sobre a WeCare
+          </a>
+        </li>
+        <li class="nav-item divisor"></li>
+        <!-- temp -->
+        <div *ngIf="userMenuType == 'unkown'">
+          <li class="nav-item">
+            <a
+              href="/login"
+              class="nav-link font-weight-bold"
+              routerLinkActive="active"
+              >Acessar</a
+            >
+          </li>
+        </div>
 
-        <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-                <a routerLink="/home" class="nav-link" routerLinkActive="active">Início</a>
-            </li>
-            <div class="navbar-nav ms-auto">
-                <!-- <li class="nav-item">
-                    <a routerLink="/causes" class="nav-link" routerLinkActive="active">Projetos</a>
-                </li> -->
-                <li class="nav-item">
-                    <a href="/login" class="nav-link font-weight-bold">Acessar</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/about" class="nav-link font-weight-bold" routerLinkActive="active">Sobre a We Care</a>
-                </li>
-                <!-- temp -->
-                <li class="nav-item">
-                    <a href="/profile" class="nav-link font-weight-bold" routerLinkActive="active">Perfil</a>
-                </li>
-            </div>
-        </ul>               
+        <div *ngIf="userMenuType == 'volunteer'">
+          <li class="nav-item">
+            <a
+              href="/user-search-oportunity"
+              class="nav-link font-weight-bold"
+              routerLinkActive="active"
+              >Pesquisar Vagas</a
+            >
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Oportunidades
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a
+              href="/user-profile"
+              class="nav-link font-weight-bold"
+              routerLinkActive="active"
+              >Perfil</a
+            >
+          </li>
+        </div>
+
+        <div *ngIf="userMenuType == 'institution'">
+          <li class="nav-item">
+            <a
+              href="/profile"
+              class="nav-link font-weight-bold"
+              routerLinkActive="active"
+              >Pesquisar Voluntários</a
+            >
+          </li>
+          <!-- <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Oportunidades
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li> -->
+          <li class="nav-item">
+            <a
+              href="/profile"
+              class="nav-link font-weight-bold"
+              routerLinkActive="active"
+              >Perfil</a
+            >
+          </li>
+        </div>
+        <div *ngIf="userMenuType == 'adm'">
+          <li class="nav-item">
+            <a
+              href="/issues-users"
+              class="nav-link font-weight-bold"
+              routerLinkActive="active"
+              >Problemas Relatados Com Voluntários</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              href="/issues-institutions"
+              class="nav-link font-weight-bold"
+              routerLinkActive="active"
+              >Problemas Relatados Com Vagas</a
+            >
+          </li>
+        </div>
+      </ul>
     </div>
+  </div>
 </nav>

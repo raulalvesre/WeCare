@@ -38,11 +38,7 @@ footer .logo{
 }
 
 .fotterespc{
-	
-	clear: both;
-	background-color: rgb(14, 164, 233, 0.7);
-	
-	color: rgb(255, 255, 255);
+	background-color: rgb(11,125,179, 0.7);
 }
 
 .content {
@@ -71,4 +67,18 @@ footer .logo{
 
 .row{
 	--bs-gutter-x: 0em;
+}
+
+.footerBorder{
+	box-sizing: border-box;
+	border: 3px solid rgb(255, 255, 255);
+}
+
+.divisor{
+	height: 1px;
+	background: rgb(255, 255, 255, 0.5);
+}
+
+ul{
+	list-style-type: none;
 }

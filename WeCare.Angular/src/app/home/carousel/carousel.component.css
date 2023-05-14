@@ -31,3 +31,7 @@
     text-align: center;
     padding: 50px;
   }
+
+  .carousel-item img{
+    height: 30vh;
+  }

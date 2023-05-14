@@ -18,6 +18,10 @@ import { UsermainComponent } from './users/usermain/usermain.component';
 import { InstitutionsFormsComponent } from './institutions/forms/forms.component';
 import { CausesComponent } from './home/causes/causes.component';
 import { ProfileTypeComponent } from './users/forms/profile-type/profile-type.component';
+import { ProfileComponent } from './users/profile/profile.component';
+import { SearchOportunityComponent } from './users/search-oportunity/search-oportunity.component';
+import { UsersIssuesComponent } from './adm/users-issues/users-issues.component';
+import { InstitutionsIssuesComponent } from './adm/institutions-issues/institutions-issues.component';
 
 
 @NgModule({
@@ -35,6 +39,10 @@ import { ProfileTypeComponent } from './users/forms/profile-type/profile-type.co
     InstitutionsFormsComponent,
     CausesComponent,
     ProfileTypeComponent,
+    ProfileComponent,
+    SearchOportunityComponent,
+    UsersIssuesComponent,
+    InstitutionsIssuesComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,18 +1,16 @@
 <div id="Body" class="">
-<div>
-
-<div **ngIf="notLogged == true">
   <div>
-    <app-carousel></app-carousel>
+    <div class="d-none d-md-block">
+      <app-carousel></app-carousel>
+    </div>
+
+    <div class="sticky-top">
+      <app-navbar></app-navbar>
+    </div>
+    <router-outlet></router-outlet>
+
+    <div>
+      <app-footer></app-footer>
+    </div>
   </div>
-</div>
-
-<div class="sticky-top text-right">
-  <app-navbar></app-navbar>
-</div>
-<router-outlet></router-outlet>
-
-<div>
-  <app-footer></app-footer>
-</div>
 </div>

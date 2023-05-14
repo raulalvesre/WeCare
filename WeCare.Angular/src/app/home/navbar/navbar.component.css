@@ -74,7 +74,7 @@ footer .logo{
 	clear: both;
 	background-color: black;
 	text-align: center;
-	color: white;
+	color: rgb(212, 41, 41);
 }
 
 .content {
@@ -99,4 +99,14 @@ footer .logo{
 .imagem{
 	width: 80%;
 	height: 200px;
+}
+
+.navbar-toggler{
+	border-color: rgb(255, 255, 255, 0.5);
+}
+
+.divisor{
+	width: 1px;
+	background: rgb(255, 255, 255, 0.5);
+	margin: 15px 15px;
 }
