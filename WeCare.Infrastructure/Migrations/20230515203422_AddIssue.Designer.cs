@@ -12,8 +12,8 @@ using WeCare.Infrastructure;
 namespace WeCare.Infrastructure.Migrations
 {
     [DbContext(typeof(WeCareDatabaseContext))]
-    [Migration("20230505195209_AddCausesUsersInterestedIn")]
-    partial class AddCausesUsersInterestedIn
+    [Migration("20230515203422_AddIssue")]
+    partial class AddIssue
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -207,6 +207,126 @@ namespace WeCare.Infrastructure.Migrations
                         .HasDatabaseName("ix_confirmation_tokens_user_id");
 
                     b.ToTable("confirmation_tokens", "public");
+                });
+
+            modelBuilder.Entity("WeCare.Domain.Models.IssueMessage", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)")
+                        .HasColumnName("content");
+
+                    b.Property<long>("IssueReportId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("issue_report_id");
+
+                    b.Property<long?>("IssueReportId1")
+                        .HasColumnType("bigint")
+                        .HasColumnName("issue_report_id1");
+
+                    b.Property<long>("SenderId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("sender_id");
+
+                    b.Property<DateTime>("Timestamp")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("timestamp")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.HasKey("Id")
+                        .HasName("pk_issue_messsages");
+
+                    b.HasIndex("IssueReportId")
+                        .HasDatabaseName("ix_issue_messsages_issue_report_id");
+
+                    b.HasIndex("IssueReportId1")
+                        .HasDatabaseName("ix_issue_messsages_issue_report_id1");
+
+                    b.HasIndex("SenderId")
+                        .HasDatabaseName("ix_issue_messsages_sender_id");
+
+                    b.ToTable("issue_messsages", "public");
+                });
+
+            modelBuilder.Entity("WeCare.Domain.Models.IssueReport", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("creation_date")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<long>("OpportunityId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("opportunity_id");
+
+                    b.Property<long>("ReportedUserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("reported_user_id");
+
+                    b.Property<long>("ReporterId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("reporter_id");
+
+                    b.Property<DateTime?>("ResolutionDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("resolution_date");
+
+                    b.Property<string>("ResolutionNotes")
+                        .HasColumnType("text")
+                        .HasColumnName("resolution_notes");
+
+                    b.Property<long?>("ResolverId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("resolver_id");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.HasKey("Id")
+                        .HasName("pk_issue_reports");
+
+                    b.HasIndex("OpportunityId")
+                        .HasDatabaseName("ix_issue_reports_opportunity_id");
+
+                    b.HasIndex("ReportedUserId")
+                        .HasDatabaseName("ix_issue_reports_reported_user_id");
+
+                    b.HasIndex("ReporterId")
+                        .HasDatabaseName("ix_issue_reports_reporter_id");
+
+                    b.HasIndex("ResolverId")
+                        .HasDatabaseName("ix_issue_reports_resolver_id");
+
+                    b.ToTable("issue_reports", "public");
                 });
 
             modelBuilder.Entity("WeCare.Domain.Models.OpportunityCause", b =>
@@ -676,6 +796,13 @@ namespace WeCare.Infrastructure.Migrations
                     b.ToTable("volunteer_opportunities", "public");
                 });
 
+            modelBuilder.Entity("WeCare.Domain.Models.Admin", b =>
+                {
+                    b.HasBaseType("WeCare.Domain.Models.User");
+
+                    b.HasDiscriminator().HasValue("ADMIN");
+                });
+
             modelBuilder.Entity("WeCare.Domain.Models.Candidate", b =>
                 {
                     b.HasBaseType("WeCare.Domain.Models.User");
@@ -767,6 +894,70 @@ namespace WeCare.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WeCare.Domain.Models.IssueMessage", b =>
+                {
+                    b.HasOne("WeCare.Domain.Models.IssueReport", "IssueReport")
+                        .WithMany()
+                        .HasForeignKey("IssueReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_issue_messsages_issue_reports_issue_report_id");
+
+                    b.HasOne("WeCare.Domain.Models.IssueReport", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("IssueReportId1")
+                        .HasConstraintName("fk_issue_messsages_issue_reports_issue_report_id1");
+
+                    b.HasOne("WeCare.Domain.Models.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_issue_messsages_users_sender_id");
+
+                    b.Navigation("IssueReport");
+
+                    b.Navigation("Sender");
+                });
+
+            modelBuilder.Entity("WeCare.Domain.Models.IssueReport", b =>
+                {
+                    b.HasOne("WeCare.Domain.Models.VolunteerOpportunity", "Opportunity")
+                        .WithMany()
+                        .HasForeignKey("OpportunityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_issue_reports_volunteer_opportunity_opportunity_id");
+
+                    b.HasOne("WeCare.Domain.Models.User", "ReportedUser")
+                        .WithMany()
+                        .HasForeignKey("ReportedUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_issue_reports_users_reported_user_id");
+
+                    b.HasOne("WeCare.Domain.Models.User", "Reporter")
+                        .WithMany()
+                        .HasForeignKey("ReporterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_issue_reports_users_reporter_id");
+
+                    b.HasOne("WeCare.Domain.Models.User", "Resolver")
+                        .WithMany()
+                        .HasForeignKey("ResolverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("fk_issue_reports_users_resolver_id");
+
+                    b.Navigation("Opportunity");
+
+                    b.Navigation("ReportedUser");
+
+                    b.Navigation("Reporter");
+
+                    b.Navigation("Resolver");
+                });
+
             modelBuilder.Entity("WeCare.Domain.Models.OpportunityInvitation", b =>
                 {
                     b.HasOne("WeCare.Domain.Models.Candidate", "Candidate")
@@ -819,6 +1010,11 @@ namespace WeCare.Infrastructure.Migrations
                         .HasConstraintName("fk_volunteer_opportunities_users_institution_id");
 
                     b.Navigation("Institution");
+                });
+
+            modelBuilder.Entity("WeCare.Domain.Models.IssueReport", b =>
+                {
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("WeCare.Domain.Models.Institution", b =>

@@ -4,8 +4,6 @@ using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using RazorLight.Compilation;
-using RazorLight.Extensions;
 using WeCare.API.Auth;
 using WeCare.API.Extensions;
 using WeCare.API.Filters;
@@ -120,6 +118,8 @@ builder.Services.AddScoped<OpportunityCauseRepository>();
 builder.Services.AddScoped<OpportunityRegistrationRepository>();
 builder.Services.AddScoped<OpportunityInvitationRepository>();
 builder.Services.AddScoped<CandidateQualificationRepository>();
+builder.Services.AddScoped<IssueRepository>();
+builder.Services.AddScoped<IssueMessageRepository>();
 
 builder.Services.AddScoped<VolunteerOpportunityFormValidator>();
 builder.Services.AddScoped<CandidateAdminFormValidator>();
@@ -127,6 +127,8 @@ builder.Services.AddScoped<CandidateFormValidator>();
 builder.Services.AddScoped<InstitutionAdminFormValidator>();
 builder.Services.AddScoped<InstitutionFormValidator>();
 builder.Services.AddScoped<OpportunityInvitationFormValidator>();
+builder.Services.AddScoped<IssueFormValidator>();
+builder.Services.AddScoped<IssueMessageFormValidator>();
 
 builder.Services.AddScoped<CandidateMapper>();
 builder.Services.AddScoped<InstitutionMapper>();
@@ -134,6 +136,8 @@ builder.Services.AddScoped<VolunteerOpportunityMapper>();
 builder.Services.AddScoped<OpportunityCauseMapper>();
 builder.Services.AddScoped<OpportunityRegistrationMapper>();
 builder.Services.AddScoped<OpportunityInvitationMapper>();
+builder.Services.AddScoped<IssueMapper>();
+builder.Services.AddScoped<IssueMessageMapper>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
@@ -153,6 +157,7 @@ builder.Services.AddScoped<OpportunityCauseService>();
 builder.Services.AddScoped<OpportunityRegistrationService>();
 builder.Services.AddScoped<OpportunityInvitationService>();
 builder.Services.AddScoped<CandidateQualificationService>();
+builder.Services.AddScoped<IssueService>();
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 

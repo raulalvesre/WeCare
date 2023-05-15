@@ -58,6 +58,16 @@ public class AuthService
         return GenerateJwt(institution);
     }
     
+    public async Task<TokenViewModel> AuthenticateAdmin(LoginRequest loginRequest)
+    {
+        var admin = await _userService.GetByEmailAndEnabled(loginRequest.Email);
+
+        if (!LoginRequestPasswordAndUserModelPasswordAreTheSame(loginRequest, admin))
+            throw new UnauthorizedException("Usuário ou senha inválidos");
+
+        return GenerateJwt(admin);
+    }
+    
     private bool LoginRequestPasswordAndUserModelPasswordAreTheSame(LoginRequest req, UserCompleteViewModel userCompleteViewModel)
     {
         return StringCipher.Decrypt(userCompleteViewModel.Password).Equals(req.Password);

@@ -45,7 +45,7 @@ public class CandidateService
 
     public async Task<CandidateViewModel> GetById(long id)
     {
-        var candidate = await _candidateRepository.GetById(id);
+        var candidate = await _candidateRepository.GetByIdAsync(id);
 
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");
@@ -92,7 +92,7 @@ public class CandidateService
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
         
-        var candidate = await _candidateRepository.GetById(candidateId);
+        var candidate = await _candidateRepository.GetByIdAsync(candidateId);
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");
         
@@ -127,7 +127,7 @@ public class CandidateService
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
-        var candidate = await _candidateRepository.GetById(candidateId);
+        var candidate = await _candidateRepository.GetByIdAsync(candidateId);
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");
 
@@ -143,7 +143,7 @@ public class CandidateService
         if (!_currentUser.IsInRole("ADMIN") && candidateId != _currentUser.GetUserId())
             throw new ForbiddenException("Vocẽ não ter permissão");
         
-        var candidate = await _candidateRepository.GetById(candidateId);
+        var candidate = await _candidateRepository.GetByIdAsync(candidateId);
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");
 
@@ -161,7 +161,7 @@ public class CandidateService
         if (!_currentUser.IsInRole("ADMIN") && candidateId != _currentUser.GetUserId())
             throw new ForbiddenException("Vocẽ não ter permissão");
         
-        var candidate = await _candidateRepository.GetById(candidateId);
+        var candidate = await _candidateRepository.GetByIdAsync(candidateId);
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");
 

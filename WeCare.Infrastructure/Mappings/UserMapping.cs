@@ -16,7 +16,8 @@ public class UserMapping : IEntityTypeConfiguration<User>
 
         builder.HasDiscriminator(x => x.Type)
             .HasValue<Candidate>("CANDIDATE")
-            .HasValue<Institution>("INSTITUTION");
+            .HasValue<Institution>("INSTITUTION")
+            .HasValue<Admin>("ADMIN");
         
         builder.HasKey(x => x.Id);
 

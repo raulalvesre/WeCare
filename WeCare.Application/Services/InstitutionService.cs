@@ -37,7 +37,7 @@ public class InstitutionService
     
      public async Task<InstitutionViewModel> GetById(long id)
     {
-        var institution = await _institutionRepository.GetById(id);
+        var institution = await _institutionRepository.GetByIdAsync(id);
 
         if (institution is null)
             throw new NotFoundException("Instituição não encontrada");
@@ -78,7 +78,7 @@ public class InstitutionService
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
-        var institution = await _institutionRepository.GetById(institutionId);
+        var institution = await _institutionRepository.GetByIdAsync(institutionId);
         if (institution is null)
             throw new NotFoundException("Instituição não encontrada");
         
@@ -110,7 +110,7 @@ public class InstitutionService
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
-        var institution = await _institutionRepository.GetById(institutionId);
+        var institution = await _institutionRepository.GetByIdAsync(institutionId);
         if (institution is null)
             throw new NotFoundException("Instituição não encontrada");
 
@@ -123,7 +123,7 @@ public class InstitutionService
 
     public async Task Delete(long institutionId)
     {
-        var institution = await _institutionRepository.GetById(institutionId);
+        var institution = await _institutionRepository.GetByIdAsync(institutionId);
         if (institution is null)
             throw new NotFoundException("Instituição não encontrada");
 
@@ -138,7 +138,7 @@ public class InstitutionService
     
     public async Task AddPhoto(long candidateId, ImageUploadForm form)
     {
-        var institution = await _institutionRepository.GetById(candidateId);
+        var institution = await _institutionRepository.GetByIdAsync(candidateId);
         if (institution is null)
             throw new NotFoundException("Instituição não encontrada");
 

@@ -26,10 +26,20 @@ public abstract class BaseRepository<T> where T : class
         await _set.AddAsync(record);
     }
 
+    public async Task SaveAll(IEnumerable<T> records)
+    {
+        await _set.AddRangeAsync(records);
+    }
+
     public Task Update(T record)
     {
         _set.Update(record);
         return Task.CompletedTask;
+    }
+
+    public void UpdateAll(IEnumerable<T> records)
+    {
+        _set.UpdateRange(records);
     }
 
     public Task Remove(T record)
@@ -60,4 +70,10 @@ public abstract class BaseRepository<T> where T : class
 
         return new Pagination<T>(pageNumber, pageSize, totalCount, totalPages, recordList);
     }
+
+    public virtual ValueTask<T?> GetByIdAsync(long id)
+    {
+        return _set.FindAsync(id);
+    }
+    
 }

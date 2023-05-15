@@ -11,11 +11,6 @@ public class CandidateRepository : BaseRepository<Candidate>
     {
     }
     
-    public Task<Candidate?> GetById(long id)
-    {
-        return Query
-            .FirstOrDefaultAsync(candidate => candidate.Id == id);
-    }
     
     public Task<bool> ExistsByIdNotAndEmail(long id, string email)
     {
