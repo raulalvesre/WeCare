@@ -7,7 +7,8 @@ import { Component } from '@angular/core';
 })
 export class LoginComponent {
   activeTab: string = "volunteer"
-  onTabClick(tab) {
-    this.activeTab = tab;
+  
+  onTabClick(activeTabName) {
+  this.activeTab = activeTabName;
   }
 }
