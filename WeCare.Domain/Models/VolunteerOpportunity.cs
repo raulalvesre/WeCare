@@ -22,5 +22,7 @@ public class VolunteerOpportunity
     public long InstitutionId { get; set; }
     public Institution? Institution { get; set; }
     public IEnumerable<OpportunityCause> Causes { get; set; } = new List<OpportunityCause>();
+
+    public bool HasAlreadyHappened() => OpportunityDate <= DateTime.Now;
 }
 

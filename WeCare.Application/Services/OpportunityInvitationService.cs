@@ -80,7 +80,7 @@ public class OpportunityInvitationService
 
     public async Task<OpportunityInvitationViewModel> Save(OpportunityInvitationForm form)
     {
-        var candidate = await _candidateRepository.GetById(form.CandidateId);
+        var candidate = await _candidateRepository.GetByIdAsync(form.CandidateId);
         if (candidate is null)
             throw new NotFoundException("Candidate não encontrado");
 

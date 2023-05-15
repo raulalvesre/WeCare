@@ -17,12 +17,6 @@ public class InstitutionRepository : BaseRepository<Institution>
             .AnyAsync(x => x.Id == id);
     }
     
-    public Task<Institution?> GetById(long id)
-    {
-        return Query
-            .FirstOrDefaultAsync(x => x.Id == id);
-    }
-    
     public Task<bool> ExistsByIdNotAndEmail(long id, string email)
     {
         return Query.AnyAsync(x => x.Id != id && x.Email.Equals(email));

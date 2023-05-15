@@ -44,10 +44,21 @@ public class IssueMapping :  IEntityTypeConfiguration<IssueReport>
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
         
+        builder.HasOne(x => x.Resolver)
+            .WithMany()
+            .HasForeignKey(x => x.ResolverId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Cascade);
+        
         builder.HasOne(x => x.Opportunity)
             .WithMany()
             .HasForeignKey(x => x.OpportunityId)
             .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.Messages)
+            .WithOne()
+            .HasForeignKey(x => x.IssueReportId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -11,17 +11,11 @@ public class UserRepository : BaseRepository<User>
     {
     }
     
-    public Task<User?> GetById(long id)
-    {
-        return Query            
-            .FirstOrDefaultAsync(user => user.Id == id);
-    }
-    
-    public Task<User?> GetByEmail(string email)
+    public Task<User?> GetByEmailAndEnabled(string email)
     {
         return Query
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Email.Equals(email));
+            .FirstOrDefaultAsync(x => x.Email.Equals(email) && x.Enabled);
     }
     
     public Task<bool> ExistsByIdNotAndEmail(long id, string email)

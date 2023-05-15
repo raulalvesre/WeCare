@@ -92,6 +92,9 @@ public class OpportunityRegistrationService
 
         if (candidateAlreadyRegistered)
             throw new ConflictException("Candidato já inscrito");
+
+        if (opportunity.HasAlreadyHappened())
+            throw new ConflictException("Oportunidade já aconteceu");
         
         var opportunityRegistration = new OpportunityRegistration
         {
@@ -134,9 +137,10 @@ public class OpportunityRegistrationService
         if (registration.IsCanceled())
             throw new BadRequestException("Inscrição cancelada");
         
+        
         if (registration.AlreadyHasBeenDeniedOrAccepted())
             throw new BadRequestException("Inscrição já foi aceita/recusada");
-
+        
         registration.Status = ACCEPTED;
         registration.FeedbackMessage = feedbackMessage;
         await _registrationRepository.Update(registration);
@@ -145,7 +149,7 @@ public class OpportunityRegistrationService
     
     public async Task DenyRegistration(long registrationId, string feedbackMessage)
     {
-        OpportunityRegistration? registration = await _registrationRepository.Query
+        var registration = await _registrationRepository.Query
             .FirstOrDefaultAsync(x => x.Id == registrationId);
 
         if (registration is null)
@@ -160,6 +164,28 @@ public class OpportunityRegistrationService
         registration.Status = DENIED;
         registration.FeedbackMessage = feedbackMessage;
         await _registrationRepository.Update(registration);
+        await _unitOfWork.SaveAsync();
+    }
+
+    public async Task DenyAllPending(long opportunityId)
+    {
+        var opportunity = await _volunteerOpportunityRepository.Query
+            .Where(x => x.Id == opportunityId)
+            .FirstOrDefaultAsync();
+        
+        if (opportunity is null)
+            throw new NotFoundException($"Oportunidade com id={opportunityId} não encontrada");
+        
+        var pendingRegistrations = _registrationRepository.Query
+            .Where(x => x.OpportunityId == opportunityId && x.Status == PENDING)
+            .ToHashSet();
+        
+        foreach (var registration in pendingRegistrations)
+        {
+            registration.Status = DENIED;
+        }
+
+        _registrationRepository.UpdateAll(pendingRegistrations);
         await _unitOfWork.SaveAsync();
     }
 

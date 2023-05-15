@@ -19,7 +19,7 @@ public class UserService
     
     public async Task<UserCompleteViewModel> GetById(long id)
     {
-        var user = await _userRepository.GetById(id);
+        var user = await _userRepository.GetByIdAsync(id);
 
         if (user is null)
             throw new NotFoundException("Usuário não encontrado");
@@ -28,9 +28,9 @@ public class UserService
     }
 
 
-    public async Task<UserCompleteViewModel> GetByEmail(string email)
+    public async Task<UserCompleteViewModel> GetByEmailAndEnabled(string email)
     {
-        var user = await _userRepository.GetByEmail(email);
+        var user = await _userRepository.GetByEmailAndEnabled(email);
 
         if (user is null)
             throw new NotFoundException("Usuário não encontrado");
@@ -47,7 +47,7 @@ public class UserService
 
     public async Task SetUserEnabled(long id, bool enabled)
     {
-        var user = await _userRepository.GetById(id);
+        var user = await _userRepository.GetByIdAsync(id);
 
         if (user is null)
             throw new NotFoundException("Usuário não encontrado");

@@ -8,6 +8,10 @@ public class UnprocessableEntityException: Exception
     {
         Errors = errors;
     }
+    
+    public UnprocessableEntityException(string error) : base(error)
+    {
+    }
 
     public UnprocessableEntityException() : base("Requisição inválida por favor verifique os dados e tente novamente")
     {

@@ -27,6 +27,12 @@ public class AuthController : ControllerBase
     {
         return Ok(await _authService.AuthenticateInstitution(loginRequest));
     }
+    
+    [HttpPost("login-admin")]
+    public async ValueTask<ActionResult<TokenViewModel>> LoginAdmin(LoginRequest loginRequest)
+    {
+        return Ok(await _authService.AuthenticateAdmin(loginRequest));
+    }
 
     [HttpPost("register-candidate")]
     public async ValueTask<ActionResult> RegisterCandidate(CandidateForm form)

@@ -1,3 +1,4 @@
+using System.Data;
 using FluentValidation;
 using WeCare.Application.ViewModels;
 
@@ -23,6 +24,10 @@ public class IssueFormValidator : AbstractValidator<IssueReportForm>
         RuleFor(x => x.ReportedUserId)
             .NotNull()
             .WithMessage("É necessário o Id de quem está sendo reportado");
-        
+
+        RuleFor(x => x.OpportunityId)
+            .NotNull()
+            .WithMessage("É preciso o ID da oportunidade na qual o problema ocorreu");
+
     }
 }
