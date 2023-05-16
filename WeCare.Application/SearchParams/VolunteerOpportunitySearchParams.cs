@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using WeCare.Domain.Core;
@@ -14,6 +15,8 @@ public class VolunteerOpportunitySearchParams : PaginationFilterParamsBase<Volun
     public string? City { get; set; }
     public State? State { get; set; }
     public IEnumerable<string> Causes { get; set; } = new List<string>();
+    public OpportunityOrderBy? OrderBy { get; set; }
+    public SortDirection? OrderDirection { get; set; }
 
     protected override void Filter()
     {
@@ -42,6 +45,42 @@ public class VolunteerOpportunitySearchParams : PaginationFilterParamsBase<Volun
             And(vo => vo.Causes
                 .Any(oc => Causes.Contains(oc.Code))
             );
+        }
+
+        if (OrderBy.HasValue && OrderDirection.HasValue)
+            ApplyOrderBy();
+    }
+
+    private void ApplyOrderBy()
+    {
+        Direction = OrderDirection == SortDirection.Ascending ? SortDirection.Ascending : SortDirection.Descending;
+
+        switch (OrderBy)
+        {
+            case OpportunityOrderBy.Id:
+                OrderByExpression = x => x.Id;
+                break;
+            case OpportunityOrderBy.Name:
+                OrderByExpression = op => op.Name;
+                break;
+            case OpportunityOrderBy.Description:
+                OrderByExpression = op => op.Description;
+                break;
+            case OpportunityOrderBy.OpportunityDate:
+                OrderByExpression = op => op.OpportunityDate;
+                break;
+            case OpportunityOrderBy.City:
+                OrderByExpression = op => op.City;
+                break;
+            case OpportunityOrderBy.State:
+                OrderByExpression = op => op.State;
+                break;
+            case OpportunityOrderBy.CreationDate:
+                OrderByExpression = op => op.CreationDate;
+                break;
+            case OpportunityOrderBy.InstitutionId:
+                OrderByExpression = op => op.InstitutionId;
+                break;
         }
     }
 }

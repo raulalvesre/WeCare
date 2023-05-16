@@ -1,8 +1,7 @@
 using System.Linq.Expressions;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using WeCare.Domain;
+using WeCare.Application.SearchParams;
 using WeCare.Domain.Core;
 
 namespace WeCare.Infrastructure;
@@ -11,6 +10,8 @@ public abstract class PaginationFilterParamsBase<T> : IPaginationFilterParams<T>
 {
     private Expression<Func<T, bool>> _predicate = PredicateBuilder.New<T>(true);
     private Func<IQueryable<T>, IQueryable<T>>? _preQuery;
+    protected Expression<Func<T, object>> OrderByExpression { get; set; }
+    protected SortDirection Direction { get; set; }
 
     public int? PageNumber { get; set; }
     public int? PageSize { get; set; }
@@ -23,7 +24,20 @@ public abstract class PaginationFilterParamsBase<T> : IPaginationFilterParams<T>
         if (_preQuery != null)
             query = _preQuery(query);
 
-        return query.AsExpandableEFCore().Where(_predicate);
+        if (SortDirection.Ascending.Equals(Direction))
+        {
+            query = query.AsExpandableEFCore().Where(_predicate).OrderBy(OrderByExpression);
+        }
+        else if (SortDirection.Descending.Equals(Direction))
+        {
+            query = query.AsExpandableEFCore().Where(_predicate).OrderByDescending(OrderByExpression);
+        }
+        else
+        {
+            query = query.AsExpandableEFCore().Where(_predicate);
+        }
+        
+        return query;
     }
 
     protected abstract void Filter();
@@ -42,4 +56,5 @@ public abstract class PaginationFilterParamsBase<T> : IPaginationFilterParams<T>
     {
         _preQuery = func;
     }
+    
 }

@@ -1,3 +1,4 @@
+using System.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WeCare.Application.Interfaces;
@@ -16,7 +17,9 @@ public class VolunteerOpportunityController : ControllerBase
     private readonly OpportunityRegistrationService _opportunityRegistrationService;
     private readonly ICurrentUser _currentUser;
 
-    public VolunteerOpportunityController(VolunteerOpportunityService volunteerOpportunityService, ICurrentUser currentUser, OpportunityRegistrationService opportunityRegistrationService)
+    public VolunteerOpportunityController(VolunteerOpportunityService volunteerOpportunityService,
+        ICurrentUser currentUser,
+        OpportunityRegistrationService opportunityRegistrationService)
     {
         _volunteerOpportunityService = volunteerOpportunityService;
         _currentUser = currentUser;
@@ -87,4 +90,5 @@ public class VolunteerOpportunityController : ControllerBase
         return NoContent();
     }
     
+
 }
