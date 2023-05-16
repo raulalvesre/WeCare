@@ -10,8 +10,8 @@ public abstract class PaginationFilterParamsBase<T> : IPaginationFilterParams<T>
 {
     private Expression<Func<T, bool>> _predicate = PredicateBuilder.New<T>(true);
     private Func<IQueryable<T>, IQueryable<T>>? _preQuery;
-    protected Expression<Func<T, object>> OrderByExpression { get; set; }
-    protected SortDirection Direction { get; set; }
+    protected Expression<Func<T, object>>? OrderByExpression { get; set; }
+    protected SortDirection? Direction { get; set; }
 
     public int? PageNumber { get; set; }
     public int? PageSize { get; set; }
