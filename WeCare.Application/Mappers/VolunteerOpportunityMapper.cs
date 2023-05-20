@@ -8,12 +8,16 @@ public class VolunteerOpportunityMapper
 {
 
     private readonly OpportunityCauseRepository _opportunityCauseRepository;
+    private readonly QualificationRepository _qualificationRepository;
     private readonly InstitutionMapper _institutionMapper;
 
-    public VolunteerOpportunityMapper(OpportunityCauseRepository opportunityCauseRepository, InstitutionMapper institutionMapper)
+    public VolunteerOpportunityMapper(OpportunityCauseRepository opportunityCauseRepository,
+        InstitutionMapper institutionMapper,
+        QualificationRepository qualificationRepository)
     {
         _opportunityCauseRepository = opportunityCauseRepository;
         _institutionMapper = institutionMapper;
+        _qualificationRepository = qualificationRepository;
     }
 
     public VolunteerOpportunityViewModel FromModel(VolunteerOpportunity opportunity)
@@ -28,6 +32,7 @@ public class VolunteerOpportunityMapper
             Photo = opportunity.Photo,
             Address = new AddressViewModel(opportunity),
             Causes = opportunity.Causes.Select(x => x.Name),
+            DesirableQualifications = opportunity.DesirableQualifications.Select(x => x.Name),
             CreationDate = opportunity.CreationDate
         };
     }
@@ -43,6 +48,7 @@ public class VolunteerOpportunityMapper
             Photo = opportunity.Photo,
             Address = new SecretativeAddressViewModel(opportunity),
             Causes = opportunity.Causes.Select(x => x.Name),
+            DesirableQualifications = opportunity.DesirableQualifications.Select(x => x.Name),
             Institution = _institutionMapper.FromModelToCandidateRegistrationViewModel(opportunity.Institution)
         };
     }
@@ -58,6 +64,7 @@ public class VolunteerOpportunityMapper
             Photo = opportunity.Photo,
             Address = new AddressViewModel(opportunity),
             Causes = opportunity.Causes.Select(x => x.Name),
+            DesirableQualifications = opportunity.DesirableQualifications.Select(x => x.Name),
             Institution = _institutionMapper.FromModelToCandidateRegistrationViewModel(opportunity.Institution)
         };
     }
@@ -65,6 +72,7 @@ public class VolunteerOpportunityMapper
     public VolunteerOpportunity ToModel(long institutionId, VolunteerOpportunityForm form)
     {
         var causes = _opportunityCauseRepository.FindByCodeIn(form.Causes);
+        var qualifications = _qualificationRepository.FindByIdIn(form.DesirableQualificationsIds);
 
         using var memoryStream = new MemoryStream();
         form.Photo.CopyTo(memoryStream);
@@ -83,6 +91,7 @@ public class VolunteerOpportunityMapper
             State =  form.Address.State,
             PostalCode =  form.Address.PostalCode,
             Causes = causes,
+            DesirableQualifications = qualifications,
             InstitutionId = institutionId
         };
     }
@@ -90,7 +99,8 @@ public class VolunteerOpportunityMapper
     public void Merge(VolunteerOpportunity opportunity, VolunteerOpportunityForm form)
     {
         var causes = _opportunityCauseRepository.FindByCodeIn(form.Causes);
-        
+        var qualifications = _qualificationRepository.FindByIdIn(form.DesirableQualificationsIds);
+
         using var memoryStream = new MemoryStream();
         form.Photo.CopyTo(memoryStream);
 
@@ -106,6 +116,7 @@ public class VolunteerOpportunityMapper
         opportunity.State = form.Address.State;
         opportunity.PostalCode = form.Address.PostalCode;
         opportunity.Causes = causes;
+        opportunity.DesirableQualifications = qualifications;
     }
     
 }

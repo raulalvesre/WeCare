@@ -8,11 +8,14 @@ public class VolunteerOpportunityFormValidator : AbstractValidator<VolunteerOppo
 {
 
     private readonly OpportunityCauseRepository _opportunityCauseRepository;
+    private readonly QualificationRepository _qualificationRepository;
     
-    public VolunteerOpportunityFormValidator(OpportunityCauseRepository opportunityCauseRepository)
+    public VolunteerOpportunityFormValidator(OpportunityCauseRepository opportunityCauseRepository, 
+        QualificationRepository qualificationRepository)
     {
         _opportunityCauseRepository = opportunityCauseRepository;
-        
+        _qualificationRepository = qualificationRepository;
+
         RuleFor(x => x.Name)
             .NotEmpty()
             .WithMessage("O nome da oportunidade não pode ser vazio")
@@ -39,6 +42,9 @@ public class VolunteerOpportunityFormValidator : AbstractValidator<VolunteerOppo
 
         RuleFor(x => x.Causes)
             .Custom(AllCauseCodesExists);
+
+        RuleFor(x => x.DesirableQualificationsIds)
+            .CustomAsync(AllQualificationIdsExists);
     }
 
     private void AllCauseCodesExists(IEnumerable<string> formCausesCodes, ValidationContext<VolunteerOpportunityForm> context)
@@ -51,6 +57,20 @@ public class VolunteerOpportunityFormValidator : AbstractValidator<VolunteerOppo
             if (!modelCausesCodes.Contains(causeCode))
             {
                 context.AddFailure($"Causa com o código {causeCode} não existe");
+            }
+        }
+    }
+    
+    private async Task AllQualificationIdsExists(IEnumerable<long> ids, ValidationContext<VolunteerOpportunityForm> context, CancellationToken arg3)
+    {
+        var qualifications = await _qualificationRepository.FindByIdInAsync(ids);
+        var dbIds = qualifications.Select(x => x.Id);
+
+        foreach (var id in ids)
+        {
+            if (!dbIds.Contains(id))
+            {
+                context.AddFailure($"Qualificação com o ID {id} não existe");
             }
         }
     }

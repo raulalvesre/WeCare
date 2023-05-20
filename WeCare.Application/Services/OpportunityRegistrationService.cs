@@ -31,59 +31,62 @@ public class OpportunityRegistrationService
         _currentUser = currentUser;
         _mapper = mapper;
     }
-    
-    public async Task<Pagination<AcceptedRegistrationForCandidateViewModel>> GetAcceptedRegistrationsPageForCandidate(OpportunityRegistrationSearchParams searchParams)
+
+    public async Task<Pagination<AcceptedRegistrationForCandidateViewModel>> GetAcceptedRegistrationsPageForCandidate(
+        OpportunityRegistrationSearchParams searchParams)
     {
         if (searchParams.CandidateId != _currentUser.GetUserId())
             throw new UnauthorizedException("Você não possui permissão");
-        
+
         var page = await _registrationRepository.Paginate(searchParams);
         return new Pagination<AcceptedRegistrationForCandidateViewModel>(
-            page.PageNumber, 
+            page.PageNumber,
             page.PageSize,
             page.TotalCount,
             page.TotalPages,
             page.Data.Select(x => _mapper.FromModelToAcceptedRegistrationForCandidateViewModel(x)));
     }
 
-    public async Task<Pagination<RegistrationForCandidateViewModel>> GetPageForCandidate(OpportunityRegistrationSearchParams searchParams)
+    public async Task<Pagination<RegistrationForCandidateViewModel>> GetPageForCandidate(
+        OpportunityRegistrationSearchParams searchParams)
     {
         if (searchParams.CandidateId != _currentUser.GetUserId())
             throw new UnauthorizedException("Você não possui permissão");
-        
+
         var page = await _registrationRepository.Paginate(searchParams);
         return new Pagination<RegistrationForCandidateViewModel>(
-            page.PageNumber, 
+            page.PageNumber,
             page.PageSize,
             page.TotalCount,
             page.TotalPages,
             page.Data.Select(x => _mapper.FromModelToRegistrationForCandidateViewModel(x)));
     }
-    
-    public async Task<Pagination<RegistrationForInstitutionViewModel>> GetPageForInstitution(OpportunityRegistrationSearchParams searchParams)
+
+    public async Task<Pagination<RegistrationForInstitutionViewModel>> GetPageForInstitution(
+        OpportunityRegistrationSearchParams searchParams)
     {
         var institutionDoestNotOwnOpportunity = !await _volunteerOpportunityRepository.Query
             .AnyAsync(x => x.Id == searchParams.OpportunityId && x.InstitutionId == _currentUser.GetUserId());
 
         if (institutionDoestNotOwnOpportunity)
             throw new UnauthorizedException("Você não é dona da oportunidade");
-        
+
         var page = await _registrationRepository.Paginate(searchParams);
         return new Pagination<RegistrationForInstitutionViewModel>(
-            page.PageNumber, 
+            page.PageNumber,
             page.PageSize,
             page.TotalCount,
             page.TotalPages,
             page.Data.Select(x => _mapper.FromModelToRegistrationForInstutitionViewModel(x)));
     }
-    
+
     public async Task RegisterCandidate(long opportunityId, long candidateId)
     {
         var opportunity = await _volunteerOpportunityRepository.Query
             .AsNoTracking()
             .Where(x => x.Id == opportunityId)
             .FirstOrDefaultAsync();
-        
+
         if (opportunity is null)
             throw new NotFoundException($"Oportunidade com id={opportunityId} não encontrada");
 
@@ -95,7 +98,7 @@ public class OpportunityRegistrationService
 
         if (opportunity.HasAlreadyHappened())
             throw new ConflictException("Oportunidade já aconteceu");
-        
+
         var opportunityRegistration = new OpportunityRegistration
         {
             OpportunityId = opportunityId,
@@ -105,13 +108,13 @@ public class OpportunityRegistrationService
         await _registrationRepository.Save(opportunityRegistration);
         await _unitOfWork.SaveAsync();
     }
-    
+
     public async Task CancelRegistration(long opportunityId, long candidateId)
     {
         var opportunity = await _volunteerOpportunityRepository.Query
             .Where(x => x.Id == opportunityId)
             .FirstOrDefaultAsync();
-        
+
         if (opportunity is null)
             throw new NotFoundException($"Oportunidade com id={opportunityId} não encontrada");
 
@@ -133,20 +136,20 @@ public class OpportunityRegistrationService
 
         if (registration is null)
             throw new NotFoundException("Inscrição não encontrada");
-        
+
         if (registration.IsCanceled())
             throw new BadRequestException("Inscrição cancelada");
-        
-        
+
+
         if (registration.AlreadyHasBeenDeniedOrAccepted())
             throw new BadRequestException("Inscrição já foi aceita/recusada");
-        
+
         registration.Status = ACCEPTED;
         registration.FeedbackMessage = feedbackMessage;
         await _registrationRepository.Update(registration);
         await _unitOfWork.SaveAsync();
     }
-    
+
     public async Task DenyRegistration(long registrationId, string feedbackMessage)
     {
         var registration = await _registrationRepository.Query
@@ -157,7 +160,7 @@ public class OpportunityRegistrationService
 
         if (registration.IsCanceled())
             throw new BadRequestException("Inscrição cancelada");
-        
+
         if (registration.AlreadyHasBeenDeniedOrAccepted())
             throw new BadRequestException("Inscrição já foi aceita/recusada");
 
@@ -172,14 +175,14 @@ public class OpportunityRegistrationService
         var opportunity = await _volunteerOpportunityRepository.Query
             .Where(x => x.Id == opportunityId)
             .FirstOrDefaultAsync();
-        
+
         if (opportunity is null)
             throw new NotFoundException($"Oportunidade com id={opportunityId} não encontrada");
-        
+
         var pendingRegistrations = _registrationRepository.Query
             .Where(x => x.OpportunityId == opportunityId && x.Status == PENDING)
             .ToHashSet();
-        
+
         foreach (var registration in pendingRegistrations)
         {
             registration.Status = DENIED;
@@ -189,4 +192,9 @@ public class OpportunityRegistrationService
         await _unitOfWork.SaveAsync();
     }
 
+    public async Task<Pagination<VolunteerOpportunityViewModel>> GetPageOfRecommendedOpportunitiesForCandidate(
+        long candidateId)
+    {
+        return null;
+    }
 }

@@ -4,11 +4,11 @@ using WeCare.Domain.Models;
 
 namespace WeCare.Infrastructure.Mappings;
 
-public class CandidateQualificationMapping : IEntityTypeConfiguration<CandidateQualification>
+public class QualificationMapping : IEntityTypeConfiguration<Qualification>
 {
-    public void Configure(EntityTypeBuilder<CandidateQualification> builder)
+    public void Configure(EntityTypeBuilder<Qualification> builder)
     {
-        builder.ToTable("candidate_qualifications");
+        builder.ToTable("qualifications");
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Name);

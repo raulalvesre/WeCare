@@ -8,15 +8,15 @@ namespace WeCare.Application.Validators;
 public class CandidateFormValidator : AbstractValidator<CandidateForm>
 {
     private readonly CandidateRepository _candidateRepository;
-    private readonly CandidateQualificationRepository _candidateQualificationRepository;
+    private readonly QualificationRepository _qualificationRepository;
     private readonly OpportunityCauseRepository _opportunityCauseRepository;
 
     public CandidateFormValidator(CandidateRepository candidateRepository,
-        CandidateQualificationRepository candidateQualificationRepository, 
+        QualificationRepository qualificationRepository, 
         OpportunityCauseRepository opportunityCauseRepository)
     {
         _candidateRepository = candidateRepository;
-        _candidateQualificationRepository = candidateQualificationRepository;
+        _qualificationRepository = qualificationRepository;
         _opportunityCauseRepository = opportunityCauseRepository;
 
         RuleFor(x => x.Name)
@@ -100,7 +100,7 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
         ValidationContext<CandidateForm> context,
         CancellationToken cancellationToken)
     {
-        var qualifications = await _candidateQualificationRepository.FindByIdIn(qualificationIds);
+        var qualifications = await _qualificationRepository.FindByIdInAsync(qualificationIds);
         var dbQualificationsIds = qualifications.Select(x => x.Id).ToHashSet();
         
         foreach (var qualificationId in qualificationIds)

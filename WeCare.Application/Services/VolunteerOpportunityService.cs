@@ -122,7 +122,8 @@ public class VolunteerOpportunityService
         if (opportunity is null)
             throw new NotFoundException("Oportunidade não encontrada");
 
-        await _volunteerOpportunityRepository.Remove(opportunity);
+        opportunity.Enabled = false;
+        await _volunteerOpportunityRepository.Update(opportunity);
         await _unitOfWork.SaveAsync();
     }
     
@@ -132,7 +133,19 @@ public class VolunteerOpportunityService
         if (opportunity is null)
             throw new NotFoundException($"Oportunidade com id={opportunityId} não encontrada para instituição com id={institutionId}");
 
-        await _volunteerOpportunityRepository.Remove(opportunity);
+        opportunity.Enabled = false;
+        await _volunteerOpportunityRepository.Update(opportunity);
         await _unitOfWork.SaveAsync();
+    }
+
+    public async Task<Pagination<VolunteerOpportunityViewModel>> GetRecommendedOpportunitiesPageForCandidate(long candidateId, int pageNumber, int pageSize)
+    {
+        var opportunitiesPage = await _volunteerOpportunityRepository.GetRecommendedOpportunitiesPageForCandidate(candidateId, pageNumber, pageSize);
+        return new Pagination<VolunteerOpportunityViewModel>(
+            opportunitiesPage.PageNumber, 
+            opportunitiesPage.PageSize,
+            opportunitiesPage.TotalCount,
+            opportunitiesPage.TotalPages,
+            opportunitiesPage.Data.Select(_mapper.FromModel));
     }
 }

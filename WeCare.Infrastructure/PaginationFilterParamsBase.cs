@@ -24,7 +24,7 @@ public abstract class PaginationFilterParamsBase<T> : IPaginationFilterParams<T>
         if (_preQuery != null)
             query = _preQuery(query);
 
-        if (SortDirection.Ascending.Equals(Direction))
+          if (SortDirection.Ascending.Equals(Direction))
         {
             query = query.AsExpandableEFCore().Where(_predicate).OrderBy(OrderByExpression);
         }

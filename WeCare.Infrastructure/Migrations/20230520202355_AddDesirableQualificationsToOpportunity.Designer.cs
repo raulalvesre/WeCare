@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WeCare.Infrastructure;
@@ -11,9 +12,11 @@ using WeCare.Infrastructure;
 namespace WeCare.Infrastructure.Migrations
 {
     [DbContext(typeof(WeCareDatabaseContext))]
-    partial class WeCareDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230520202355_AddDesirableQualificationsToOpportunity")]
+    partial class AddDesirableQualificationsToOpportunity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -759,7 +762,7 @@ namespace WeCare.Infrastructure.Migrations
                     b.Property<bool>("Enabled")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(true)
+                        .HasDefaultValue(false)
                         .HasColumnName("enabled");
 
                     b.Property<long>("InstitutionId")

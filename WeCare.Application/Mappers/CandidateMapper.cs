@@ -35,7 +35,7 @@ public class CandidateMapper
     }
 
     public Candidate ToModel(CandidateForm form,
-        IEnumerable<CandidateQualification> qualifications,
+        IEnumerable<Qualification> qualifications,
         IEnumerable<OpportunityCause> interestedInCauses)
     {
         return new Candidate
@@ -61,7 +61,7 @@ public class CandidateMapper
 
     public void Merge(Candidate candidate,
         CandidateForm form,
-        IEnumerable<CandidateQualification> qualifications,
+        IEnumerable<Qualification> qualifications,
         IEnumerable<OpportunityCause> interestedInCauses)
     {
         candidate.Email = form.Email;
