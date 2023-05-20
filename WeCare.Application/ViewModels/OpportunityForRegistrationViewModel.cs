@@ -11,4 +11,6 @@ public class OpportunityForRegistrationViewModel
     public InstitutionForRegistrationViewModel Institution { get; set; }
     
     public IEnumerable<string> Causes { get; set; } = new List<string>();
+    public IEnumerable<string> DesirableQualifications { get; set; } = new List<string>();
+
 }

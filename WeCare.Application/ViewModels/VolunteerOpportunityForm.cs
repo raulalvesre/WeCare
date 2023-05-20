@@ -12,5 +12,6 @@ public class VolunteerOpportunityForm
     public IFormFile Photo { set; get; }
     public AddressViewModel Address { get; set; }
     public IEnumerable<string> Causes { get; set; } = new List<string>();
+    public IEnumerable<long> DesirableQualificationsIds { get; set; } = new List<long>();
 
 }

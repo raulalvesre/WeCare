@@ -12,4 +12,5 @@ public class VolunteerOpportunityViewModel
     public DateTime CreationDate { get; set; }
     
     public IEnumerable<string> Causes { get; set; } = new List<string>();
+    public IEnumerable<string> DesirableQualifications { get; set; } = new List<string>();
 }

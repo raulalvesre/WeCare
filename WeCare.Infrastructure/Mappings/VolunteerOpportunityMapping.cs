@@ -55,6 +55,10 @@ public class VolunteerOpportunityMapping : IEntityTypeConfiguration<VolunteerOpp
 
         builder.Property(x => x.LastUpdateDate);
 
+        builder.Property(x => x.Enabled)
+            .HasDefaultValue(true)
+            .ValueGeneratedOnAdd();
+
         builder.HasOne(x => x.Institution)
             .WithMany(x => x.VolunteerOpportunities)
             .HasForeignKey(x => x.InstitutionId)
@@ -63,5 +67,8 @@ public class VolunteerOpportunityMapping : IEntityTypeConfiguration<VolunteerOpp
 
         builder.HasMany(x => x.Causes)
             .WithMany(x => x.VolunteerOpportunities);
+        
+        builder.HasMany(x => x.DesirableQualifications)
+            .WithMany(x => x.Opportunities);
     }
 }

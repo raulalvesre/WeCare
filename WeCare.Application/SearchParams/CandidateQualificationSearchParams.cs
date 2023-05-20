@@ -4,7 +4,7 @@ using WeCare.Infrastructure;
 
 namespace WeCare.Application.SearchParams;
 
-public class CandidateQualificationSearchParams : PaginationFilterParamsBase<CandidateQualification>
+public class CandidateQualificationSearchParams : PaginationFilterParamsBase<Qualification>
 {
     public string Name { get; set; }
     

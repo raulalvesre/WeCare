@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WeCare.Application.Interfaces;
 using WeCare.Application.SearchParams;
 using WeCare.Application.Services;
 using WeCare.Application.ViewModels;
@@ -13,12 +14,18 @@ public class CandidateController : ControllerBase
 {
     private readonly CandidateService _candidateService;
     private readonly OpportunityRegistrationService _opportunityRegistrationService;
+    private readonly VolunteerOpportunityService _volunteerOpportunityService;
+    private readonly ICurrentUser _currentUser;
 
     public CandidateController(CandidateService candidateService,
-        OpportunityRegistrationService opportunityRegistrationService)
+        OpportunityRegistrationService opportunityRegistrationService,
+        VolunteerOpportunityService volunteerOpportunityService, 
+        ICurrentUser currentUser)
     {
         _candidateService = candidateService;
         _opportunityRegistrationService = opportunityRegistrationService;
+        _volunteerOpportunityService = volunteerOpportunityService;
+        _currentUser = currentUser;
     }
 
     [HttpGet("{id:long:min(0)}")]
@@ -116,5 +123,12 @@ public class CandidateController : ControllerBase
         };
         
         return Ok(await _opportunityRegistrationService.GetPageForCandidate(searchParams));
-    }  
+    }
+
+    [Authorize(Roles = "CANDIDATE")]
+    [HttpGet("recommended-opportunities")]
+    public async ValueTask<ActionResult<Pagination<VolunteerOpportunityViewModel>>> GetRecommendedOpportunitiesPage(int pageNumber = 1, int pageSize = 10)
+    {
+        return Ok(await _volunteerOpportunityService.GetRecommendedOpportunitiesPageForCandidate(_currentUser.GetUserId(), pageNumber, pageSize));
+    }
 }

@@ -14,7 +14,7 @@ namespace WeCare.Application.Services;
 public class CandidateService
 {
     private readonly CandidateRepository _candidateRepository;
-    private readonly CandidateQualificationRepository _candidateQualificationRepository;
+    private readonly QualificationRepository _qualificationRepository;
     private readonly OpportunityCauseRepository _opportunityCauseRepository;
     private readonly UserRepository _userRepository;
     private readonly UnitOfWork _unitOfWork;
@@ -29,7 +29,7 @@ public class CandidateService
         UnitOfWork unitOfWork, 
         CandidateAdminFormValidator candidateAdminFormValidator,
         CandidateFormValidator candidateFormValidator, ICurrentUser currentUser, 
-        CandidateQualificationRepository candidateQualificationRepository, 
+        QualificationRepository qualificationRepository, 
         OpportunityCauseRepository opportunityCauseRepository)
     {
         _candidateRepository = candidateRepository;
@@ -39,7 +39,7 @@ public class CandidateService
         _candidateAdminFormValidator = candidateAdminFormValidator;
         _candidateFormValidator = candidateFormValidator;
         _currentUser = currentUser;
-        _candidateQualificationRepository = candidateQualificationRepository;
+        _qualificationRepository = qualificationRepository;
         _opportunityCauseRepository = opportunityCauseRepository;
     }
 
@@ -71,7 +71,7 @@ public class CandidateService
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
-        var qualifications = await _candidateQualificationRepository.FindByIdIn(form.QualificationsIds);
+        var qualifications = await _qualificationRepository.FindByIdInAsync(form.QualificationsIds);
         var interestedInCauses = await _opportunityCauseRepository.FindByIdIn(form.InterestedInCausesIds);
 
         var candidate = _mapper.ToModel(form, qualifications, interestedInCauses);
@@ -96,7 +96,7 @@ public class CandidateService
         if (candidate is null)
             throw new NotFoundException("Candidato não encontrado");
         
-        var qualifications = await _candidateQualificationRepository.FindByIdIn(form.QualificationsIds);
+        var qualifications = await _qualificationRepository.FindByIdInAsync(form.QualificationsIds);
         var interestedInCauses = await _opportunityCauseRepository.FindByIdIn(form.InterestedInCausesIds);
 
         _mapper.Merge(candidate, form, qualifications, interestedInCauses);

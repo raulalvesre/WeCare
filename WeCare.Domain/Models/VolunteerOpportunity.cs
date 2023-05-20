@@ -18,10 +18,12 @@ public class VolunteerOpportunity
     public string PostalCode { get; set; } = string.Empty;
     public DateTime CreationDate { get; set; }
     public DateTime? LastUpdateDate { get; set; }
+    public bool Enabled { get; set; }
 
     public long InstitutionId { get; set; }
     public Institution? Institution { get; set; }
     public IEnumerable<OpportunityCause> Causes { get; set; } = new List<OpportunityCause>();
+    public IEnumerable<Qualification> DesirableQualifications { get; set; } = new List<Qualification>();
 
     public bool HasAlreadyHappened() => OpportunityDate <= DateTime.Now;
 }

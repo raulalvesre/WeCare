@@ -1,4 +1,3 @@
-using System.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WeCare.Application.Interfaces;
@@ -90,5 +89,11 @@ public class VolunteerOpportunityController : ControllerBase
         return NoContent();
     }
     
+    [Authorize(Roles = "CANDIDATE")]
+    [HttpGet("recommended")]
+    public async ValueTask<ActionResult<Pagination<VolunteerOpportunityViewModel>>> GetPageOfRecommendedOpportunitiesForCandidate()
+    {
+        return Ok(await _opportunityRegistrationService.GetPageOfRecommendedOpportunitiesForCandidate(_currentUser.GetUserId()));
+    }
 
 }
