@@ -13,7 +13,8 @@ public class CandidateSearchParams : PaginationFilterParamsBase<Candidate>
     public string? Name { get; set; }
     public string? City { get; set; }
     public State? State { get; set; }
-    
+    public IEnumerable<long> QualificationIds { get; set; }
+
     protected override void Filter()
     {
         if (Id.HasValue)
@@ -30,5 +31,12 @@ public class CandidateSearchParams : PaginationFilterParamsBase<Candidate>
 
         if (State.HasValue)
             And(x => x.State == State);
+        
+        if (QualificationIds.Any())
+        {
+            And(vo => vo.Qualifications
+                .Any(oc => QualificationIds.Contains(oc.Id))
+            );
+        }
     }
 }

@@ -1,5 +1,3 @@
-using System.Linq.Expressions;
-using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using WeCare.Domain.Core;
 using WeCare.Domain.Models;
@@ -14,7 +12,9 @@ public class VolunteerOpportunitySearchParams : PaginationFilterParamsBase<Volun
     public DateTime? PeriodEnd { get; set; }
     public string? City { get; set; }
     public State? State { get; set; }
+    public long? CandidateNotRegistered { get; set; }
     public IEnumerable<string> Causes { get; set; } = new List<string>();
+    public IEnumerable<long> DesirableQualifications = new List<long>();
     public OpportunityOrderBy? OrderBy { get; set; }
     public SortDirection? OrderDirection { get; set; }
 
@@ -39,11 +39,21 @@ public class VolunteerOpportunitySearchParams : PaginationFilterParamsBase<Volun
 
         if (State.HasValue)
             And(x => x.State == State);
+        
+        if (CandidateNotRegistered.HasValue)
+            And(x => x.Registrations.Any(x => x.CandidateId != CandidateNotRegistered));
 
         if (Causes.Any())
         {
             And(vo => vo.Causes
                 .Any(oc => Causes.Contains(oc.Code))
+            );
+        }
+        
+        if (DesirableQualifications.Any())
+        {
+            And(vo => vo.DesirableQualifications
+                .Any(x => DesirableQualifications.Contains(x.Id))
             );
         }
 

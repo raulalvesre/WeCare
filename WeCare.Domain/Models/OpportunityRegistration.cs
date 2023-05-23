@@ -18,4 +18,6 @@ public class OpportunityRegistration
 
     public bool AlreadyHasBeenDeniedOrAccepted() => Status == DENIED || Status == ACCEPTED;
 
+    public bool IsNotAccepted() => Status != ACCEPTED;
+
 }
