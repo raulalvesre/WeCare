@@ -75,5 +75,5 @@ public abstract class BaseRepository<T> where T : class
     {
         return _set.FindAsync(id);
     }
-    
+
 }
