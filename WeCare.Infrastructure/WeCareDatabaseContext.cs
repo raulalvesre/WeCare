@@ -7,15 +7,6 @@ namespace WeCare.Infrastructure;
 
 public class WeCareDatabaseContext : DbContext
 {
-    
-    private static readonly string _connStr = @"
-        Host=localhost;
-        Port=5432;
-        Database=wecare;
-        User Id=postgres;
-        Password=rar432;
-    ";
-
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Candidate> Candidates { get; set; } = null!;
     public DbSet<Institution> Institutions  { get; set; } = null!;
@@ -24,8 +15,11 @@ public class WeCareDatabaseContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ??
+                               "Host=localhost;Port=5432;Database=wecare;User Id=postgres;Password=rar432;";
+
         optionsBuilder
-            .UseNpgsql(_connStr)
+            .UseNpgsql(connectionString)
             .UseSnakeCaseNamingConvention()
             .LogTo(Console.WriteLine, LogLevel.Information);
     }
