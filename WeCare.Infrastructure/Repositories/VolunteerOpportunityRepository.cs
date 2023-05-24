@@ -70,10 +70,19 @@ public class VolunteerOpportunityRepository : BaseRepository<VolunteerOpportunit
 
         var query = FormattableStringFactory.Create($"{baseQuery} OFFSET {skip} LIMIT {pageSize}");
 
-        var opportunities = WeCareDatabaseContext.VolunteerOpportunities
+        var opportunityIds = WeCareDatabaseContext.VolunteerOpportunities
             .FromSqlInterpolated(query)
-            .ToList();
+            .Select(x => x.Id)
+            .ToHashSet();
 
+        var opportunitiesDict = WeCareDatabaseContext.VolunteerOpportunities
+            .Include(x => x.Causes)
+            .Include(x => x.DesirableQualifications)
+            .Where(x => opportunityIds.Contains(x.Id))
+            .ToDictionary(x => x.Id);
+        
+        var opportunities = opportunityIds.Select(id => opportunitiesDict[id]).ToList();
+        
         var count = WeCareDatabaseContext.VolunteerOpportunities
             .FromSqlRaw(baseQuery)
             .Count();
