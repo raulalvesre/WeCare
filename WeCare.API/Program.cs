@@ -27,7 +27,7 @@ builder.Logging.AddConsole();
 builder.Configuration.AddEnvironmentVariables(x => x.Prefix = "WECARE__");
 
 
-var key = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("jwt-secret"));
+var key = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("JWT_SECRET"));
 
 builder.Services.AddAuthentication(x =>
 {
