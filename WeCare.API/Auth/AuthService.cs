@@ -76,7 +76,7 @@ public class AuthService
     private TokenViewModel GenerateJwt(UserCompleteViewModel user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_config.GetValue<string>("jwt-secret"));
+        var key = Encoding.ASCII.GetBytes(_config.GetValue<string>("JWT_SECRET"));
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[]
@@ -113,9 +113,10 @@ public class AuthService
         var emailConfirmationViewModel = new EmailConfirmationViewModel
         {
             UserName = name,
-            ConfirmationToken = confirmationToken
+            ConfirmationToken = confirmationToken,
+            Url = Environment.GetEnvironmentVariable("FRONT_URL") ?? "http://locahost:4200"
         };
-
+        
         await _emailService.SendEmailAsync(email, subject, nameof(AccountActivation), emailConfirmationViewModel);
     }
     
@@ -150,7 +151,8 @@ public class AuthService
         var passwordRecoveryViewModel = new PasswordRecoveryViewModel
         {
             CandidateName = user.Name,
-            ConfirmationToken = token
+            ConfirmationToken = token,
+            Url = Environment.GetEnvironmentVariable("FRONT_URL") ?? "http://locahost:4200"
         };
         
         await _emailService.SendEmailAsync(user.Email, subject, nameof(PasswordRecovery), passwordRecoveryViewModel);

@@ -31,6 +31,6 @@
 	<h1>WeCare</h1>
 	<p>Olá, @Model.UserName!</p>
 	<p>Seja bem-vindo(a) à nossa plataforma! Estamos muito felizes em tê-lo(a) como novo(a) membro e gostaríamos de confirmar a ativação da sua conta. Estamos ansiosos para proporcionar a você uma experiência incrível e satisfatória.</p>
-	<p>Para ativar sua conta, <a href="http://localhost:8085/activate-account?token=@Model.ConfirmationToken" class="button">clique aqui</a></p>
+	<p>Para ativar sua conta, <a href="http://@Model.Url/activate-account?token=@Model.ConfirmationToken" class="button">clique aqui</a></p>
 </body>
 </html>

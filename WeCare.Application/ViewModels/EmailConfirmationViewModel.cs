@@ -4,4 +4,5 @@ public class EmailConfirmationViewModel
 {
     public string UserName { get; set; }
     public string ConfirmationToken { get; set; }
+    public string Url { get; set; }
 }

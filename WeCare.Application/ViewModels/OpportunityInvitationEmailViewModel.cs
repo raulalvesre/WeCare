@@ -6,4 +6,5 @@ public class OpportunityInvitationEmailViewModel
     public long OpportunityId { get; set; }
     public string OpportunityName { get; set; }
     public string InvitationMessage { get; set; }
+    public string Url { get; set; }
 }

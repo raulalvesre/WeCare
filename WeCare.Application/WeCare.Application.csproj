@@ -30,7 +30,7 @@
     <ItemGroup>
       <None Remove="EmailTemplates\OpportunityInvitation.cshtml" />
       <Content Include="EmailTemplates\OpportunityInvitation.cshtml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <Content Update="EmailTemplates\AccountActivation.cshtml">
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
@@ -40,6 +40,14 @@
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="EmailTemplates\AccountActivation.cshtml" />
+      <Content Include="EmailTemplates\AccountActivation.cshtml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="EmailTemplates\PasswordRecovery.cshtml" />
+      <Content Include="EmailTemplates\PasswordRecovery.cshtml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
 
