@@ -10,7 +10,6 @@ class IssueReport {
     + ResolverId : long? <<get>> <<set>>
     + OpportunityId : long <<get>> <<set>>
     + ResolutionDate : DateTime? <<get>> <<set>>
-    + Resolver : User? <<get>> <<set>>
     + CreationDate : DateTime <<get>> <<set>>
 
     + IsClosed() : bool
