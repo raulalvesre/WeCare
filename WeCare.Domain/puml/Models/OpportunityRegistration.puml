@@ -9,6 +9,5 @@ class OpportunityRegistration {
     + AlreadyHasBeenDeniedOrAccepted() : bool
     + IsNotAccepted() : bool
 }
-OpportunityRegistration --> "Opportunity" VolunteerOpportunity
 OpportunityRegistration --> "Candidate" Candidate
 @enduml
