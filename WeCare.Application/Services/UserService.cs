@@ -26,7 +26,16 @@ public class UserService
 
         return new UserCompleteViewModel(user);
     }
+    
+    public async Task<UserCompleteViewModel> GetByEmail(string email)
+    {
+        var user = await _userRepository.GetByEmailAndEnabled(email);
 
+        if (user is null)
+            throw new NotFoundException("Usuário não encontrado");
+
+        return new UserCompleteViewModel(user);
+    }
 
     public async Task<UserCompleteViewModel> GetByEmailAndEnabled(string email)
     {

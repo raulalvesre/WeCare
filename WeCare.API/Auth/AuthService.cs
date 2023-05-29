@@ -138,14 +138,14 @@ public class AuthService
         await _userService.SetUserEnabled(confirmationToken.UserId, true);
     }
     
-    public async Task SendPasswordRecoveryEmail(long userId)
+    public async Task SendPasswordRecoveryEmail(string email)
     {
-        var user = await _userService.GetById(userId);
+        var user = await _userService.GetByEmail(email);
         if (user is null)
             throw new NotFoundException("Usuário não encontrado");
         
         var token = Guid.NewGuid().ToString();
-        await _confirmationTokenService.Save(new(token, userId));
+        await _confirmationTokenService.Save(new(token, user.Id));
         
         const string subject = "WeCare - Recuperação de senha";
         var passwordRecoveryViewModel = new PasswordRecoveryViewModel

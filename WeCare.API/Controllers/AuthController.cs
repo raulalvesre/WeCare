@@ -55,10 +55,10 @@ public class AuthController : ControllerBase
         return NoContent();
     }
     
-    [HttpPost("password-recovery/email/{userId}")]
-    public async ValueTask<ActionResult> SendPasswordRecoveryEmail(long userId)
+    [HttpPost("password-recovery/email/{email:string}")]
+    public async ValueTask<ActionResult> SendPasswordRecoveryEmail(string email)
     {
-        await _authService.SendPasswordRecoveryEmail(userId);
+        await _authService.SendPasswordRecoveryEmail(email);
         return NoContent();
     }
 
