@@ -3,4 +3,8 @@ class Qualification {
     + Id : long <<get>> <<set>>
     + Name : string <<get>> <<set>>
 }
+VolunteerOpportunity --> "DesirableQualifications" Qualification : 0..*
+ParticipationCertificate --> "DisplayedQualifications" Qualification : 0..*
+skinparam nodesep 200
+Candidate --> "Qualifications" Qualification :  "0..*" 
 @enduml

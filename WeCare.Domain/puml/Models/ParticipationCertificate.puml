@@ -6,5 +6,4 @@ class ParticipationCertificate {
     + CreationDate : DateTime <<get>> <<set>>
 }
 ParticipationCertificate --> "Registration" OpportunityRegistration
-ParticipationCertificate --> "DisplayedQualifications" Qualification : 0..*
 @enduml

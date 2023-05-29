@@ -20,5 +20,4 @@ class VolunteerOpportunity {
 }
 VolunteerOpportunity --> "Causes" OpportunityCause : 0..*
 VolunteerOpportunity o-> "Registrations" OpportunityRegistration : 0..*
-VolunteerOpportunity --> "DesirableQualifications" Qualification : 0..*
 @enduml
