@@ -1,0 +1,22 @@
+@startuml
+abstract class User {
+    + Id : long <<get>> <<set>>
+    + State : State <<get>> <<set>>
+    + Type : string <<get>> <<set>>
+    + Email : string <<get>> <<set>>
+    + Password : string <<get>> <<set>>
+    + Name : string <<get>> <<set>>
+    + Telephone : string <<get>> <<set>>
+    + Bio : string <<get>> <<set>>
+    + Street : string <<get>> <<set>>
+    + Number : string <<get>> <<set>>
+    + Complement : string <<get>> <<set>>
+    + City : string <<get>> <<set>>
+    + Neighborhood : string <<get>> <<set>>
+    + PostalCode : string <<get>> <<set>>
+    + LinkedIn : string <<get>> <<set>>
+    + Enabled : bool <<get>> <<set>>
+    + LastUpdateDate : DateTime? <<get>> <<set>>
+    + CreationDate : DateTime <<get>> <<set>>
+}
+@enduml

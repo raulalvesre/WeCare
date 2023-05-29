@@ -1,0 +1,8 @@
+@startuml
+enum RegistrationStatus {
+    PENDING,
+    ACCEPTED,
+    DENIED,
+    CANCELED,
+}
+@enduml

@@ -1,0 +1,10 @@
+@startuml
+class ParticipationCertificate {
+    + Id : long <<get>> <<set>>
+    + AuthenticityCode : string <<get>> <<set>>
+    + RegistrationId : long <<get>> <<set>>
+    + CreationDate : DateTime <<get>> <<set>>
+}
+ParticipationCertificate --> "Registration" OpportunityRegistration
+ParticipationCertificate --> "DisplayedQualifications" Qualification : 0..*
+@enduml

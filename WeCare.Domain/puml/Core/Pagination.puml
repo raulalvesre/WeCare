@@ -1,0 +1,14 @@
+@startuml
+class "Pagination`1"<T> {
+    + PageNumber : int <<get>> <<set>>
+    + PageSize : int <<get>> <<set>>
+    + TotalCount : int <<get>> <<set>>
+    + TotalPages : int <<get>> <<set>>
+    + HasPreviousPage : bool <<get>>
+    + HasNextPage : bool <<get>>
+    + Pagination(pageNumber:int, pageSize:int, totalCount:int, totalPages:int, data:IEnumerable<T>)
+}
+class "IEnumerable`1"<T> {
+}
+"Pagination`1" --> "Data<T>" "IEnumerable`1"
+@enduml

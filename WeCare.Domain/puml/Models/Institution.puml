@@ -1,0 +1,7 @@
+@startuml
+class Institution {
+    + Cnpj : string <<get>> <<set>>
+}
+User <|-- Institution
+Institution o-> "VolunteerOpportunities" VolunteerOpportunity : 0..*
+@enduml

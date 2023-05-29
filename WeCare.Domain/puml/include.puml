@@ -1,0 +1,28 @@
+@startuml
+!include ./Models/VolunteerOpportunity.puml
+!include ./Models/Candidate.puml
+!include ./Models/ParticipationCertificate.puml
+!include ./Models/ConfirmationToken.puml
+!include ./Models/OpportunityRegistration.puml
+!include ./Models/Institution.puml
+!include ./Models/Qualification.puml
+!include ./Models/IssueMessage.puml
+!include ./Models/OpportunityInvitation.puml
+!include ./Models/Admin.puml
+!include ./Models/Issue.puml
+!include ./Models/User.puml
+!include ./Models/OpportunityCause.puml
+!include ./Core/InvitationStatus.puml
+!include ./Core/RegistrationStatus.puml
+!include ./Core/IssueStatus.puml
+!include ./Core/State.puml
+!include ./obj/Debug/net70/WeCare.Domain.GlobalUsings.g.puml
+!include ./obj/Debug/net70/WeCare.Domain.AssemblyInfo.puml
+!include ./obj/Debug/net70/.NETCoreApp,Version=v7.0.AssemblyAttributes.puml
+!include ./obj/Debug/net60/WeCare.Domain.GlobalUsings.g.puml
+!include ./obj/Debug/net60/WeCare.Domain.AssemblyInfo.puml
+!include ./obj/Debug/net60/.NETCoreApp,Version=v6.0.AssemblyAttributes.puml
+!include ./obj/Release/net70/WeCare.Domain.GlobalUsings.g.puml
+!include ./obj/Release/net70/WeCare.Domain.AssemblyInfo.puml
+!include ./obj/Release/net70/.NETCoreApp,Version=v7.0.AssemblyAttributes.puml
+@enduml

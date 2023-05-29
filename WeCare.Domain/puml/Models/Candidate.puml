@@ -1,0 +1,9 @@
+@startuml
+class Candidate {
+    + Cpf : string <<get>> <<set>>
+    + BirthDate : DateOnly <<get>> <<set>>
+}
+User <|-- Candidate
+Candidate --> "Qualifications" Qualification :  "0..*"
+Candidate --> "CausesCandidateIsInterestedIn" OpportunityCause : "0..*"
+@enduml

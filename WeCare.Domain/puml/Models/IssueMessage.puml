@@ -1,0 +1,11 @@
+@startuml
+class IssueMessage {
+    + Id : long <<get>> <<set>>
+    + IssueReportId : long <<get>> <<set>>
+    + SenderId : long <<get>> <<set>>
+    + Content : string <<get>> <<set>>
+    + Timestamp : DateTime <<get>> <<set>>
+
+}
+IssueMessage --> "Sender" User
+@enduml

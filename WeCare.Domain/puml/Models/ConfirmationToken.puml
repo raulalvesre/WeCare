@@ -1,0 +1,9 @@
+@startuml
+class ConfirmationToken {
+    + Id : long <<get>> <<set>>
+    + Token : string <<get>> <<set>>
+    + UserId : long <<get>> <<set>>
+    + CreationDate : DateTime <<get>> <<set>>
+}
+ConfirmationToken --> "User" User
+@enduml

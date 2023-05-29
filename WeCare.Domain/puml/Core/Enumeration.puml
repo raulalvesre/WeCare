@@ -1,0 +1,15 @@
+@startuml
+abstract class Enumeration {
+    + Name : string <<get>>
+    + Id : int <<get>>
+    + <<override>> ToString() : string
+    + {static} GetAll() : IEnumerable<T>
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> GetHashCode() : int
+    + {static} AbsoluteDifference(firstValue:Enumeration, secondValue:Enumeration) : int
+    + {static} FromValue(value:int) : T
+    + {static} FromDisplayName(displayName:string) : T
+    + CompareTo(other:object) : int
+}
+IComparable <|-- Enumeration
+@enduml

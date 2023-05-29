@@ -1,0 +1,14 @@
+@startuml
+class OpportunityRegistration {
+    + Id : long <<get>> <<set>>
+    + Status : RegistrationStatus
+    + FeedbackMessage : string <<get>> <<set>>
+    + OpportunityId : long <<get>> <<set>>
+    + CandidateId : long <<get>> <<set>>
+    + IsCanceled() : bool
+    + AlreadyHasBeenDeniedOrAccepted() : bool
+    + IsNotAccepted() : bool
+}
+OpportunityRegistration --> "Opportunity" VolunteerOpportunity
+OpportunityRegistration --> "Candidate" Candidate
+@enduml

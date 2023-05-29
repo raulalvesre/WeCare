@@ -1,0 +1,9 @@
+@startuml
+class OpportunityCause {
+    + Id : long <<get>> <<set>>
+    + Code : string <<get>> <<set>>
+    + Name : string <<get>> <<set>>
+    + PrimaryColorCode : string <<get>> <<set>>
+    + SecondaryColorCode : string <<get>> <<set>>
+}
+@enduml

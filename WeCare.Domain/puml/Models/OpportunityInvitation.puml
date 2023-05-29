@@ -1,0 +1,14 @@
+@startuml
+class OpportunityInvitation {
+    + Id : long <<get>> <<set>>
+    + Status : InvitationStatus
+    + InvitationMessage : string <<get>> <<set>>
+    + ResponseMessage : string <<get>> <<set>>
+    + OpportunityId : long <<get>> <<set>>
+    + CandidateId : long <<get>> <<set>>
+    + HasBeenCanceled() : bool
+    + IsPending() : bool
+}
+OpportunityInvitation --> "Opportunity" VolunteerOpportunity
+OpportunityInvitation --> "Candidate" Candidate
+@enduml

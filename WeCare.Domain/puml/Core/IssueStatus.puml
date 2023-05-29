@@ -1,0 +1,7 @@
+@startuml
+enum IssueStatus {
+    OPEN,
+    CLOSED,
+    RESOLVED,
+}
+@enduml

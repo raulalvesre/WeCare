@@ -1,0 +1,6 @@
+@startuml
+class Qualification {
+    + Id : long <<get>> <<set>>
+    + Name : string <<get>> <<set>>
+}
+@enduml

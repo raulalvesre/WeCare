@@ -1,0 +1,23 @@
+@startuml
+class IssueReport {
+    + Id : long <<get>> <<set>>
+    + Status: IssueStatus <<get>> <<set>>
+    + Title : string <<get>> <<set>>
+    + Description : string <<get>> <<set>>
+    + ResolutionNotes : string <<get>> <<set>>
+    + ReportedUserId : long <<get>> <<set>>
+    + ReporterId : long <<get>> <<set>>
+    + ResolverId : long? <<get>> <<set>>
+    + OpportunityId : long <<get>> <<set>>
+    + ResolutionDate : DateTime? <<get>> <<set>>
+    + Resolver : User? <<get>> <<set>>
+    + CreationDate : DateTime <<get>> <<set>>
+
+    + IsClosed() : bool
+    + Resolve(resolutionNotes:string, resolverId:long) : void
+}
+IssueReport --> "ReportedUser" User
+IssueReport --> "Reporter" User
+IssueReport --> "Opportunity" VolunteerOpportunity
+IssueReport o-> "Messages" IssueMessage : 0..*
+@enduml
