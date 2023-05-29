@@ -10,18 +10,16 @@ namespace WeCare.Application.Services;
 public class OpportunityCauseService
 {
     private readonly OpportunityCauseRepository _opportunityCauseRepository;
-    private readonly OpportunityCauseMapper _mapper;
 
-    public OpportunityCauseService(OpportunityCauseRepository opportunityCauseRepository, OpportunityCauseMapper mapper)
+    public OpportunityCauseService(OpportunityCauseRepository opportunityCauseRepository)
     {
         _opportunityCauseRepository = opportunityCauseRepository;
-        _mapper = mapper;
     }
 
     public async Task<IEnumerable<OpportunityCauseViewModel>> GetAll()
     {
         var causes = await _opportunityCauseRepository.Query.ToListAsync();
-        return causes.Select(x => _mapper.FromModel(x));
+        return causes.Select(x => new OpportunityCauseViewModel(x));
     }
     
     public async Task<Pagination<OpportunityCauseViewModel>> GetPage(OpportunityCauseSearchParams searchParamses)
@@ -32,7 +30,7 @@ public class OpportunityCauseService
             causesPage.PageSize,
             causesPage.TotalCount,
             causesPage.TotalPages,
-            causesPage.Data.Select(x => _mapper.FromModel(x)));
+            causesPage.Data.Select(x => new OpportunityCauseViewModel(x)));
     }
 
 }

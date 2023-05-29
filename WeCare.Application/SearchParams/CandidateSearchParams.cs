@@ -17,6 +17,8 @@ public class CandidateSearchParams : PaginationFilterParamsBase<Candidate>
 
     protected override void Filter()
     {
+        And(x => x.Enabled);
+        
         if (Id.HasValue)
             And(x => x.Id == Id);
         

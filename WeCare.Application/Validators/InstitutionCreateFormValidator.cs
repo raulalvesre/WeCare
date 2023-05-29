@@ -4,11 +4,11 @@ using WeCare.Infrastructure.Repositories;
 
 namespace WeCare.Application.Validators;
 
-public class InstitutionFormValidator : AbstractValidator<InstitutionForm>
+public class InstitutionCreateFormValidator : AbstractValidator<InstitutionCreateForm>
 {
     private readonly InstitutionRepository _institutionRepository;
     
-    public InstitutionFormValidator(InstitutionRepository institutionRepository)
+    public InstitutionCreateFormValidator(InstitutionRepository institutionRepository)
     {
         _institutionRepository = institutionRepository;
         
@@ -60,18 +60,18 @@ public class InstitutionFormValidator : AbstractValidator<InstitutionForm>
             .WithMessage("CNPJ já cadastrado");
     }
 
-    private async Task<bool> UniqueEmail(InstitutionForm form, string email)
+    private async Task<bool> UniqueEmail(InstitutionCreateForm createForm, string email)
     {
-        return !await _institutionRepository.ExistsByIdNotAndEmail(form.Id, email);
+        return !await _institutionRepository.ExistsByEmail(email);
     }
     
-    private async Task<bool> UniqueTelephone(InstitutionForm form, string telephone)
+    private async Task<bool> UniqueTelephone(InstitutionCreateForm createForm, string telephone)
     {
-        return !await _institutionRepository.ExistsByIdNotAndTelephone(form.Id, telephone);
+        return !await _institutionRepository.ExistsByTelephone(telephone);
     }
     
-    private async Task<bool> UniqueCnpj(InstitutionForm form, string cnpj)
+    private async Task<bool> UniqueCnpj(InstitutionCreateForm createForm, string cnpj)
     {
-        return !await _institutionRepository.ExistsByIdNotAndCnpj(form.Id, cnpj);
+        return !await _institutionRepository.ExistsByCnpj(cnpj);
     }
 }

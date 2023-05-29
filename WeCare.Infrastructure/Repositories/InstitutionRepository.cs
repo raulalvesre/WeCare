@@ -22,10 +22,21 @@ public class InstitutionRepository : BaseRepository<Institution>
         return Query.AnyAsync(x => x.Id != id && x.Email.Equals(email));
     }
     
+    public Task<bool> ExistsByEmail(string email)
+    {
+        return Query.AnyAsync(x => x.Email.Equals(email));
+    }
+    
     public Task<bool> ExistsByIdNotAndTelephone(long id, string telephone)
     {
         return Query.AnyAsync(x => x.Id != id && x.Telephone.Equals(telephone));
     }
+    
+    public Task<bool> ExistsByTelephone(string telephone)
+    {
+        return Query.AnyAsync(x => x.Telephone.Equals(telephone));
+    }
+
     
     public Task<Institution?> GetByIdNoTracking(long id)
     {
@@ -37,6 +48,11 @@ public class InstitutionRepository : BaseRepository<Institution>
     public async Task<bool> ExistsByIdNotAndCnpj(long id, string cnpj)
     {
         return await Query.AnyAsync(x => x.Id != id && x.Cnpj.Equals(cnpj));
+    }
+    
+    public Task<bool> ExistsByCnpj(string cnpj)
+    {
+        return Query.AnyAsync(x => x.Cnpj.Equals(cnpj));
     }
     
 }

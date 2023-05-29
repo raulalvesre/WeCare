@@ -17,13 +17,21 @@ public class QualificationService
         _qualificationRepository = qualificationRepository;
     }
 
-    public async Task<IEnumerable<Qualification>> GetAll()
+    public async Task<IEnumerable<QualificationViewModel>> GetAll()
     {
-        return await _qualificationRepository.Query.ToListAsync();
+        var qualifications = await _qualificationRepository.Query.ToListAsync();
+        return qualifications.Select(x => new QualificationViewModel(x));
     }
-    
-    public async Task<Pagination<Qualification>> GetPage(CandidateQualificationSearchParams searchParamses)
+
+    public async Task<Pagination<QualificationViewModel>> GetPage(CandidateQualificationSearchParams searchParamses)
     {
-        return await _qualificationRepository.Paginate(searchParamses);
+        var qualifications = await _qualificationRepository.Paginate(searchParamses);
+        return new Pagination<QualificationViewModel>(
+            qualifications.PageNumber,
+            qualifications.PageSize,
+            qualifications.TotalCount,
+            qualifications.TotalPages,
+            qualifications.Data.Select(x => new QualificationViewModel(x))
+        );
     }
 }

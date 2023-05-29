@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WeCare.Application.SearchParams;
 using WeCare.Application.Services;
+using WeCare.Application.ViewModels;
 using WeCare.Domain.Core;
 using WeCare.Domain.Models;
 
@@ -20,13 +21,13 @@ public class QualificationController : ControllerBase
     }
 
     [HttpGet]
-    public async ValueTask<ActionResult<Qualification>> GetAll()
+    public async ValueTask<ActionResult<QualificationViewModel>> GetAll()
     {
         return Ok(await _qualificationService.GetAll());
     } 
     
     [HttpGet("search")]
-    public async ValueTask<ActionResult<Pagination<Qualification>>> Search([FromQuery] CandidateQualificationSearchParams searchParams)
+    public async ValueTask<ActionResult<Pagination<QualificationViewModel>>> Search([FromQuery] CandidateQualificationSearchParams searchParams)
     {
         return Ok(await _qualificationService.GetPage(searchParams));
     } 

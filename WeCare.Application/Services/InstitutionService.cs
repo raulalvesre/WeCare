@@ -18,21 +18,24 @@ public class InstitutionService
     private readonly UnitOfWork _unitOfWork;
     private readonly InstitutionMapper _mapper;
     private readonly InstitutionAdminFormValidator _institutionAdminFormValidator;
-    private readonly InstitutionFormValidator _institutionFormValidator;
+    private readonly InstitutionCreateFormValidator _institutionCreateFormValidator;
+    private readonly InstitutionUpdateFormValidator _institutionUpdateFormValidator;
 
     public InstitutionService(InstitutionRepository institutionRepository,
         UserRepository userRepository,
         InstitutionMapper mapper,
         UnitOfWork unitOfWork, 
         InstitutionAdminFormValidator institutionAdminFormValidator, 
-        InstitutionFormValidator institutionFormValidator)
+        InstitutionCreateFormValidator institutionCreateFormValidator, 
+        InstitutionUpdateFormValidator institutionUpdateFormValidator)
     {
         _institutionRepository = institutionRepository;
         _userRepository = userRepository;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
         _institutionAdminFormValidator = institutionAdminFormValidator;
-        _institutionFormValidator = institutionFormValidator;
+        _institutionCreateFormValidator = institutionCreateFormValidator;
+        _institutionUpdateFormValidator = institutionUpdateFormValidator;
     }
     
      public async Task<InstitutionViewModel> GetById(long id)
@@ -57,13 +60,13 @@ public class InstitutionService
             modelPage.Data.Select(x => _mapper.FromModel(x)));
     }
 
-    public async Task<InstitutionViewModel> Save(InstitutionForm form)
+    public async Task<InstitutionViewModel> Save(InstitutionCreateForm createForm)
     {
-        var validationResult = await _institutionFormValidator.ValidateAsync(form);
+        var validationResult = await _institutionCreateFormValidator.ValidateAsync(createForm);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
-        var institution = _mapper.ToModel(form);
+        var institution = _mapper.ToModel(createForm);
 
         await _institutionRepository.Save(institution);
         await _unitOfWork.SaveAsync();
@@ -71,10 +74,10 @@ public class InstitutionService
         return _mapper.FromModel(institution);
     }
     
-    public async Task<InstitutionViewModel> Update(long institutionId, InstitutionForm form)
+    public async Task<InstitutionViewModel> Update(long institutionId, InstitutionUpdateForm createForm)
     {
-        form.Id = institutionId;
-        var validationResult = await _institutionFormValidator.ValidateAsync(form);
+        createForm.Id = institutionId;
+        var validationResult = await _institutionUpdateFormValidator.ValidateAsync(createForm);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult.Errors);
 
@@ -82,7 +85,7 @@ public class InstitutionService
         if (institution is null)
             throw new NotFoundException("Instituição não encontrada");
         
-        _mapper.Merge(institution, form);
+        _mapper.Merge(institution, createForm);
         await _institutionRepository.Update(institution);
         await _unitOfWork.SaveAsync();
 

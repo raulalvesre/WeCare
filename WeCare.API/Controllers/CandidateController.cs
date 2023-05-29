@@ -43,9 +43,9 @@ public class CandidateController : ControllerBase
     
     [Authorize(Roles = "CANDIDATE")]
     [HttpPut("{candidateId:long}")]
-    public async ValueTask<ActionResult<CandidateViewModel>> Update(long candidateId, CandidateForm form)
+    public async ValueTask<ActionResult<CandidateViewModel>> Update(long candidateId, CandidateUpdateForm updateForm)
     {
-        return Ok(await _candidateService.Update(candidateId, form));
+        return Ok(await _candidateService.Update(candidateId, updateForm));
     }
 
     [Authorize(Roles = "CANDIDATE")]

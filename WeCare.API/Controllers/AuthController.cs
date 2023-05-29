@@ -35,16 +35,16 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register-candidate")]
-    public async ValueTask<ActionResult> RegisterCandidate(CandidateForm form)
+    public async ValueTask<ActionResult> RegisterCandidate(CandidateCreateForm createForm)
     {
-        await _authService.RegisterCandidate(form);
+        await _authService.RegisterCandidate(createForm);
         return NoContent();
     }
 
     [HttpPost("register-institution")]
-    public async ValueTask<ActionResult> RegisterInstitution(InstitutionForm form)
+    public async ValueTask<ActionResult> RegisterInstitution(InstitutionCreateForm createForm)
     {
-        await _authService.RegisterInstitution(form);
+        await _authService.RegisterInstitution(createForm);
         return NoContent();
     }
 

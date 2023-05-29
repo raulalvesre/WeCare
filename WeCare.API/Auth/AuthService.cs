@@ -97,13 +97,13 @@ public class AuthService
         };
     }
 
-    public async Task RegisterCandidate(CandidateForm form)
+    public async Task RegisterCandidate(CandidateCreateForm createForm)
     {
-        var candidateViewModel = await _candidateService.Save(form);
+        var candidateViewModel = await _candidateService.Save(createForm);
 
         var token = Guid.NewGuid().ToString();
         await _confirmationTokenService.Save(new ConfirmationTokenForm(token, candidateViewModel.Id));
-        await SendAccountActivationEmail(candidateViewModel.Name, form.Email, token);
+        await SendAccountActivationEmail(candidateViewModel.Name, createForm.Email, token);
     }
     
     private async Task SendAccountActivationEmail(string name, string email, string confirmationToken)
@@ -120,13 +120,13 @@ public class AuthService
         await _emailService.SendEmailAsync(email, subject, nameof(AccountActivation), emailConfirmationViewModel);
     }
     
-    public async Task RegisterInstitution(InstitutionForm form)
+    public async Task RegisterInstitution(InstitutionCreateForm createForm)
     {
-        var institutionViewModel = await _institutionService.Save(form);
+        var institutionViewModel = await _institutionService.Save(createForm);
 
         var token = Guid.NewGuid().ToString();
         await _confirmationTokenService.Save(new ConfirmationTokenForm(token, institutionViewModel.Id));
-        await SendAccountActivationEmail(institutionViewModel.Email, form.Email, token);
+        await SendAccountActivationEmail(institutionViewModel.Email, createForm.Email, token);
     }
     
     public async Task ActivateAccount(string token)

@@ -5,13 +5,13 @@ using WeCare.Infrastructure.Repositories;
 
 namespace WeCare.Application.Validators;
 
-public class CandidateFormValidator : AbstractValidator<CandidateForm>
+public class CandidateUpdateFormValidator : AbstractValidator<CandidateUpdateForm>
 {
     private readonly CandidateRepository _candidateRepository;
     private readonly QualificationRepository _qualificationRepository;
     private readonly OpportunityCauseRepository _opportunityCauseRepository;
 
-    public CandidateFormValidator(CandidateRepository candidateRepository,
+    public CandidateUpdateFormValidator(CandidateRepository candidateRepository,
         QualificationRepository qualificationRepository, 
         OpportunityCauseRepository opportunityCauseRepository)
     {
@@ -34,15 +34,7 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
             .WithMessage("O email deve ser válido")
             .MustAsync((x, email, cT) => UniqueEmail(x, email))
             .WithMessage("Email já cadastrado");
-
-        RuleFor(x => x.Password)
-            .NotEmpty()
-            .WithMessage("É necessário uma senha")
-            .MinimumLength(6)
-            .WithMessage("A senha precisa ter no minínmo 6 caracteres")
-            .MaximumLength(500)
-            .WithMessage("A senha precisa ter no máximo 500 caracteres");
-
+        
         RuleFor(x => x.Telephone)
             .NotEmpty()
             .WithMessage("É necessário um telefone")
@@ -81,23 +73,23 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
             .CustomAsync(AllCausesIdsExists);
     }
 
-    private async Task<bool> UniqueEmail(CandidateForm form, string email)
+    private async Task<bool> UniqueEmail(CandidateUpdateForm updateForm, string email)
     {
-        return !await _candidateRepository.ExistsByIdNotAndEmail(form.Id, email);
+        return !await _candidateRepository.ExistsByIdNotAndEmail(updateForm.Id, email);
     }
 
-    private async Task<bool> UniqueTelephone(CandidateForm form, string telephone)
+    private async Task<bool> UniqueTelephone(CandidateUpdateForm updateForm, string telephone)
     {
-        return !await _candidateRepository.ExistsByIdNotAndTelephone(form.Id, telephone);
+        return !await _candidateRepository.ExistsByIdNotAndTelephone(updateForm.Id, telephone);
     }
 
-    private async Task<bool> UniqueCpf(CandidateForm form, string cpf)
+    private async Task<bool> UniqueCpf(CandidateUpdateForm updateForm, string cpf)
     {
-        return !await _candidateRepository.ExistsByIdNotAndCpf(form.Id, cpf);
+        return !await _candidateRepository.ExistsByIdNotAndCpf(updateForm.Id, cpf);
     }
 
     private async Task AllQualificationsIdsExists(IEnumerable<long> qualificationIds,
-        ValidationContext<CandidateForm> context,
+        ValidationContext<CandidateUpdateForm> context,
         CancellationToken cancellationToken)
     {
         var qualifications = await _qualificationRepository.FindByIdInAsync(qualificationIds);
@@ -113,7 +105,7 @@ public class CandidateFormValidator : AbstractValidator<CandidateForm>
     }
     
     private async Task AllCausesIdsExists(IEnumerable<long> causesIds,
-        ValidationContext<CandidateForm> context,
+        ValidationContext<CandidateUpdateForm> context,
         CancellationToken cancellationToken)
     {
         var causes = await _opportunityCauseRepository.FindByIdIn(causesIds);
