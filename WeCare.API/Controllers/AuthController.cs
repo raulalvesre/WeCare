@@ -55,7 +55,7 @@ public class AuthController : ControllerBase
         return NoContent();
     }
     
-    [HttpPost("password-recovery/email/{email:string}")]
+    [HttpPost("password-recovery/email/{email}")]
     public async ValueTask<ActionResult> SendPasswordRecoveryEmail(string email)
     {
         await _authService.SendPasswordRecoveryEmail(email);
