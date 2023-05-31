@@ -16,6 +16,8 @@ public class InstitutionSearchParams : PaginationFilterParamsBase<Institution>
     
     protected override void Filter()
     {
+        And(x => x.Enabled);
+        
         if (Id.HasValue)
             And(x => x.Id == Id);
         

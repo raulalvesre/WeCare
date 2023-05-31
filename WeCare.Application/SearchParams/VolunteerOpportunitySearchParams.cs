@@ -22,6 +22,8 @@ public class VolunteerOpportunitySearchParams : PaginationFilterParamsBase<Volun
     {
         PreQuery(ops => ops.Include(op => op.Causes));
 
+        And(x => x.Enabled);
+
         if (InstitutionId.HasValue)
             And(x => x.InstitutionId == InstitutionId);
 
