@@ -28,7 +28,7 @@ public class VolunteerOpportunityController : ControllerBase
     [HttpGet("{opportunityId:long}")]
     public async ValueTask<ActionResult<VolunteerOpportunityViewModel>> GetById(long opportunityId)
     {
-        return Ok(await _volunteerOpportunityService.GetByInstitutionIdAndOpportunityId(_currentUser.GetUserId(), opportunityId));
+        return Ok(await _volunteerOpportunityService.GetById(opportunityId));
     }
     
     [HttpGet("search")]
