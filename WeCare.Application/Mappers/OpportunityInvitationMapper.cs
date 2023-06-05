@@ -23,6 +23,7 @@ public class OpportunityInvitationMapper
         return new OpportunityInvitationViewModel
         {
             Id = opportunityInvitation.Id,
+            Status = opportunityInvitation.Status,
             InvitationMessage = opportunityInvitation.InvitationMessage,
             ResponseMessage = opportunityInvitation.ResponseMessage,
             OpportunityId = opportunityInvitation.OpportunityId,
