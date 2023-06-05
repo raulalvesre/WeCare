@@ -41,4 +41,11 @@ public class CandidateRepository : BaseRepository<Candidate>
     {
         return Query.AnyAsync(x => x.Cpf.Equals(cpf));
     }
+
+    public Task<Candidate?> GetByIdAsync(long id)
+    {
+        return Query.Include(x => x.Qualifications)
+            .Include(x => x.CausesCandidateIsInterestedIn)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
 }
