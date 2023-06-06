@@ -114,7 +114,7 @@ public class AuthService
         {
             UserName = name,
             ConfirmationToken = confirmationToken,
-            Url = Environment.GetEnvironmentVariable("FRONT_URL") ?? "http://locahost:4200"
+            Url = Environment.GetEnvironmentVariable("FRONT_URL") ?? "http://localhost:4200"
         };
         
         await _emailService.SendEmailAsync(email, subject, nameof(AccountActivation), emailConfirmationViewModel);
@@ -152,7 +152,7 @@ public class AuthService
         {
             CandidateName = user.Name,
             ConfirmationToken = token,
-            Url = Environment.GetEnvironmentVariable("FRONT_URL") ?? "http://locahost:4200"
+            Url = Environment.GetEnvironmentVariable("FRONT_URL") ?? "http://localhost:4200"
         };
         
         await _emailService.SendEmailAsync(user.Email, subject, nameof(PasswordRecovery), passwordRecoveryViewModel);

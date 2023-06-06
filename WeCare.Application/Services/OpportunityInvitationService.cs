@@ -132,7 +132,7 @@ public class OpportunityInvitationService
             OpportunityId = opportunity.Id,
             OpportunityName = opportunity.Name,
             InvitationMessage = invitationMessage,
-            Url = Environment.GetEnvironmentVariable("FRONT_URL") ?? "http://locahost:4200"
+            Url = Environment.GetEnvironmentVariable("FRONT_URL") ?? "http://localhost:4200"
         };
 
         var subject = $"WeCare - A empresa {opportunity.Institution.Name} te convidou para uma oportunidade";
