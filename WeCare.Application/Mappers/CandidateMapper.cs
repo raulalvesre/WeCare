@@ -16,6 +16,8 @@ public class CandidateMapper
             Cpf = candidate.Cpf,
             Telephone = candidate.Telephone,
             Bio = candidate.Bio,
+            Photo = candidate.Photo,
+            LinkedIn = candidate.LinkedIn,
             Address = new AddressViewModel(candidate),
             BirthDate = candidate.BirthDate,
             Qualifications = candidate.Qualifications.Select(x => new QualificationViewModel(x)),

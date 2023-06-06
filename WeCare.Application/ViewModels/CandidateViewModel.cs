@@ -9,6 +9,8 @@ public class CandidateViewModel
     public string Name { get; set; }
     public string Telephone { get; set; }
     public string Bio { get; set; }
+    public byte[] Photo { get; set; }
+    public string LinkedIn { get; set; }
     public AddressViewModel Address { get; set; }
     public string Cpf { get; set; }
     public DateOnly BirthDate { get; set; }

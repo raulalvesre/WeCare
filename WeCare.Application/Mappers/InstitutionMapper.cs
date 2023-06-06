@@ -16,6 +16,8 @@ public class InstitutionMapper
             Cnpj = institution.Cnpj,
             Telephone = institution.Telephone,
             Bio = institution.Bio,
+            Photo = institution.Photo,
+            LinkedIn = institution.LinkedIn,
             Address = new AddressViewModel(institution),
         };
     }
