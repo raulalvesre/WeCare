@@ -29,6 +29,8 @@ public class InstitutionMapper
              Id = institution.Id,
              Photo = institution.Photo,
              Name = institution.Name,
+             Email = institution.Email,
+             Telephone = institution.Telephone,
              Cnpj = institution.Cnpj,
              Address = new SecretativeAddressViewModel(institution),
          };
