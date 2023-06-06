@@ -91,4 +91,12 @@ public class VolunteerOpportunityRepository : BaseRepository<VolunteerOpportunit
 
         return new Pagination<VolunteerOpportunity>(pageNumber, pageSize, count, totalPages, opportunities);
     }
+    
+    public  Task<VolunteerOpportunity?> GetByIdAsync(long id)
+    {
+        return Query
+            .Include(x => x.Causes)
+            .Include(x => x.Institution)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
 }

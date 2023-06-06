@@ -14,4 +14,11 @@ public class ParticipationCertificateRepository : BaseRepository<ParticipationCe
     {
         return await Query.Where(x => ids.Contains(x.Id)).ToListAsync();
     }
+    
+    public Task<ParticipationCertificate?> GetByIdAsync(long id)
+    {
+        return Query.Include(x => x.Registration)
+            .Include(x => x.DisplayedQualifications)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
 }

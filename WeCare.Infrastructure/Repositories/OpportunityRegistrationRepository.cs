@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using WeCare.Domain.Models;
 using WeCare.Infrastructure.Repositories.Base;
 
@@ -7,5 +8,12 @@ public class OpportunityRegistrationRepository : BaseRepository<OpportunityRegis
 {
     public OpportunityRegistrationRepository(WeCareDatabaseContext weCareDatabaseContext) : base(weCareDatabaseContext)
     {
+    }
+    
+    public Task<OpportunityRegistration?> GetByIdAsync(long id)
+    {
+        return Query.Include(x => x.Candidate)
+            .Include(x => x.Opportunity)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 }
