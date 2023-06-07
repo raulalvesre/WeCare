@@ -43,7 +43,7 @@ public class VolunteerOpportunitySearchParams : PaginationFilterParamsBase<Volun
             And(x => x.State == State);
         
         if (CandidateNotRegistered.HasValue)
-            And(x => x.Registrations.Any(x => x.CandidateId != CandidateNotRegistered));
+            And(x => x.Registrations.Any(y => y.CandidateId != CandidateNotRegistered));
 
         if (Causes.Any())
         {

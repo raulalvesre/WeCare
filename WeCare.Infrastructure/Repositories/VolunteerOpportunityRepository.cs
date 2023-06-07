@@ -61,7 +61,9 @@ public class VolunteerOpportunityRepository : BaseRepository<VolunteerOpportunit
                 JOIN opportunities_with_common_qualifications opcq ON opcq.opportunity_id = opcc.opportunity_id
                 JOIN volunteer_opportunities op ON (op.id = opcc.opportunity_id AND op.id = opcq.opportunity_id)
                 JOIN users u on u.id = {candidateId}
+                LEFT JOIN opportunity_registrations r ON r.candidate_id = {candidateId} AND r.opportunity_id = op.id
             WHERE op.enabled
+                AND r.opportunity_id IS NULL
             ORDER BY CASE
                  WHEN u.city = op.city THEN 0
                  WHEN u.city <> op.city AND u.state = op.state THEN 1
