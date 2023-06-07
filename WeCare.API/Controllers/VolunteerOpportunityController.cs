@@ -89,11 +89,5 @@ public class VolunteerOpportunityController : ControllerBase
         return NoContent();
     }
     
-    [Authorize(Roles = "CANDIDATE")]
-    [HttpGet("recommended")]
-    public async ValueTask<ActionResult<Pagination<VolunteerOpportunityViewModel>>> GetPageOfRecommendedOpportunitiesForCandidate()
-    {
-        return Ok(await _opportunityRegistrationService.GetPageOfRecommendedOpportunitiesForCandidate(_currentUser.GetUserId()));
-    }
 
 }

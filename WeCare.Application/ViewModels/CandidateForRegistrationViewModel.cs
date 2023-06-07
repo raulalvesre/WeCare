@@ -1,3 +1,5 @@
+using WeCare.Domain.Models;
+
 namespace WeCare.Application.ViewModels;
 
 public class CandidateForRegistrationViewModel
@@ -8,4 +10,6 @@ public class CandidateForRegistrationViewModel
     public string Bio { get; set; }
     public DateOnly BirthDate { get; set; }
     public SecretativeAddressViewModel Address { get; set; }
+    public IEnumerable<OpportunityCauseViewModel> CausesInterestedIn { get; set; }
+    public IEnumerable<QualificationViewModel> Qualifications { get; set; }
 }

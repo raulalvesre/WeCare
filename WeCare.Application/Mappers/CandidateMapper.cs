@@ -34,7 +34,9 @@ public class CandidateMapper
             Name = candidate.Name,
             Bio = candidate.Bio,
             Address = new SecretativeAddressViewModel(candidate),
-            BirthDate = candidate.BirthDate
+            BirthDate = candidate.BirthDate,
+            Qualifications = candidate.Qualifications.Select(x => new QualificationViewModel(x)),
+            CausesInterestedIn = candidate.CausesCandidateIsInterestedIn.Select(x => new OpportunityCauseViewModel(x))
         };
     }
 

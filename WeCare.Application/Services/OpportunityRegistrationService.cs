@@ -192,9 +192,5 @@ public class OpportunityRegistrationService
         await _unitOfWork.SaveAsync();
     }
 
-    public async Task<Pagination<VolunteerOpportunityViewModel>> GetPageOfRecommendedOpportunitiesForCandidate(
-        long candidateId)
-    {
-        return null;
-    }
+
 }
