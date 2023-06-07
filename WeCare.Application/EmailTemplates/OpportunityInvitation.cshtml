@@ -31,7 +31,8 @@
 <body>
 	<h1>WeCare</h1>
 	<p>Parabéns, @Model.CandidateName!</p>
-	<p>Você foi convidado para a seguinte oportunidade: <a href="@Model.Url/opportunity-invitations/@Model.OpportunityId" class="button">@Model.OpportunityName</a></p>
+	<p>Você foi convidado para a seguinte oportunidade: @Model.OpportunityName</p>
+	<p><a href="@Model.Url/opportunities-invite" class="button">Clique aqui para conferir sua página de convites!</a></p>
 	@if (!string.IsNullOrEmpty(Model.InvitationMessage)) 
 	{
 		<p>Mensagem de convite: @Model.InvitationMessage</p>
