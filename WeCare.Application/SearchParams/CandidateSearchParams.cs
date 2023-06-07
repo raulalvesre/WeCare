@@ -13,7 +13,7 @@ public class CandidateSearchParams : PaginationFilterParamsBase<Candidate>
     public string? Name { get; set; }
     public string? City { get; set; }
     public State? State { get; set; }
-    public IEnumerable<long> QualificationIds { get; set; }
+    public IEnumerable<long> QualificationIds { get; set; } = new List<long>();
 
     protected override void Filter()
     {
