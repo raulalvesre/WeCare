@@ -11,13 +11,15 @@ public class OpportunityRegistrationSearchParams : PaginationFilterParamsBase<Op
     public RegistrationStatus? Status { get; set; }
     public long? OpportunityId { get; set; }
     public long? CandidateId { get; set; }
-    
+
     protected override void Filter()
     {
-        PreQuery(x => x.Include(x => x.Candidate).ThenInclude(x => x.CausesCandidateIsInterestedIn).Include(x => x.Candidate).ThenInclude(x => x.CausesCandidateIsInterestedIn).Include(x => x.Opportunity).ThenInclude(x => x.Institution));
+        PreQuery(x => x.Include(x => x.Candidate.CausesCandidateIsInterestedIn)
+            .Include(x => x.Candidate.Qualifications)
+            .Include(x => x.Opportunity.Institution));
         if (Status.HasValue)
             And(x => x.Status == Status);
-        
+
         if (OpportunityId.HasValue)
         {
             PreQuery(q => q.Include(x => x.Candidate));
