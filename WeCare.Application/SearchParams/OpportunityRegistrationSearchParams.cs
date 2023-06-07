@@ -17,6 +17,7 @@ public class OpportunityRegistrationSearchParams : PaginationFilterParamsBase<Op
         PreQuery(x => x.Include(x => x.Candidate.CausesCandidateIsInterestedIn)
             .Include(x => x.Candidate.Qualifications)
             .Include(x => x.Opportunity.Institution));
+        
         if (Status.HasValue)
             And(x => x.Status == Status);
 
