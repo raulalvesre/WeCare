@@ -8,15 +8,15 @@ public class RegistrationViewModel
     public long Id { get; set; }
     public RegistrationStatus Status { get; set; }
     public string FeedbackMessage { get; set; }
-    public long CandidateId { get; set; }
-    public long OpportunityId { get; set; }
+    public CandidateViewModel Candidate { get; set; }
+    public VolunteerOpportunityViewModel Opportunity { get; set; }
 
     public RegistrationViewModel(OpportunityRegistration registration)
     {
         Id = registration.Id;
         Status = registration.Status;
         FeedbackMessage = registration.FeedbackMessage;
-        CandidateId = registration.CandidateId;
-        OpportunityId = registration.OpportunityId;
+        Candidate = new CandidateViewModel(registration.Candidate);
+        Opportunity = new VolunteerOpportunityViewModel(registration.Opportunity);
     }
 }

@@ -17,4 +17,23 @@ public class CandidateViewModel
     public IEnumerable<QualificationViewModel> Qualifications { get; set; }
     public IEnumerable<OpportunityCauseViewModel> CausesCandidateIsInterestedIn { get; set; }
 
+    public CandidateViewModel(Candidate candidate)
+    {
+        Id = candidate.Id;
+        Email = candidate.Email;
+        Name = candidate.Name;
+        Telephone = candidate.Telephone;
+        Bio = candidate.Bio;
+        Photo = candidate.Photo;
+        LinkedIn = candidate.LinkedIn;
+        Address = new AddressViewModel(candidate);
+        Cpf = candidate.Cpf;
+        BirthDate = candidate.BirthDate;
+        Qualifications = candidate.Qualifications.Select(x => new QualificationViewModel(x));
+        CausesCandidateIsInterestedIn =  candidate.CausesCandidateIsInterestedIn.Select(x => new OpportunityCauseViewModel(x));;
+    }
+
+    public CandidateViewModel()
+    {
+    }
 }

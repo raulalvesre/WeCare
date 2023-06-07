@@ -10,8 +10,8 @@ public class IssueSearchParams : PaginationFilterParamsBase<IssueReport>
     public IssueStatus? Status { get; set; }
     public long? ReporterId { get; set; }
     public long? ReportedUserId { get; set; }
-    public string Description { get; set; }
-    public string ResolutionNotes { get; set; }
+    public string? Description { get; set; }
+    public string? ResolutionNotes { get; set; }
     public DateTime? PeriodStart { get; set; }
     public DateTime? PeriodEnd { get; set; }
     
@@ -29,10 +29,10 @@ public class IssueSearchParams : PaginationFilterParamsBase<IssueReport>
         if (ReportedUserId.HasValue)
             And(x => x.ReportedUserId == ReportedUserId);
         
-        if (string.IsNullOrEmpty(Description))
+        if (!string.IsNullOrEmpty(Description))
             And(x => EF.Functions.Like(x.Description, $"%{Description}%"));
         
-        if (string.IsNullOrEmpty(ResolutionNotes))
+        if (!string.IsNullOrEmpty(ResolutionNotes))
             And(x => EF.Functions.Like(x.ResolutionNotes, $"%{ResolutionNotes}%"));
         
         if (PeriodStart.HasValue && PeriodEnd.HasValue)

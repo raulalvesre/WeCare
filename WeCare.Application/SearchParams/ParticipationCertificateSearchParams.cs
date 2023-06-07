@@ -13,14 +13,26 @@ public class ParticipationCertificateSearchParams : PaginationFilterParamsBase<P
 
     protected override void Filter()
     {
-        PreQuery(x => x.Include(x => x.Registration).Include(x => x.DisplayedQualifications));
-        
+        PreQuery(x => x.Include(x => x.Registration)
+            .ThenInclude(x => x.Opportunity)
+            .ThenInclude(x => x.Causes)
+            .Include(x => x.Registration)
+            .ThenInclude(x => x.Opportunity)
+            .ThenInclude(x => x.Institution)
+            .Include(x => x.Registration)
+            .ThenInclude(x => x.Candidate)
+            .ThenInclude(x => x.CausesCandidateIsInterestedIn)
+            .Include(x => x.Registration)
+            .ThenInclude(x => x.Candidate)
+            .ThenInclude(x => x.Qualifications)
+            .Include(x => x.DisplayedQualifications));
+
         if (CandidateId.HasValue)
             And(x => x.Registration.CandidateId == CandidateId);
-        
+
         if (OpportunityId.HasValue)
             And(x => x.Registration.OpportunityId == OpportunityId);
-        
+
         if (PeriodStart.HasValue && PeriodEnd.HasValue)
             And(x => x.CreationDate >= PeriodStart && x.CreationDate <= PeriodEnd);
 
