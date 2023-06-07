@@ -20,7 +20,8 @@ public class OpportunityRegistrationMapper
         {
             Id = model.Id,
             Status = model.Status,
-            Candidate = _candidateMapper.FromModelToInstitutionRegistrationViewModel(model.Candidate)
+            Candidate = _candidateMapper.FromModelToInstitutionRegistrationViewModel(model.Candidate),
+            Opportunity = new VolunteerOpportunityViewModel(model.Opportunity)
         };
     }
     

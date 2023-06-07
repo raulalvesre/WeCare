@@ -66,6 +66,11 @@ public class ParticipationCertificateService
         if (registration.IsNotAccepted())
             throw new UnprocessableEntityException("Inscrição nunca foi aceita, não é possível emitir certificado de participação");
 
+        var alreadyExistingParticipationCertificate =
+            _certificateRepository.Query.FirstOrDefault(x => x.RegistrationId == form.RegistrationId);
+        if (alreadyExistingParticipationCertificate is not null)
+            throw new ConflictException("Certificado ja foi emitido");
+        
         var authenticityCode = Guid.NewGuid().ToString();
         var certificate = new ParticipationCertificate
         {
