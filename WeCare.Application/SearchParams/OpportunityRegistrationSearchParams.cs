@@ -14,7 +14,7 @@ public class OpportunityRegistrationSearchParams : PaginationFilterParamsBase<Op
     
     protected override void Filter()
     {
-        PreQuery(x => x.Include(x => x.Candidate).Include(x => x.Opportunity).ThenInclude(x => x.Institution));
+        PreQuery(x => x.Include(x => x.Candidate).ThenInclude(x => x.CausesCandidateIsInterestedIn).Include(x => x.Candidate).ThenInclude(x => x.CausesCandidateIsInterestedIn).Include(x => x.Opportunity).ThenInclude(x => x.Institution));
         if (Status.HasValue)
             And(x => x.Status == Status);
         
