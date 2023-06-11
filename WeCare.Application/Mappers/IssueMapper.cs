@@ -16,7 +16,11 @@ public class IssueMapper
             Description = model.Description,
             ResolutionNotes = model.ResolutionNotes,
             ReportedUserId = model.ReportedUserId,
+            ReportedName = model.ReportedUser.Name,
+            ReportedPhoto = model.ReportedUser.Photo,
             ReporterId = model.ReporterId,
+            ReporterName = model.Reporter.Name,
+            ReporterPhoto = model.Reporter.Photo,
             OpportunityId = model.OpportunityId,
             CreationDate = model.CreationDate,
         };

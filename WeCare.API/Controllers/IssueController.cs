@@ -59,7 +59,7 @@ public class IssueController : ControllerBase
     {
         var searchParams = new IssueMessageSearchParams
         {
-            Id = id,
+            IssueId = id,
             PageSize = pageSize,
             PageNumber = pageNumber
         };
