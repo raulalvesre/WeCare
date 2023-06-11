@@ -37,4 +37,10 @@ public class ParticipationCertificateController : ControllerBase
     {
         return Ok(await _participationCertificateService.Save(form));
     }
+    
+    [HttpGet("{authenticityCode:Guid}")]
+    public ActionResult<ParticipationCertificateViewModel> GetByAuthenticityCode(Guid authenticityCode)
+    {
+        return Ok(_participationCertificateService.GetByAuthenticityCode(authenticityCode));
+    }
 }

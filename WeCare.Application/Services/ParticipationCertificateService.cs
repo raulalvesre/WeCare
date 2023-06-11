@@ -1,4 +1,3 @@
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using WeCare.Application.Exceptions;
 using WeCare.Application.SearchParams;
@@ -82,6 +81,28 @@ public class ParticipationCertificateService
 
         await _certificateRepository.Save(certificate);
         await _unitOfWork.SaveAsync();
+        return new ParticipationCertificateViewModel(certificate);
+    }
+
+    public ParticipationCertificateViewModel GetByAuthenticityCode(Guid authenticityCode)
+    {
+        var certificate = _certificateRepository.Query.Include(x => x.Registration)
+            .ThenInclude(x => x.Opportunity)
+            .ThenInclude(x => x.Causes)
+            .Include(x => x.Registration)
+            .ThenInclude(x => x.Opportunity)
+            .ThenInclude(x => x.Institution)
+            .Include(x => x.Registration)
+            .ThenInclude(x => x.Candidate)
+            .ThenInclude(x => x.CausesCandidateIsInterestedIn)
+            .Include(x => x.Registration)
+            .ThenInclude(x => x.Candidate)
+            .ThenInclude(x => x.Qualifications)
+            .Include(x => x.DisplayedQualifications).FirstOrDefault(x => x.AuthenticityCode == authenticityCode.ToString());
+
+        if (certificate is null)
+            throw new NotFoundException("Certificado não encontrado");
+
         return new ParticipationCertificateViewModel(certificate);
     }
 }

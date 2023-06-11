@@ -21,4 +21,5 @@ public class ParticipationCertificateRepository : BaseRepository<ParticipationCe
             .Include(x => x.DisplayedQualifications)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
+
 }
