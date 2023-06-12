@@ -10,6 +10,7 @@ public class OpportunityInvitationSearchParams : PaginationFilterParamsBase<Oppo
     
     public long? OpportunityId { get; set; }
     public long? CandidateId { get; set; }
+    public long? InstitutionId { get; set; }
     public InvitationStatus? Status { get; set; }
     
     protected override void Filter()
@@ -17,13 +18,18 @@ public class OpportunityInvitationSearchParams : PaginationFilterParamsBase<Oppo
         PreQuery(q => q.Include(x => x.Candidate)
             .ThenInclude(x => x.Qualifications)
             .Include(x => x.Opportunity)
-            .ThenInclude(x => x.Causes));
+            .ThenInclude(x => x.Causes)
+            .Include(x => x.Opportunity)
+            .ThenInclude(x => x.Institution));
 
         if (OpportunityId.HasValue)
             And(x => x.OpportunityId == OpportunityId);
 
         if (CandidateId.HasValue)
             And(x => x.CandidateId == CandidateId);
+        
+        if (InstitutionId.HasValue)
+            And(x => x.Opportunity.InstitutionId == InstitutionId);
         
         if (Status.HasValue)
             And(x => x.Status == Status);

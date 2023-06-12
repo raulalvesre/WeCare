@@ -13,6 +13,7 @@ public class VolunteerOpportunitySearchParams : PaginationFilterParamsBase<Volun
     public string? City { get; set; }
     public State? State { get; set; }
     public long? CandidateNotRegistered { get; set; }
+    public long? CandidateNotInvited { get; set; }
     public IEnumerable<string> Causes { get; set; } = new List<string>();
     public IEnumerable<long> DesirableQualifications = new List<long>();
     public OpportunityOrderBy? OrderBy { get; set; }
@@ -44,6 +45,9 @@ public class VolunteerOpportunitySearchParams : PaginationFilterParamsBase<Volun
         
         if (CandidateNotRegistered.HasValue)
             And(x => x.Registrations.All(y => y.CandidateId != CandidateNotRegistered));
+
+        if (CandidateNotInvited.HasValue)
+            And(x => x.Invitations.All(y => y.CandidateId != CandidateNotInvited));
 
         if (Causes.Any())
         {

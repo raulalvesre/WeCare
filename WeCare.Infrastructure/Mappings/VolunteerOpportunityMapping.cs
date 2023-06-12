@@ -72,6 +72,10 @@ public class VolunteerOpportunityMapping : IEntityTypeConfiguration<VolunteerOpp
             .WithOne(x => x.Opportunity)
             .HasForeignKey(x => x.OpportunityId);
         
+        builder.HasMany(x => x.Invitations)
+            .WithOne(x => x.Opportunity)
+            .HasForeignKey(x => x.OpportunityId);
+        
         builder.HasMany(x => x.DesirableQualifications)
             .WithMany(x => x.Opportunities);
     }
