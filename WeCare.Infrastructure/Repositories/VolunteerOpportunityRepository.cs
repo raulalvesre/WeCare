@@ -64,6 +64,7 @@ public class VolunteerOpportunityRepository : BaseRepository<VolunteerOpportunit
                 LEFT JOIN opportunity_registrations r ON r.candidate_id = {candidateId} AND r.opportunity_id = op.id
             WHERE op.enabled
                 AND r.opportunity_id IS NULL
+                AND op.opportunity_date > now()
             ORDER BY CASE
                  WHEN u.city = op.city THEN 0
                  WHEN u.city <> op.city AND u.state = op.state THEN 1
